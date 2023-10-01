@@ -14,15 +14,11 @@ public class HelpDeskApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        HomeView hw = new HomeView();
-        JFrame frame = new JFrame();
-        frame.add(hw);
-        
-        frame.setSize(718, 540);
-        frame.setTitle("AUT Helpdesk");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        JFrame window = new WindowManager();
+        window.setSize(718, 540);
+        window.setTitle("AUT Helpdesk");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setVisible(true);
     }
     
 }

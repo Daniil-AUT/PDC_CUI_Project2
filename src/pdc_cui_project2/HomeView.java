@@ -26,6 +26,7 @@ public class HomeView extends JPanel {
     public HomeView() {
         setLayout(new BorderLayout());
         
+        
         levelLabels = new JPanel();
         levelLabels.setLayout(new BoxLayout(levelLabels, BoxLayout.Y_AXIS));
         
@@ -61,6 +62,7 @@ public class HomeView extends JPanel {
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("faq button has been pressed");
+                
             }
         });
         
