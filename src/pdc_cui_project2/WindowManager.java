@@ -8,25 +8,44 @@ import javax.swing.*;
  * @author Daniil
  */
 public class WindowManager extends JFrame {
-
-    public JFrame mainFrame;
+    private static WindowManager manager;
     private HomeView homeView;
     private FaqView faqView;
-
-    public WindowManager() {
-        mainFrame = new JFrame();
-
-        homeView = new HomeView();
-        faqView = new FaqView();
-
-        add(homeView);
+    
+    // Apply singleton pattern
+    public static synchronized WindowManager getManager() {
+        if (manager == null) {
+            manager = new WindowManager();
+        }
+        return manager;
+    }
+    
+    private WindowManager() {
         
+        createPanels();
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(718, 540);
+        setTitle("AUT Helpdesk");
+        setLayout(new CardLayout());
+        setVisible(true);
+    }
+    private void createPanels() {
+        homeView = new HomeView();
+        homeView.setVisible(true);
+        
+        faqView = new FaqView();
+        faqView.setVisible(false);
+        
+        add(homeView);
         add(faqView);
     }
-    public void setHome(boolean visible) {
+
+    public void setHomeVisible(boolean visible) {
         homeView.setVisible(visible);
     }
-    public void setFAQ(boolean visible) {
+
+    public void setFAQVisible(boolean visible) {
         faqView.setVisible(visible);
     }
 }

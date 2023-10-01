@@ -9,7 +9,7 @@ import javax.swing.*;
  *
  * @author Daniil
  */
-public class HomeView extends JPanel {
+public final class HomeView extends JPanel {
     private JButton loginButton;
     private JPanel levelButtons;
     private JPanel levelLabels;
@@ -23,10 +23,14 @@ public class HomeView extends JPanel {
         Image image = new ImageIcon("swag.png").getImage();
         g.drawImage(image, 100,100,null);
     }
+    
     public HomeView() {
+        createComponents();
+        createEvents();
+    }
+    
+    private void createComponents() {
         setLayout(new BorderLayout());
-        
-        
         levelLabels = new JPanel();
         levelLabels.setLayout(new BoxLayout(levelLabels, BoxLayout.Y_AXIS));
         
@@ -40,31 +44,12 @@ public class HomeView extends JPanel {
         
         loginButton = new JButton("Log In");
         GUIStyle.styleButton(loginButton);
-        loginButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("login button has been pressed");
-            }
-        });
         
         signupButton = new JButton("Sign Up");
         GUIStyle.styleButton(signupButton);
-        signupButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("signup button has been pressed");
-            }
-        });
         
         faqButton = new JButton("View FAQ");
         GUIStyle.styleButton(faqButton);
-        faqButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("faq button has been pressed");
-                
-            }
-        });
         
         levelLabels.add(greetLabel);
         levelLabels.add(instructionLabel);
@@ -77,6 +62,33 @@ public class HomeView extends JPanel {
         add(levelButtons, BorderLayout.SOUTH);
         
         add(faqButton, BorderLayout.NORTH);
+    }
+    
+    private void createEvents() {
+       loginButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("login button has been pressed");
+            }
+        }); 
+       
+       signupButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("signup button has been pressed");
+            }
+        });
+        
+        
+        faqButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("faq button has been pressed");
+                WindowManager.getManager().setHomeVisible(false);
+                WindowManager.getManager().setFAQVisible(true);
+            }
+        });
         
     }
+
 }

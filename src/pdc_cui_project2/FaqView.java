@@ -12,13 +12,38 @@ import javax.swing.*;
  */
 public class FaqView extends JPanel {
     private JButton backButton;
-    private JLabel faqInfo;
+    private JTextArea faqInfo;
     
     public FaqView() {
-        backButton = new JButton();
-        faqInfo = new JLabel();
-        System.out.println(showInfo());
+        createComponents();
+        createEvents();
     }
+    
+    public void createComponents() {
+        setLayout(new BorderLayout());
+        backButton = new JButton("Go Home");
+        GUIStyle.styleButton(backButton);
+        faqInfo = new JTextArea("\n\n"+showInfo(), 60, 50);
+        faqInfo.setEditable(false);
+        GUIStyle.styleTextArea(faqInfo);
+        
+        JScrollPane scroll = new JScrollPane(faqInfo);
+        scroll.setEnabled(true);
+        add(backButton, BorderLayout.NORTH);
+        add(scroll, BorderLayout.CENTER);
+    }
+    
+    public void createEvents() {
+        backButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("home button has been pressed");
+                WindowManager.getManager().setFAQVisible(false);
+                WindowManager.getManager().setHomeVisible(true);
+            }
+        });
+    }
+    
     private static String showInfo() {
         String text = "";
         try (BufferedReader reader = new BufferedReader(new FileReader("HelpDeskFiles\\faq.txt"))) {

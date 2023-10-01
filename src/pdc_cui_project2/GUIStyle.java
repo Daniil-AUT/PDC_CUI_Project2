@@ -21,4 +21,9 @@ public class GUIStyle {
         label.setFont(new Font("Consolas", Font.BOLD, 12));
         label.setText("<html>" + label.getText().replace("\n", "<br>") + "</html>");
     }
+    
+    public static void styleTextArea(JTextArea text) {
+        text.setFont(new Font("Consolas", Font.PLAIN, 12));
+        
+    }
 }
