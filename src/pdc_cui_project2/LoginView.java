@@ -3,7 +3,6 @@ package pdc_cui_project2;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
 import javax.swing.*;
 
 /**
@@ -39,12 +38,16 @@ public class LoginView extends JPanel {
     public void createComponents() {
         setLayout(new BorderLayout());
 
-        // Top panel with back button
-        JPanel topPanel = new JPanel();
-        add(topPanel, BorderLayout.NORTH);
+//        Top panel with back button
+//        JPanel topPanel = new JPanel();
+//        add(topPanel, BorderLayout.NORTH);
+//        backButton = new JButton("Home");
+//        GUIStyle.styleButton(backButton);
+//        topPanel.add(backButton);
+
         backButton = new JButton("Home");
         GUIStyle.styleButton(backButton);
-        topPanel.add(backButton);
+        add(backButton, BorderLayout.NORTH);
 
         // Center panel for login label, instructions, radio buttons, and entry fields
         JPanel centerPanel = new JPanel(new BorderLayout());
@@ -52,8 +55,9 @@ public class LoginView extends JPanel {
 
         // Panel for login label
         JPanel topCenter = new JPanel();
-        loginLabel = new JLabel("Log In");
+        loginLabel = new JLabel("\nLog In\n");
         GUIStyle.styleLabel(loginLabel);
+        loginLabel.setFont(new Font("Consolas", Font.CENTER_BASELINE, 24));
         topCenter.add(loginLabel);
         centerPanel.add(topCenter, BorderLayout.NORTH);
 
@@ -80,17 +84,14 @@ public class LoginView extends JPanel {
         radioPanel.add(customer);
         inputPanel.add(radioPanel); 
 
-        // Add email field
         emailField = new JTextField("", 24);
         inputPanel.add(new JLabel("Email:"));  // Add label
         inputPanel.add(emailField);
-
-        // Add password field
+        
         passField = new JPasswordField("", 24);
         inputPanel.add(new JLabel("Password:"));  // Add label
         inputPanel.add(passField);
 
-        // Add login button
         loginButton = new JButton("Log In");
         GUIStyle.styleButton(loginButton);
         
@@ -107,6 +108,17 @@ public class LoginView extends JPanel {
                 System.out.println("back button has been pressed");
                 WindowManager.getManager().setHomeVisible(true);
                 WindowManager.getManager().setLoginVisible(false);
+            }
+        });
+        
+        loginButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("loginb button has been pressed");
+                if(passField.getText().equals("test") && emailField.getText().equals("test")) {
+                    WindowManager.getManager().setHomeVisible(false);
+                    WindowManager.getManager().setLoginVisible(false);
+                }
             }
         });
     }

@@ -11,8 +11,6 @@ import javax.swing.*;
  */
 public final class HomeView extends JPanel {
     private JButton loginButton;
-    private JPanel levelButtons;
-    private JPanel levelLabels;
     private JButton signupButton;
     private JButton faqButton;
     private JLabel greetLabel;
@@ -39,6 +37,7 @@ public final class HomeView extends JPanel {
         JPanel topCenter = new JPanel();
         greetLabel = new JLabel("\nWelcome to AUT HelpDesk!\n");
         GUIStyle.styleLabel(greetLabel);
+        greetLabel.setFont(new Font("Consolas", Font.CENTER_BASELINE, 24));
         topCenter.add(greetLabel);
         centerPanel.add(topCenter, BorderLayout.NORTH);
 
@@ -76,6 +75,9 @@ public final class HomeView extends JPanel {
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("signup button has been pressed");
+                WindowManager.getManager().setSignUpVisible(true);
+                WindowManager.getManager().setHomeVisible(false);
+                
             }
         });
         
