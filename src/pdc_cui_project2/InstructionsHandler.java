@@ -32,19 +32,13 @@ public class InstructionsHandler {
     }
 
     public static String userLogIn() {
-        return "**Log In Instructions**\n" +
-               "All commands are case insensitive!\n\n" +
-               "If you wish to go back to the Home Page, you can do so by typing 'home'.\n\n" +
-               "Before logging in, you must state if you're an existing. If so, type 'yes' to login.\n" +
-               "Otherwise, type 'no' to create an account.\n\n" +
-               "If you're an existing user, you must identify yourself in the command line\n" +
-               "using the following: 'student'(Student), 'assistant'(Assistant), 'customer'(Customer).\n\n" +
-               "If you're a new user, you must Sign Up before proceeding, you will be asked to\n" +
-               "enter your full name and an email. You will then be assigned a unique ID which\n" +
-               "you will use to log in next time you use the program.\n\n" +
-               "If you wish to exit, you can do so at any time by typing 'quit' in command line\n" +
-               "to exit the program.\n\n" +
-               "**Warning: You must word the command exactly as specified in the instructions.**";
+        
+        return "Please choose your role to be Student, Assistant, or Customer. \n"+
+                "This helps us tailor your experience.\n\n"+
+                "For the Email entry,  please enter your email address and make sure it\n"+
+                "ends with \"@mail.com\" for proper registration.\n\n" +
+                "For the password entry,  enter your password in password field and \n"+
+                "remember, no blank spaces allowed. Keep it secure!\n\n";
     }
 
     public static String userAccount() {

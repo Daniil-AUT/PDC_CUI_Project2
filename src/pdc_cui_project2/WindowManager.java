@@ -11,6 +11,7 @@ public class WindowManager extends JFrame {
     private static WindowManager manager;
     private HomeView homeView;
     private FaqView faqView;
+    private LoginView loginView;
     
     // Apply singleton pattern
     public static synchronized WindowManager getManager() {
@@ -37,8 +38,12 @@ public class WindowManager extends JFrame {
         faqView = new FaqView();
         faqView.setVisible(false);
         
+        loginView = new LoginView();
+        loginView.setVisible(false);
+        
         add(homeView);
         add(faqView);
+        add(loginView);
     }
 
     public void setHomeVisible(boolean visible) {
@@ -47,6 +52,9 @@ public class WindowManager extends JFrame {
 
     public void setFAQVisible(boolean visible) {
         faqView.setVisible(visible);
+    }
+    public void setLoginVisible(boolean visible) {
+        loginView.setVisible(visible);
     }
 }
 

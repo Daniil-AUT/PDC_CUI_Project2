@@ -21,7 +21,7 @@ public class FaqView extends JPanel {
     
     public void createComponents() {
         setLayout(new BorderLayout());
-        backButton = new JButton("Go Home");
+        backButton = new JButton("Go Back");
         GUIStyle.styleButton(backButton);
         faqInfo = new JTextArea("\n\n"+showInfo(), 60, 50);
         faqInfo.setEditable(false);
@@ -54,9 +54,9 @@ public class FaqView extends JPanel {
             reader.close();
             // Give possible exceptions errors and handle them through print statements
         } catch (FileNotFoundException e) {
-            System.out.println("Sorry, FAQ is unavailable at the moment.");
+            return "Sorry, FAQ is unavailable at the moment.";
         } catch (IOException e) {
-            System.out.println("Apologies, An Error Occured Loading an FAQ");
+            return "Apologies, An Error Occured Loading an FAQ";
         }
         return text;
     }

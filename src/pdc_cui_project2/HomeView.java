@@ -16,13 +16,8 @@ public final class HomeView extends JPanel {
     private JButton signupButton;
     private JButton faqButton;
     private JLabel greetLabel;
-    private JLabel instructionLabel;
+    private JTextArea instructionText;
     
-    @Override
-    public void paintComponent( Graphics g ){
-        Image image = new ImageIcon("swag.png").getImage();
-        g.drawImage(image, 100,100,null);
-    }
     
     public HomeView() {
         createComponents();
@@ -31,37 +26,40 @@ public final class HomeView extends JPanel {
     
     private void createComponents() {
         setLayout(new BorderLayout());
-        levelLabels = new JPanel();
-        levelLabels.setLayout(new BoxLayout(levelLabels, BoxLayout.Y_AXIS));
-        
-        greetLabel = new JLabel("Welcome to the AUT HelpDesk!");
-        GUIStyle.styleLabel(greetLabel);
-        // Chat GPT helped
-        instructionLabel = new JLabel(InstructionsHandler.userGreeting());
-        GUIStyle.styleLabel(instructionLabel);
-        
-        levelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        
-        loginButton = new JButton("Log In");
-        GUIStyle.styleButton(loginButton);
-        
-        signupButton = new JButton("Sign Up");
-        GUIStyle.styleButton(signupButton);
         
         faqButton = new JButton("View FAQ");
         GUIStyle.styleButton(faqButton);
-        
-        levelLabels.add(greetLabel);
-        levelLabels.add(instructionLabel);
-        add(levelLabels, BorderLayout.CENTER);
-
-        // Add some space around the label panel using EmptyBorder
-        levelLabels.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        levelButtons.add(loginButton);
-        levelButtons.add(signupButton);
-        add(levelButtons, BorderLayout.SOUTH);
-        
         add(faqButton, BorderLayout.NORTH);
+
+        // Center panel for login label, instructions, radio buttons, and entry fields
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        add(centerPanel, BorderLayout.CENTER);
+
+        // Panel for login label
+        JPanel topCenter = new JPanel();
+        greetLabel = new JLabel("\nWelcome to AUT HelpDesk!\n");
+        GUIStyle.styleLabel(greetLabel);
+        topCenter.add(greetLabel);
+        centerPanel.add(topCenter, BorderLayout.NORTH);
+
+        // Panel for login instructions
+        JPanel midCenter = new JPanel();
+        instructionText = new JTextArea(InstructionsHandler.userGreeting());
+        instructionText.setEditable(false);
+        instructionText.setOpaque(false);
+        midCenter.add(instructionText);
+        centerPanel.add(midCenter, BorderLayout.CENTER);
+
+        
+        JPanel bottomPanel = new JPanel();
+        loginButton = new JButton("Log In");
+        GUIStyle.styleButton(loginButton);
+        signupButton = new JButton("Sign Up");
+        GUIStyle.styleButton(signupButton);
+        bottomPanel.add(loginButton);
+        bottomPanel.add(signupButton);
+        add(bottomPanel, BorderLayout.SOUTH);
+        
     }
     
     private void createEvents() {
@@ -69,6 +67,8 @@ public final class HomeView extends JPanel {
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("login button has been pressed");
+                WindowManager.getManager().setHomeVisible(false);
+                WindowManager.getManager().setLoginVisible(true);
             }
         }); 
        
