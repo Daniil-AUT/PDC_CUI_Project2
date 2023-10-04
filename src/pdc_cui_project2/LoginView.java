@@ -76,6 +76,9 @@ public class LoginView extends JPanel implements Page {
         radioPanel.add(student);
         radioPanel.add(assistant);
         radioPanel.add(customer);
+        GUIStyle.styleRadioButton(student);
+        GUIStyle.styleRadioButton(customer);
+        GUIStyle.styleRadioButton(assistant);
         inputPanel.add(radioPanel); 
 
         emailField = new JTextField("", 24);
