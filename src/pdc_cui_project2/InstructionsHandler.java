@@ -42,63 +42,42 @@ public class InstructionsHandler {
     }
 
     public static String userAccount() {
-        return "**Account Instructions**\n" +
-               "All commands are case insensitive!\n\n" +
-               "If you wish to go back to the Home Page, you can do so by typing 'home'.\n" +
-               "By doing so, you will log out of your account.\n\n" +
-               "If you wish to view your personal ticket, you can do so by typing 'view'\n" +
-               "in command line.\n\n" +
-               "If you wish to make a ticket, you can do so by typing 'create' in command\n" +
-               "line.\n\n" +
-               "If you wish to delete your ticket (deletes the whole ticket), you can do\n" +
-               "so by typing 'delete' in the command line.\n\n" +
-               "Note: A user is permitted to having one ticket at all times\n\n" +
-               "If you wish to exit, you can do so at any time by typing 'quit' in command\n" +
-               "line to exit the program.\n\n" +
-               "**Warning: You must word the command exactly as specified in the instructions.**";
-    }
+        return "Creating a Ticket:\n" +
+                "The \"Create Ticket\" button is available. Click on it, and a \n"
+                + "form will appear. " +
+                "Fill in the necessary details to create your ticket. Once you've \n"
+                + "created a ticket, the \"Create Ticket\" button will be disabled.\n\n" +
 
-    public static String createUserAccount() {
-        return "**Account Creation**\n" +
-               "All commands are case insensitive!\n\n" +
-               "If you wish to go back to the Home Page, you can do so by typing 'home'.\n" +
-               "By doing so, your progress will be lost.\n\n" +
-               "Note: Your name cannot contain number/special characters/blank spaces\n" +
-               "and the email should end with '@mail.com'.\n\n" +
-               "Please fill in the fields without leaving any blank spaces.\n\n" +
-               "If you wish to exit, you can do so at any time by typing 'quit' in command\n" +
-               "line to exit the program.\n\n" +
-               "**Warning: You must word the command exactly as specified in the instructions.**";
-    }
+                "Viewing Your Ticket:\n" +
+                "Your active ticket will be displayed on the dashboard. The \"View\"\n"
+                + " and \"Update\" options are enabled only when you have an active \n"
+                + "ticket. Click on \"View\" to see the details of your ticket.\n\n" +
 
-    public static String userTicket() {
-        return "**Ticket Instructions**\n" +
-               "All commands are case insensitive!\n\n" +
-               "If you wish to go back to the Home Page, you can do so by typing 'home'.\n" +
-               "By doing so, you will log out of your account.\n\n" +
-               "If you change your mind, you can go back to your Account, you can do so\n" +
-               "by typing 'back' in the command line.\n\n" +
-               "If you want the ticket to be registered, you must fill in all the field\n" +
-               "with appropriate information, please note that by typing some keywords\n" +
-               "of the program, the program will respond to them accordingly with saving\n" +
-               "your ticket.\n\n" +
-               "If you wish to exit, you can do so at any time by typing 'quit' in command\n" +
-               "line to exit the program.\n\n" +
-               "**Warning: You must word the command exactly as specified in the instructions.**";
+                "Updating Your Ticket:\n" +
+                "To make updates to your ticket, click on the \"Update\" button. \n"
+                + "This will open a form where you can modify details or add comments.\n"
+                + " Save your changes to update the ticket.\n\n" +
+
+                "Deleting Your Ticket:\n" +
+                "The \"Delete\" button is available, but it's disabled when you \n"
+                + "don't have an active ticket. Once you create a ticket, the \"Delete\" \n"
+                + "button becomes enabled. Click on it if you wish to remove your existing \n"
+                + "ticket. Confirm the action when prompted.";
     }
 
     public static String assistantTicket() {
-        return "**Ticket Instructions**\n" +
-               "All commands are case insensitive!\n\n" +
-               "If you wish to go back to the Home Page, you can do so by typing 'home'.\n" +
-               "By doing so, you will log out of your account.\n\n" +
-               "If you change your mind, you can go back to your Account, you can do so\n" +
-               "by typing 'account' in the command line.\n\n" +
-               "If you wish to look at all the submitted tickets, you can do so by typing\n" +
-               "'view' in the command line.\n\n" +
-               "If you wish to reply to one of the tickets, you can do so by typing the\n" +
-               "ticket ID.\n\n" +
-               "**Warning: You must word the command exactly as specified in the instructions.**";
+        return "Viewing Tickets:\n\n"
+        + "Start by navigating to the ticket management interface.\n"
+        + "Locate and press the \"View\" button to access a list of all \n"
+        + "submitted tickets. Keep in mind that if there are no tickets submitted,\n"
+        + " the \"View\" button will be disabled. Ensure that there are active \n"
+        + "tickets before attempting to view them.\n\n"
+        + "Replying to Tickets:\n\n"
+        + "Once you've accessed the list of tickets, choose the specific ticket \n"
+        + "you want to reply to. Press the \"Reply\" button to provide a response \n"
+        + "or additional information. Note that the \"Reply\" button will only be\n"
+        + "active if there are existing tickets. If there are no tickets, you won't\n"
+        + "be able to reply until a ticket has been submitted.";
     }
 }
 

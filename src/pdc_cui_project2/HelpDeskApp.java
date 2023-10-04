@@ -1,9 +1,5 @@
 package pdc_cui_project2;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import javax.swing.JFrame;
-
 /**
  *
  * @author Daniil
@@ -17,5 +13,4 @@ public class HelpDeskApp {
         WindowManager window = WindowManager.getManager();
         window.setVisible(true);
     }
-    
 }

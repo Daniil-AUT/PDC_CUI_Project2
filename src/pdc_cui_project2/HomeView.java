@@ -50,7 +50,7 @@ public final class HomeView extends JPanel {
         centerPanel.add(midCenter, BorderLayout.CENTER);
 
         
-        JPanel bottomPanel = new JPanel();
+        JPanel bottomPanel = new JPanel(new GridLayout(0, 2, 1, 0));
         loginButton = new JButton("Log In");
         GUIStyle.styleButton(loginButton);
         signupButton = new JButton("Sign Up");

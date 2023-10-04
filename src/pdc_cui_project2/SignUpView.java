@@ -13,7 +13,6 @@ import javax.swing.*;
 public class SignUpView extends JPanel {
     private JButton backButton;
     private JLabel signupLabel;
-    private JTextArea signUpInstruction;
     private JTextField name;
     private JTextField lastName;
     private JTextField email;
@@ -115,6 +114,8 @@ public class SignUpView extends JPanel {
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("signup button has been pressed");
+                WindowManager.getManager().setUserAccountVisible(true);
+                WindowManager.getManager().setSignUpVisible(false);
                 
             }
         });

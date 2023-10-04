@@ -38,13 +38,6 @@ public class LoginView extends JPanel {
     public void createComponents() {
         setLayout(new BorderLayout());
 
-//        Top panel with back button
-//        JPanel topPanel = new JPanel();
-//        add(topPanel, BorderLayout.NORTH);
-//        backButton = new JButton("Home");
-//        GUIStyle.styleButton(backButton);
-//        topPanel.add(backButton);
-
         backButton = new JButton("Home");
         GUIStyle.styleButton(backButton);
         add(backButton, BorderLayout.NORTH);
@@ -116,7 +109,7 @@ public class LoginView extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("loginb button has been pressed");
                 if(passField.getText().equals("test") && emailField.getText().equals("test")) {
-                    WindowManager.getManager().setHomeVisible(false);
+                    WindowManager.getManager().setAssistantAccountVisible(true);
                     WindowManager.getManager().setLoginVisible(false);
                 }
             }
