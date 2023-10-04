@@ -7,3 +7,10 @@ package pdc_cui_project2;
 public class AccountView {
     
 }
+
+// Home page button
+
+
+// Ticket options:
+// View, Delete, Edit, create buttons
+// enable/disable based on ticket
