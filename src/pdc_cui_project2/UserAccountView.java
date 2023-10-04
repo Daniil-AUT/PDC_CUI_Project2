@@ -8,7 +8,7 @@ import javax.swing.*;
  *
  * @author Daniil
  */
-public class UserAccountView extends JPanel {
+public class UserAccountView extends JPanel implements Page {
     private JButton backButton;
     private JButton viewButton;
     private JButton createButton;
@@ -18,11 +18,12 @@ public class UserAccountView extends JPanel {
     private JTextArea userInstruction;
     
     public UserAccountView() {
-        createUserComponents();
+        createComponents();
         createEvents();
     }
     
-    private void createUserComponents() { 
+    @Override
+    public void createComponents() { 
         setLayout(new BorderLayout());
         backButton = new JButton("Home");
         GUIStyle.styleButton(backButton);
@@ -63,7 +64,8 @@ public class UserAccountView extends JPanel {
         buttonPanel.add(deleteButton);
     }
     
-    private void createEvents() { 
+    @Override
+    public void createEvents() { 
         backButton.addActionListener(
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {

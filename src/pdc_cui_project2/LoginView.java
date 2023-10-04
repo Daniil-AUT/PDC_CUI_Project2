@@ -9,7 +9,7 @@ import javax.swing.*;
  *
  * @author Daniil
  */
-public class LoginView extends JPanel {
+public class LoginView extends JPanel implements Page {
     // back button home
     private JButton backButton;
     // Label for Login
@@ -35,6 +35,7 @@ public class LoginView extends JPanel {
         createEvents();
     }
     
+    @Override
     public void createComponents() {
         setLayout(new BorderLayout());
 
@@ -93,7 +94,7 @@ public class LoginView extends JPanel {
         centerPanel.add(inputPanel, BorderLayout.SOUTH);
     }
 
-    
+    @Override
     public void createEvents() {
         backButton.addActionListener(
         new ActionListener() {

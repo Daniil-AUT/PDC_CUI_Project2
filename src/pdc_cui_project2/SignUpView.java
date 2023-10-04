@@ -10,7 +10,7 @@ import javax.swing.*;
  * @author Daniil
  */
 
-public class SignUpView extends JPanel {
+public class SignUpView extends JPanel implements Page {
     private JButton backButton;
     private JLabel signupLabel;
     private JTextField name;
@@ -29,7 +29,8 @@ public class SignUpView extends JPanel {
         createEvents();
     }
     
-    private void createComponents() { 
+    @Override
+    public void createComponents() { 
         setLayout(new BorderLayout());
         backButton = new JButton("Home");
         GUIStyle.styleButton(backButton);
@@ -53,7 +54,9 @@ public class SignUpView extends JPanel {
         users.add(student);
         users.add(assistant);
         users.add(customer);
-        
+        GUIStyle.styleRadioButton(student);
+        GUIStyle.styleRadioButton(customer);
+        GUIStyle.styleRadioButton(assistant);
         // Middle panel for radio buttons
         JPanel middlePanel = new JPanel(); 
         middlePanel.add(student);
@@ -101,7 +104,8 @@ public class SignUpView extends JPanel {
         add(signupButton, BorderLayout.SOUTH);
     }
     
-    private void createEvents() { 
+    @Override
+    public void createEvents() { 
         backButton.addActionListener(
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {

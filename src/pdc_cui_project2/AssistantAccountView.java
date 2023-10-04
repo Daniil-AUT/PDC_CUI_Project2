@@ -14,7 +14,7 @@ import javax.swing.JTextArea;
  *
  * @author Daniil
  */
-public class AssistantAccountView extends JPanel{
+public class AssistantAccountView extends JPanel implements Page{
     private JButton backButton;
     private JTextArea userInstruction;
     private JButton assistantReply;
@@ -26,8 +26,8 @@ public class AssistantAccountView extends JPanel{
         createEvents();
     }
     
-    
-    private void createComponents() {
+    @Override
+    public void createComponents() {
            setLayout(new BorderLayout());
            backButton = new JButton("Home");
            GUIStyle.styleButton(backButton);
@@ -62,7 +62,9 @@ public class AssistantAccountView extends JPanel{
            buttonPanel.add(assistantView);
            buttonPanel.add(assistantReply);
     }
- private void createEvents() { 
+    
+    @Override
+    public void createEvents() { 
         backButton.addActionListener(
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {

@@ -10,7 +10,7 @@ import javax.swing.*;
  *
  * @author Daniil
  */
-public class FaqView extends JPanel {
+public class FaqView extends JPanel implements Page {
     private JButton backButton;
     private JTextArea faqInfo;
     
@@ -19,6 +19,7 @@ public class FaqView extends JPanel {
         createEvents();
     }
     
+    @Override
     public void createComponents() {
         setLayout(new BorderLayout());
         backButton = new JButton("Go Back");
@@ -33,6 +34,7 @@ public class FaqView extends JPanel {
         add(scroll, BorderLayout.CENTER);
     }
     
+    @Override
     public void createEvents() {
         backButton.addActionListener(
         new ActionListener() {

@@ -9,7 +9,7 @@ import javax.swing.*;
  *
  * @author Daniil
  */
-public final class HomeView extends JPanel {
+public final class HomeView extends JPanel implements Page {
     private JButton loginButton;
     private JButton signupButton;
     private JButton faqButton;
@@ -22,7 +22,8 @@ public final class HomeView extends JPanel {
         createEvents();
     }
     
-    private void createComponents() {
+    @Override
+    public void createComponents() {
         setLayout(new BorderLayout());
         
         faqButton = new JButton("View FAQ");
@@ -61,7 +62,8 @@ public final class HomeView extends JPanel {
         
     }
     
-    private void createEvents() {
+    @Override
+    public void createEvents() {
        loginButton.addActionListener(
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {
