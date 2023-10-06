@@ -1,6 +1,7 @@
 package pdc_cui_project2;
 
 import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 /**
@@ -15,6 +16,7 @@ public class WindowManager extends JFrame {
     private SignUpView signupView;
     private UserAccountView userAccountView;
     private AssistantAccountView assistantAccountView;
+    private TicketView ticketView;
     
     // Apply singleton pattern
     public static synchronized WindowManager getManager() {
@@ -27,7 +29,10 @@ public class WindowManager extends JFrame {
     private WindowManager() {
         
         createPanels();
+        createMainFrame();
         
+    }
+    private void createMainFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(718, 540);
         setTitle("AUT Helpdesk");
@@ -35,32 +40,38 @@ public class WindowManager extends JFrame {
         setVisible(true);
     }
     private void createPanels() {
+        ArrayList<JPanel> views = new ArrayList<>();
+        
         homeView = new HomeView();
-        homeView.setVisible(true);
-        
+        views.add(homeView);
         faqView = new FaqView();
-        faqView.setVisible(false);
-        
+        views.add(faqView);
         loginView = new LoginView();
-        loginView.setVisible(false);
-        
+        views.add(loginView);
         signupView = new SignUpView();
-        signupView.setVisible(false);
-        
+        views.add(signupView);
         userAccountView = new UserAccountView();
-        userAccountView.setVisible(false);
-        
+        views.add(userAccountView);
         assistantAccountView = new AssistantAccountView();
-        assistantAccountView.setVisible(false);
+        views.add(assistantAccountView);
+        ticketView = new TicketView();
+        views.add(ticketView);
         
-        add(homeView);
-        add(faqView);
-        add(loginView);
-        add(signupView);
-        add(userAccountView);
-        add(assistantAccountView);
+        for(JPanel view : views) {
+            if(view instanceof HomeView) {
+                addPanel(view, true);
+            }
+            else {
+                addPanel(view, false);
+            }
+        }
     }
-
+    private void addPanel(JPanel panel, boolean isVisible) {
+        if (panel != null) {
+            panel.setVisible(isVisible);
+            add(panel);
+        }
+    }
     public void setHomeVisible(boolean visible) {
         homeView.setVisible(visible);
     }
@@ -79,6 +90,18 @@ public class WindowManager extends JFrame {
     }
     public void setAssistantAccountVisible(boolean visible) {
         assistantAccountView.setVisible(visible);
+    }
+    public void setTicketVisible(boolean visible, String window) {
+        switch (window) {
+            case "asReply":
+                ticketView.showAsReplyWindow();
+                break;
+            case "asView":
+                ticketView.showAsViewWindow();
+                break;
+            
+        }
+        ticketView.setVisible(visible);
     }
 }
 

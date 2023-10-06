@@ -68,8 +68,25 @@ public class AssistantAccountView extends JPanel implements Page{
         backButton.addActionListener(
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("faq button has been pressed");
+                System.out.println("home button has been pressed");
                 WindowManager.getManager().setHomeVisible(true);
+                WindowManager.getManager().setAssistantAccountVisible(false);
+            }
+        });
+        assistantReply.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("reply button has been pressed");
+                WindowManager.getManager().setTicketVisible(true, "asReply");
+                WindowManager.getManager().setAssistantAccountVisible(false);
+            }
+        });
+        
+        assistantView.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("reply button has been pressed");
+                WindowManager.getManager().setTicketVisible(true, "asView");
                 WindowManager.getManager().setAssistantAccountVisible(false);
             }
         });
