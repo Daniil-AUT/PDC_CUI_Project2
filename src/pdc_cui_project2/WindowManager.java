@@ -17,6 +17,7 @@ public class WindowManager extends JFrame {
     private UserAccountView userAccountView;
     private AssistantAccountView assistantAccountView;
     private TicketView ticketView;
+    public DataBaseHandler db;
     
     // Apply singleton pattern
     public static synchronized WindowManager getManager() {
@@ -27,7 +28,7 @@ public class WindowManager extends JFrame {
     }
     
     private WindowManager() {
-        
+        db = new DataBaseHandler();
         createPanels();
         createMainFrame();
         
