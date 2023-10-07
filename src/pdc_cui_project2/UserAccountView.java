@@ -57,13 +57,13 @@ public class UserAccountView extends JPanel implements Page {
         editButton = new JButton("Edit Ticket");
         GUIStyle.styleButton(editButton);
         deleteButton = new JButton("Delete Ticket");
+        deleteButton.setEnabled(false);
         GUIStyle.styleButton(deleteButton);
         buttonPanel.add(viewButton);
         buttonPanel.add(createButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
     }
-    
     @Override
     public void createEvents() { 
         backButton.addActionListener(
@@ -74,6 +74,32 @@ public class UserAccountView extends JPanel implements Page {
                 WindowManager.getManager().setUserAccountVisible(false);
             }
         });
+        
+        createButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("create button has been pressed");
+                WindowManager.getManager().setTicketVisible(true, "Create");
+                WindowManager.getManager().setUserAccountVisible(false);
+            }
+        });
+        editButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("create button has been pressed");
+                WindowManager.getManager().setTicketVisible(true, "Update");
+                WindowManager.getManager().setUserAccountVisible(false);
+            }
+        });
+        viewButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("create button has been pressed");
+                WindowManager.getManager().setTicketVisible(true, "View");
+                WindowManager.getManager().setUserAccountVisible(false);
+            }
+        });
+        
     }
 }
 

@@ -12,7 +12,7 @@ public class GUIStyle {
     public static void styleButton(JButton button) {
         button.setForeground(Color.WHITE);
         button.setBackground(Color.BLUE);
-        button.setFont(new Font("Consolas", Font.BOLD, 12));
+        button.setFont(new Font("Consolas", Font.BOLD, 14));
         button.setPreferredSize(new Dimension(150, 30));
         button.setFocusPainted(false);
     }

@@ -91,6 +91,7 @@ public class WindowManager extends JFrame {
     public void setAssistantAccountVisible(boolean visible) {
         assistantAccountView.setVisible(visible);
     }
+    
     public void setTicketVisible(boolean visible, String window) {
         switch (window) {
             case "asReply":
@@ -99,7 +100,17 @@ public class WindowManager extends JFrame {
             case "asView":
                 ticketView.showAsViewWindow();
                 break;
-            
+            case "Create":
+                ticketView.showCreateWindow();
+                break;
+            case "View":
+                ticketView.showViewWindow();
+                break;
+            case "Update":
+                ticketView.showUpdateWindow();
+                break;
+            case "":
+                break;
         }
         ticketView.setVisible(visible);
     }
