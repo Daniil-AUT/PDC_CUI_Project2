@@ -62,7 +62,6 @@ public final class HomeView extends JPanel implements Page {
         
     }
     
-    @Override
     public void createEvents() {
        loginButton.addActionListener(
         new ActionListener() {
@@ -91,8 +90,6 @@ public final class HomeView extends JPanel implements Page {
                 WindowManager.getManager().setHomeVisible(false);
                 WindowManager.getManager().setFAQVisible(true);
             }
-        });
-        
+        });   
     }
-
 }

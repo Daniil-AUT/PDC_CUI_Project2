@@ -11,14 +11,14 @@ import javax.swing.*;
  */
 
 public class SignUpView extends JPanel implements Page {
-    private JButton backButton;
+    public JButton backButton;
     private JLabel signupLabel;
     private JTextField name;
     private JTextField lastName;
     private JTextField email;
     private JPasswordField password;
     private JPasswordField confPassword;
-    private JButton signupButton;
+    public JButton signupButton;
     private ButtonGroup users;
     private JRadioButton student;
     private JRadioButton assistant;
@@ -26,10 +26,8 @@ public class SignUpView extends JPanel implements Page {
     
     public SignUpView() {
         createComponents();
-        createEvents();
     }
     
-    @Override
     public void createComponents() { 
         setLayout(new BorderLayout());
         backButton = new JButton("Home");
@@ -102,27 +100,6 @@ public class SignUpView extends JPanel implements Page {
         signupButton = new JButton("Sign Up");
         GUIStyle.styleButton(signupButton);
         add(signupButton, BorderLayout.SOUTH);
-    }
-    
-    @Override
-    public void createEvents() { 
-        backButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("home button has been pressed");
-                WindowManager.getManager().setHomeVisible(true);
-                WindowManager.getManager().setSignUpVisible(false);
-            }
-        });
-        signupButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("signup button has been pressed");
-                WindowManager.getManager().setUserAccountVisible(true);
-                WindowManager.getManager().setSignUpVisible(false);
-                
-            }
-        });
     }
     
 }

@@ -34,7 +34,6 @@ public final class DataBaseHandler {
         if (this.conn == null) {
             try {
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-                //System.out.println(URL + "   CONNECTED....");
 
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
@@ -84,14 +83,25 @@ public final class DataBaseHandler {
         }
     }
     
+//    User
+//    Name - String 
+//    Last Name - String
+//    email - String 
+//    id - String 
+//
+//
+//    Ticket 
+//    Ticket ID (Same as user id) - String
+//    Ticket Topic - String
+//    Ticket Description - String
     
-    public void createTable() {
+    public void createUserTable() {
         try {
             Statement statement = conn.createStatement();
             String newTableName = "USERS";
 
             String sqlCreate = "create table " + newTableName + " (ID int not null,"
-                    + "Brand varchar(20), Model varchar(20),"
+                    + "Name varchar(20), 'Last Name' varchar(20),"
                     + "Price int, PRIMARY KEY (ID))";
             statement.executeUpdate(sqlCreate);
 

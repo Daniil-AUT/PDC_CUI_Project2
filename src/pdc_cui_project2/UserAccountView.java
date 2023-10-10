@@ -22,7 +22,6 @@ public class UserAccountView extends JPanel implements Page {
         createEvents();
     }
     
-    @Override
     public void createComponents() { 
         setLayout(new BorderLayout());
         backButton = new JButton("Home");
@@ -64,7 +63,7 @@ public class UserAccountView extends JPanel implements Page {
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
     }
-    @Override
+    
     public void createEvents() { 
         backButton.addActionListener(
         new ActionListener() {

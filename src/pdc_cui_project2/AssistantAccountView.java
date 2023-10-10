@@ -63,7 +63,6 @@ public class AssistantAccountView extends JPanel implements Page{
            buttonPanel.add(assistantReply);
     }
     
-    @Override
     public void createEvents() { 
         backButton.addActionListener(
         new ActionListener() {

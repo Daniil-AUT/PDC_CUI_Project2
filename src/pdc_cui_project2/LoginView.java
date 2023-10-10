@@ -97,7 +97,6 @@ public class LoginView extends JPanel implements Page {
         centerPanel.add(inputPanel, BorderLayout.SOUTH);
     }
 
-    @Override
     public void createEvents() {
         backButton.addActionListener(
         new ActionListener() {
