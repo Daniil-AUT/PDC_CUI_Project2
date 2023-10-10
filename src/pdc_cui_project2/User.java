@@ -11,14 +11,16 @@ public abstract class User {
     private final String name;
     private final String lastName;
     private final String email;
+    private final String password;
     public Random rand;
     
     // Initialise the user constructor with appropriate
     // arguments + instantiate the Random object for generating id's
-    public User(String name, String lastName, String email) {
+    public User(String name, String lastName, String email, String password) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.rand = new Random();
     }
     
@@ -30,8 +32,12 @@ public abstract class User {
 
     public abstract String getID();
     
+    
     // The getter methods are the only ones
     // allowed for this class and its child classes
+    public String getPassword() {
+        return password;
+    }
     public String getName() {
         return name;
     }

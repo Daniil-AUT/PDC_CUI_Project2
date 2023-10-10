@@ -17,8 +17,8 @@ public final class Student extends User {
     
     // Constructor will take in arguments passed to super
     // and set the id based on the method
-    public Student(String name, String lastName, String email) {
-        super(name, lastName, email);
+    public Student(String name, String lastName, String email, String password) {
+        super(name, lastName, email, password);
         this.studentID = createID();
     }
 

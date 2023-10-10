@@ -12,8 +12,8 @@ public final class Customer extends User {
     private final String unknownID;
     // Constructor will take in arguments passed to super
     // and set the id based on the method
-    public Customer(String name, String lastName, String email) {
-        super(name, lastName, email);
+    public Customer(String name, String lastName, String email, String password) {
+        super(name, lastName, email, password);
         this.unknownID = createID();
 
     }
