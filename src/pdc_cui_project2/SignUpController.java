@@ -15,10 +15,12 @@ public class SignUpController {
     private SignUpView view;
     private SignUpModel model;
     private User user;
+    private DataBaseHandler db;
     
     public SignUpController(SignUpView view, SignUpModel model) {
         this.view = view;
         this.model = model;
+        this.db = DataBaseHandler.getDB();
         attachListeners();
     }
     private void attachListeners() {
@@ -44,10 +46,31 @@ public class SignUpController {
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Signup button has been pressed");
-                    System.out.println(isNameValid());
-                    System.out.println(isLNameValid());
-                    System.out.println(isEmailValid());
-                    System.out.println(passwordMatch());
+                    if(isNameValid() && isLNameValid()&&
+                            isEmailValid() && passwordMatch()) {
+                        String name = view.name.getText();
+                        String lName = view.lastName.getText();
+                        String email = view.email.getText();
+                        char[] passChar = view.password.getPassword();
+                        String password = new String(passChar);
+                        
+                        if(view.assistant.isSelected()) {
+                            System.out.println("REACHED ASSISTANT");
+                            User assistant = new Assistant(name, lName, email, password);
+                            db.insertRecordUsers(assistant);
+                        }
+                        if(view.student.isSelected()) {
+                            System.out.println("REACHED STUDENT");
+                            User student = new Student(name, lName, email, password);
+                            db.insertRecordUsers(student);
+                        }
+                        if(view.customer.isSelected()) {
+                            System.out.println("REACHED CUSTOMER");
+                            User customer = new Customer(name, lName, email, password);
+                            System.out.println(customer.getUserClass());
+                            db.insertRecordUsers(customer);
+                        }
+                    }
                 }
             });
     }

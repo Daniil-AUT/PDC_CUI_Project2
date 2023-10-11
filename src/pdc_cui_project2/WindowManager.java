@@ -17,7 +17,6 @@ public class WindowManager extends JFrame {
     private UserAccountView userAccountView;
     private AssistantAccountView assistantAccountView;
     private TicketView ticketView;
-    public DataBaseHandler db;
     private SignUpModel signupModel;
     private SignUpController signupController;
     
@@ -25,18 +24,18 @@ public class WindowManager extends JFrame {
     public static synchronized WindowManager getManager() {
         if (manager == null) {
             manager = new WindowManager();
+            
         }
         return manager;
     }
     
     private WindowManager() {
-        db = new DataBaseHandler();
         createPanels();
         createModels();
         createControllers();
         createMainFrame();
-        
     }
+    
     private void createMainFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(718, 540);

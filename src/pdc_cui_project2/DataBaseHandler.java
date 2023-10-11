@@ -6,11 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Daniil
@@ -18,18 +13,27 @@ import java.util.logging.Logger;
 public final class DataBaseHandler {
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
-    private static final String URL = "jdbc:derby://localhost:1527/HelpDeskDB;create=true";
+    private static final String URL = "jdbc:derby:HelpDeskDB;create=true";
     //Practice: jdbc:derby://localhost:1527/HelpDeskDB;create=true
     
     //Main: jdbc:derby:HelpDeskDB;create=true
     Connection conn;
-    public DataBaseHandler() {
+    private static DataBaseHandler db;
+    
+    private DataBaseHandler() {
         establishConnection();
         createUserTable();
-        for(String name : getNames()) {
-            System.out.println(name);
-        }
     }
+    
+    
+    public static synchronized DataBaseHandler getDB() {
+        if (db == null) {
+            db = new DataBaseHandler();
+            System.out.println("Instance Created..");
+        }
+        return db;
+    }
+
     
     //Establish connection
     public Connection getConnection() {
@@ -52,6 +56,8 @@ public final class DataBaseHandler {
     public void closeConnections() {
         if (conn != null) {
             try {
+                // Shut down the Derby database
+                DriverManager.getConnection("jdbc:derby:;shutdown=true");
                 conn.close();
             } catch (SQLException ex) {
                 System.out.println("Unable to close connection...");
@@ -63,8 +69,9 @@ public final class DataBaseHandler {
             // INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type) 
             // VALUES ('id', 'name', 'lname', 'email', 'password', false, 'type')
             String sql = "INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type)"
-                    +" VALUES ('"+user.getID()+"', '"+user.getName()+"', '" +user.getLastName() +
-                    "', '"+;
+        + " VALUES ('" + user.getID() + "', '" + user.getName() + "', '" + user.getLastName()
+        + "', '" + user.getEmail() + "', '" + user.getPassword() + "', false, '"
+        + user.getUserClass() + "')";
             statement.executeUpdate(sql);
             System.out.println("Record Sucessfully Inserted..");
         }
@@ -72,21 +79,35 @@ public final class DataBaseHandler {
             System.out.println("Error Inserting Record..");
         }
     }
-    public List<String> getNames() {
-        List<String> nameList = new ArrayList<>();
-        ResultSet rs = myQuery("SELECT * FROM USERS");
+    public boolean checkIdExist(String id, String type) {
+        ResultSet rs = myQuery("SELECT ID FROM USERS WHERE Type = '" + type + "'");
         try {
             while (rs.next()) {
-                String name = rs.getString("Name");
-                nameList.add(name);
+                if(rs.getString("ID") != null) {
+                    System.out.println("Not Null");
+                    String currentID = rs.getString("ID");
+                    if (currentID.toLowerCase().equals(id.toLowerCase())) {
+                        return true;
+                    }
+                }
+                else {
+                    System.out.println("Is Null");
+                }
             }
-
         } catch (SQLException ex) {
-            Logger.getLogger(DataBaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Failed Reading from USER Table: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Failed to close ResultSet: " + e.getMessage());
+            }
         }
-
-        return nameList;
+        return false;
     }
+
     
 /*
 CREATE TABLE USERS (

@@ -27,8 +27,7 @@ public abstract class User {
     // The abstracts methods will vary from class to class
     // depending on the object
     public abstract String createID();
-
-    public abstract String getFolderName();
+    public abstract String getUserClass();
 
     public abstract String getID();
     
