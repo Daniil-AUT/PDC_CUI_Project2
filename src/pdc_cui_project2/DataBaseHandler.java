@@ -79,6 +79,23 @@ public final class DataBaseHandler {
             System.out.println("Error Inserting Record..");
         }
     }
+    public boolean passwordMatch(String pass, String id) {
+        ResultSet rs = myQuery("SELECT PASSWORD FROM USERS WHERE ID = '" + id + "'");
+        try {
+            while (rs.next()) {
+                String password = rs.getString("PASSWORD");
+                if (password != null && password.equalsIgnoreCase(pass)) {
+                    System.out.println("PASSWORD MATCH");
+                    return true;
+                }
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            System.out.println("Failed Reading from USER Table: " + ex.getMessage());
+        } 
+        return false;
+    }
+    
     public boolean checkIdExist(String id, String type) {
         ResultSet rs = myQuery("SELECT ID FROM USERS WHERE Type = '" + type + "'");
         try {

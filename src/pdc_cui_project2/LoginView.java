@@ -1,8 +1,6 @@
 package pdc_cui_project2;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
@@ -17,9 +15,11 @@ public class LoginView extends JPanel implements Page {
     // Brief explain what to do
     public JTextArea loginExplain;
     // field for email
-    public JTextField emailField;
+    public JTextField idField;
+    public JLabel idLabel;
     // field password
     public JPasswordField passField;
+    public JLabel passLabel;
     // button to log in
     public JButton loginButton;
     
@@ -32,7 +32,6 @@ public class LoginView extends JPanel implements Page {
     // for incorrect user input, use paint component
     public LoginView() {
         createComponents();
-        createEvents();
     }
     
     @Override
@@ -81,12 +80,15 @@ public class LoginView extends JPanel implements Page {
         GUIStyle.styleRadioButton(assistant);
         inputPanel.add(radioPanel); 
 
-        emailField = new JTextField("", 24);
-        inputPanel.add(new JLabel("Email:"));  // Add label
-        inputPanel.add(emailField);
+        idField = new JTextField("", 24);
+        idLabel = new JLabel("ID:");
+        inputPanel.add(idLabel);  // Add label
+        
+        inputPanel.add(idField);
         
         passField = new JPasswordField("", 24);
-        inputPanel.add(new JLabel("Password:"));  // Add label
+        passLabel = new JLabel("Password:");
+        inputPanel.add(passLabel);  // Add label
         inputPanel.add(passField);
 
         loginButton = new JButton("Log In");
@@ -95,27 +97,5 @@ public class LoginView extends JPanel implements Page {
         inputPanel.add(loginButton, BorderLayout.CENTER);
 
         centerPanel.add(inputPanel, BorderLayout.SOUTH);
-    }
-
-    public void createEvents() {
-        backButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("back button has been pressed");
-                WindowManager.getManager().setHomeVisible(true);
-                WindowManager.getManager().setLoginVisible(false);
-            }
-        });
-        
-        loginButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("loginb button has been pressed");
-                if(passField.getText().equals("test") && emailField.getText().equals("test")) {
-                    WindowManager.getManager().setAssistantAccountVisible(true);
-                    WindowManager.getManager().setLoginVisible(false);
-                }
-            }
-        });
     }
 }

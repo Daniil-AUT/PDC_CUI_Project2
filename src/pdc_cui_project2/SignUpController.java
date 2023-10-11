@@ -128,6 +128,7 @@ public class SignUpController {
         if(email.contains(" ")) {
             view.emailLabel.setText("Email: Cannot Have Blank Spaces");
             view.emailLabel.setForeground(Color.red);
+            return false;
         }
         if (!matcher.matches()) {
             view.emailLabel.setText("Email: Cannot contain special characters "
