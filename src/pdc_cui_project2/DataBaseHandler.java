@@ -83,28 +83,17 @@ public final class DataBaseHandler {
         ResultSet rs = myQuery("SELECT ID FROM USERS WHERE Type = '" + type + "'");
         try {
             while (rs.next()) {
-                if(rs.getString("ID") != null) {
-                    System.out.println("Not Null");
-                    String currentID = rs.getString("ID");
-                    if (currentID.toLowerCase().equals(id.toLowerCase())) {
-                        return true;
-                    }
-                }
-                else {
-                    System.out.println("Is Null");
+                String currentID = rs.getString("ID");
+                if (currentID != null && currentID.equalsIgnoreCase(id)) {
+                    System.out.println("ID Found: " + id);
+                    return true;
                 }
             }
+            rs.close();
         } catch (SQLException ex) {
             System.out.println("Failed Reading from USER Table: " + ex.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Failed to close ResultSet: " + e.getMessage());
-            }
-        }
+        } 
+        
         return false;
     }
 

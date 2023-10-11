@@ -35,7 +35,7 @@ public final class Assistant extends User {
     public String createID() {
         Random rand = new Random();
         String component = "AS";
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             int number = super.rand.nextInt(10);
             component += number;
         }

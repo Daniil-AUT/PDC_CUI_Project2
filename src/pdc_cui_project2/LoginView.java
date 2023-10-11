@@ -11,22 +11,22 @@ import javax.swing.*;
  */
 public class LoginView extends JPanel implements Page {
     // back button home
-    private JButton backButton;
+    public JButton backButton;
     // Label for Login
-    private JLabel loginLabel;
+    public JLabel loginLabel;
     // Brief explain what to do
-    private JTextArea loginExplain;
+    public JTextArea loginExplain;
     // field for email
-    private JTextField emailField;
+    public JTextField emailField;
     // field password
-    private JPasswordField passField;
+    public JPasswordField passField;
     // button to log in
-    private JButton loginButton;
+    public JButton loginButton;
     
-    private ButtonGroup users;
-    private JRadioButton student;
-    private JRadioButton assistant;
-    private JRadioButton customer;
+    public ButtonGroup users;
+    public JRadioButton student;
+    public JRadioButton assistant;
+    public JRadioButton customer;
 
     
     // for incorrect user input, use paint component

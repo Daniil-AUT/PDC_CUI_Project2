@@ -19,6 +19,8 @@ public class WindowManager extends JFrame {
     private TicketView ticketView;
     private SignUpModel signupModel;
     private SignUpController signupController;
+    private LoginController loginController;
+    private LoginModel loginModel;
     
     // Apply singleton pattern
     public static synchronized WindowManager getManager() {
@@ -46,9 +48,11 @@ public class WindowManager extends JFrame {
     
     private void createModels() {
         signupModel = new SignUpModel();
+        loginModel = new LoginModel();
     } 
     private void createControllers() {
         signupController = new SignUpController(signupView, signupModel);
+        loginController = new LoginController(loginView, loginModel);
     }
     private void createPanels() {
         ArrayList<JPanel> views = new ArrayList<>();

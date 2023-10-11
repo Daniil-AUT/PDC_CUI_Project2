@@ -56,19 +56,15 @@ public class SignUpController {
                         
                         if(view.assistant.isSelected()) {
                             System.out.println("REACHED ASSISTANT");
-                            User assistant = new Assistant(name, lName, email, password);
-                            db.insertRecordUsers(assistant);
+                            db.insertRecordUsers(new Assistant(name, lName, email, password));
                         }
                         if(view.student.isSelected()) {
                             System.out.println("REACHED STUDENT");
-                            User student = new Student(name, lName, email, password);
-                            db.insertRecordUsers(student);
+                            db.insertRecordUsers(new Student(name, lName, email, password));
                         }
                         if(view.customer.isSelected()) {
                             System.out.println("REACHED CUSTOMER");
-                            User customer = new Customer(name, lName, email, password);
-                            System.out.println(customer.getUserClass());
-                            db.insertRecordUsers(customer);
+                            db.insertRecordUsers(new Customer(name, lName, email, password));
                         }
                     }
                 }
