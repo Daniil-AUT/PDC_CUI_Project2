@@ -2,6 +2,7 @@ package pdc_cui_project2;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -22,7 +23,6 @@ public class LoginView extends JPanel implements Page {
     public JLabel passLabel;
     // button to log in
     public JButton loginButton;
-    
     public ButtonGroup users;
     public JRadioButton student;
     public JRadioButton assistant;
@@ -82,11 +82,14 @@ public class LoginView extends JPanel implements Page {
 
         idField = new JTextField("", 24);
         idLabel = new JLabel("ID:");
+        idField.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(idField);
         inputPanel.add(idLabel);  // Add label
         
         inputPanel.add(idField);
-        
+
         passField = new JPasswordField("", 24);
+        passField.setBorder(new LineBorder(Color.BLACK, 1));
         passLabel = new JLabel("Password:");
         inputPanel.add(passLabel);  // Add label
         inputPanel.add(passField);

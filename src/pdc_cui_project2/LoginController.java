@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -45,13 +46,13 @@ public class LoginController {
                 new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String id = view.idField.getText();
-
-                if (idValid(id)) {
+                char[] comps = view.passField.getPassword();
+                String password = new String(comps);
+                
+                if (idValid(id) == passwordValid(password)) {
                     String type;
-                    
-                    view.idLabel.setText("ID:");
-                    view.idLabel.setForeground(Color.black);
-                    
+                    setDefault("ID");
+
                     if (view.assistant.isSelected()) {
                         type = "Assistant";
                     } else if (view.customer.isSelected()) {
@@ -59,67 +60,74 @@ public class LoginController {
                     } else {
                         type = "Student";
                     }
+
                     if (model.checkIdExist(id, type)) {
-                        char[] comps = view.passField.getPassword();
-                        String password = new String(comps);
-                        if(passwordValid(password)) {
-                            if(model.passwordMatch(password, id)) {
-                                view.passLabel.setText("Password:");
-                                view.passLabel.setForeground(Color.black);
-                            }
-                            else {
-                                view.passLabel.setText("Password: The Password is not correct, try again.");
-                                view.passLabel.setForeground(Color.red);
-                            }
+                        if (model.passwordMatch(password, id)) {
+                            setDefault("Password");
+                        } else {
+                            setError("The Password is Invalid, Try Again.", "Password");
                         }
-                    }
-                    else {
-                        view.idLabel.setText("ID: No ID Found, Try With Different User Category");
-                        view.idLabel.setForeground(Color.red);
+                    } else {
+                        setError("No ID Found, Try Different User Category", "ID");
                     }
                 }
             }
         });
     }
-    
-    public boolean passwordValid(String password) {
-        if (password.length() <= 7) {
-            view.passLabel.setText("Password: Must Be Greater "
-                    + "Than 7 Characters In Length");
+    public void setError
+        (String errorMessage, String op) {
+        if(op.equals("ID")) {
+            view.idLabel.setText("ID: " + errorMessage);
+            view.idLabel.setForeground(Color.red);
+            view.idField.setBorder(new LineBorder(Color.red, 1));
+        }
+        if(op.equals("Password")) {
+            view.passLabel.setText("Password: " + errorMessage);
             view.passLabel.setForeground(Color.red);
+            view.passField.setBorder(new LineBorder(Color.red, 1));
+        }
+    }
+    public void setDefault(String op) {
+        if(op.equals("ID")) {
+            view.idLabel.setText("ID:");
+            view.idLabel.setForeground(Color.black);
+            view.idField.setBorder(new LineBorder(Color.black, 1));
+        }
+        if(op.equals("Password")) {
+            view.passLabel.setText("Password:");
+            view.passLabel.setForeground(Color.black);
+            view.passField.setBorder(new LineBorder(Color.black, 1));
+        }
+    }
+    public synchronized boolean passwordValid(String password) {
+        if (password.length() <= 7 || password.contains(" ")) {
+            setError("Must Be Greater Than 7 Characters In Length and Cannot "
+                    + "Contain Blank Spaces", "Password");
             return false;
         }
-        if (password.contains(" ")) {
-            view.passLabel.setText("Password: Cannot Contain Blank Spaces");
-            view.passLabel.setForeground(Color.red);
-            return false;
-        }
+        setDefault("Password");
         return true;
     }
     
-    public boolean idValid(String id) {
+    public synchronized boolean idValid(String id) {
         String regex = "^[a-zA-Z0-9]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(id);
 
         if (id.isBlank()) {
-            view.idLabel.setText("ID: Cannot Be Left Blank");
-            view.idLabel.setForeground(Color.red);
+            setError("Cannot Be Left Blank", "ID");
             return false;
         }
         if (id.contains(" ")) {
-            view.idLabel.setText("ID: Cannot Have Blank Spaces");
-            view.idLabel.setForeground(Color.red);
+            setError("Cannot Have Blank Spaces", "ID");
             return false;
         }
         if (!matcher.matches()) {
-            view.idLabel.setText("ID: Can Only Have Letters "
-                    + "and Numbers (No Special Characters)");
-            view.idLabel.setForeground(Color.red);
+            setError("Can Only Have Letters and Numbers (No Special Characters)",
+                    "ID");
             return false;
         }
-        view.idLabel.setText("ID:");
-        view.idLabel.setForeground(Color.black);
+        setDefault("ID");
         return true;
     }
 }
