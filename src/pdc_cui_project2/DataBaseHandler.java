@@ -25,7 +25,6 @@ public final class DataBaseHandler {
         createUserTable();
     }
     
-    
     public static synchronized DataBaseHandler getDB() {
         if (db == null) {
             db = new DataBaseHandler();

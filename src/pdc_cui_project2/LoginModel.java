@@ -8,11 +8,18 @@ import java.awt.Color;
  */
 public class LoginModel {
     private DataBaseHandler db;
-
+    public UserType userType;
+    
     public LoginModel() {
         this.db = DataBaseHandler.getDB();
     }
 
+    public enum UserType {
+        ASSISTANT,
+        CUSTOMER,
+        STUDENT
+    }
+    
     public boolean checkIdExist(String id, String type) {
         boolean valid = false;
         System.out.println(type);
@@ -22,7 +29,6 @@ public class LoginModel {
         if (!valid) {
             return false;
         }
-
         
         return true;
     }
