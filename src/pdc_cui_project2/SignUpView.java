@@ -2,6 +2,7 @@ package pdc_cui_project2;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -65,9 +66,17 @@ public class SignUpView extends JPanel implements Page {
         middlePanel.add(customer);
         
         name = new JTextField();
+        name.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(name);
         lastName = new JTextField();
+        lastName.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(lastName);
         email = new JTextField();
+        email.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(email);
         password = new JPasswordField();
+        password.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(password);
         confPassword = new JPasswordField();
         
         // Bottom panel for name, lastname, email, password fields, and signup button

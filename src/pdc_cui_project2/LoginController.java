@@ -27,8 +27,6 @@ public class LoginController {
         toAccountScreen();
     }
 
-    // 1. Check ID is valid (Combine with radio buttons)
-    // 2. Check Password is valid
     public void toHomeScreen() {
 
         view.backButton.addActionListener(
@@ -48,7 +46,7 @@ public class LoginController {
                 String id = view.idField.getText();
                 char[] comps = view.passField.getPassword();
                 String password = new String(comps);
-                
+
                 if (idValid(id) == passwordValid(password)) {
                     String type;
                     setDefault("ID");
@@ -74,32 +72,34 @@ public class LoginController {
             }
         });
     }
-    public void setError
-        (String errorMessage, String op) {
-        if(op.equals("ID")) {
+
+    public void setError(String errorMessage, String op) {
+        if (op.equals("ID")) {
             view.idLabel.setText("ID: " + errorMessage);
             view.idLabel.setForeground(Color.red);
             view.idField.setBorder(new LineBorder(Color.red, 1));
         }
-        if(op.equals("Password")) {
+        if (op.equals("Password")) {
             view.passLabel.setText("Password: " + errorMessage);
             view.passLabel.setForeground(Color.red);
             view.passField.setBorder(new LineBorder(Color.red, 1));
         }
     }
+
     public void setDefault(String op) {
-        if(op.equals("ID")) {
+        if (op.equals("ID")) {
             view.idLabel.setText("ID:");
             view.idLabel.setForeground(Color.black);
             view.idField.setBorder(new LineBorder(Color.black, 1));
         }
-        if(op.equals("Password")) {
+        if (op.equals("Password")) {
             view.passLabel.setText("Password:");
             view.passLabel.setForeground(Color.black);
             view.passField.setBorder(new LineBorder(Color.black, 1));
         }
     }
-    public synchronized boolean passwordValid(String password) {
+
+    public boolean passwordValid(String password) {
         if (password.length() <= 7 || password.contains(" ")) {
             setError("Must Be Greater Than 7 Characters In Length and Cannot "
                     + "Contain Blank Spaces", "Password");
@@ -108,8 +108,8 @@ public class LoginController {
         setDefault("Password");
         return true;
     }
-    
-    public synchronized boolean idValid(String id) {
+
+    public boolean idValid(String id) {
         String regex = "^[a-zA-Z0-9]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(id);

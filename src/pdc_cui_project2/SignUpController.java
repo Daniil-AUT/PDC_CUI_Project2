@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -14,7 +15,6 @@ import java.util.regex.Pattern;
 public class SignUpController {
     private SignUpView view;
     private SignUpModel model;
-    private User user;
     private DataBaseHandler db;
     
     public SignUpController(SignUpView view, SignUpModel model) {
@@ -46,8 +46,8 @@ public class SignUpController {
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Signup button has been pressed");
-                    if(isNameValid() && isLNameValid()&&
-                            isEmailValid() && passwordMatch()) {
+                    if(isNameValid() == isLNameValid()==
+                            isEmailValid() == passwordMatch() == true) {
                         String name = view.name.getText();
                         String lName = view.lastName.getText();
                         String email = view.email.getText();
@@ -55,21 +55,85 @@ public class SignUpController {
                         String password = new String(passChar);
                         
                         if(view.assistant.isSelected()) {
-                            System.out.println("REACHED ASSISTANT");
-                            db.insertRecordUsers(new Assistant(name, lName, email, password));
+                            model.createUser(name, lName, email, "Assistant", password);
                         }
                         if(view.student.isSelected()) {
-                            System.out.println("REACHED STUDENT");
-                            db.insertRecordUsers(new Student(name, lName, email, password));
+                            model.createUser(name, lName, email, "Student", password);
                         }
                         if(view.customer.isSelected()) {
-                            System.out.println("REACHED CUSTOMER");
-                            db.insertRecordUsers(new Customer(name, lName, email, password));
+                            model.createUser(name, lName, email, "Customer", password);
                         }
                     }
                 }
             });
     }
+    
+    public void setError(String errorMessage, String op) {
+        switch(op) {
+            case "name":
+                view.nameLabel.setText("Name: " + errorMessage);
+                view.nameLabel.setForeground(Color.red);
+                view.name.setBorder(new LineBorder(Color.red, 1));
+                break;
+            case "lname":
+                view.lName.setText("Last Name: " + errorMessage);
+                view.lName.setForeground(Color.red);
+                view.lastName.setBorder(new LineBorder(Color.red, 1));
+                break;
+            case "email":
+                view.emailLabel.setText("Email: " + errorMessage);
+                view.emailLabel.setForeground(Color.red);
+                view.email.setBorder(new LineBorder(Color.red, 1));
+                break;
+            case "pass":
+                view.passLabel.setText("Password: " + errorMessage);
+                view.passLabel.setForeground(Color.red);
+                view.password.setBorder(new LineBorder(Color.red, 1));
+                break;
+            case "cpass":
+                view.cPassLabel.setText("Confirm Password: " + errorMessage);
+                view.cPassLabel.setForeground(Color.red);
+                view.confPassword.setBorder(new LineBorder(Color.red, 1));
+                view.passLabel.setText("Password: " + errorMessage);
+                view.passLabel.setForeground(Color.red);
+                view.password.setBorder(new LineBorder(Color.red, 1));
+                break;
+        }
+    }
+
+    public void setDefault(String op) {
+        switch(op) {
+            case "name":
+                view.nameLabel.setText("Name:");
+                view.nameLabel.setForeground(Color.black);
+                view.name.setBorder(new LineBorder(Color.black, 1));
+                break;
+            case "lname":
+                view.nameLabel.setText("Last Name:");
+                view.nameLabel.setForeground(Color.black);
+                view.name.setBorder(new LineBorder(Color.black, 1));
+                break;
+            case "email":
+                view.lName.setText("Email:");
+                view.lName.setForeground(Color.black);
+                view.lastName.setBorder(new LineBorder(Color.black, 1));
+                break;
+            case "pass":
+                view.passLabel.setText("Password:");
+                view.passLabel.setForeground(Color.black);
+                view.password.setBorder(new LineBorder(Color.black, 1));
+                break;
+            case "cpass":
+                view.passLabel.setText("Password:");
+                view.passLabel.setForeground(Color.black);
+                view.password.setBorder(new LineBorder(Color.black, 1));
+                view.cPassLabel.setText("Confirm Password:");
+                view.cPassLabel.setForeground(Color.black);
+                view.confPassword.setBorder(new LineBorder(Color.black, 1));
+                break;            
+        }
+    }
+    
     public boolean isNameValid() {
         String name = view.name.getText();
         String regex = "^[a-zA-Z]+$";
@@ -77,21 +141,18 @@ public class SignUpController {
         Matcher matcher = pattern.matcher(name);
         
         if(name.isBlank()) {
-            view.nameLabel.setText("Name: Must Contain Atleast 1 Character");
-            view.nameLabel.setForeground(Color.red);
+            setError("Must Contain Atleast 1 Character", "name");
             return false;
         }
         if (!matcher.matches()) {
-            view.nameLabel.setText("Name: Must Only Have Letters");
-            view.nameLabel.setForeground(Color.red);
+            setError("Must Only Have Letters", "name");
             return false;
         }
-        else {
-            view.nameLabel.setText("Name:");
-            view.nameLabel.setForeground(Color.black);
-        }
+        
+        setDefault("name");
         return true;
     }
+    
     public boolean isLNameValid() {
         String lastname = view.lastName.getText();
         String regex = "^[a-zA-Z]+$";
@@ -99,19 +160,14 @@ public class SignUpController {
         Matcher matcher = pattern.matcher(lastname);
         
         if(lastname.isBlank()) {
-            view.lName.setText("Last Name: Must Contain Atleast 1 Character");
-            view.lName.setForeground(Color.red);
+            setError("Must Contain Atleast 1 Character", "lname");
             return false;
         }
         if (!matcher.matches()) {
-            view.lName.setText("Last Name: Must Only Have Letters");
-            view.lName.setForeground(Color.red);
+            setError("Must Only Have Letters", "lname");
             return false;
         }
-        else {
-            view.lName.setText("Last Name:");
-            view.lName.setForeground(Color.black);
-        }
+        setDefault("lname");
         return true;
     }
     public boolean isEmailValid() {
@@ -121,25 +177,19 @@ public class SignUpController {
         Matcher matcher = pattern.matcher(email);
         
         if(email.isBlank()) {
-            view.emailLabel.setText("Email: Cannot Be Left Blank");
-            view.emailLabel.setForeground(Color.red);
+            setError("Cannot Be Left Blank", "email");
             return false;
         }
         if(email.contains(" ")) {
-            view.emailLabel.setText("Email: Cannot Have Blank Spaces");
-            view.emailLabel.setForeground(Color.red);
+            setError("Cannot Have Blank Spaces","email");
             return false;
         }
         if (!matcher.matches()) {
-            view.emailLabel.setText("Email: Cannot contain special characters "
-                    + "and have to end with '@mail.com'");
-            view.emailLabel.setForeground(Color.red);
+            setError("Cannot contain special characters "
+                    + "and have to end with '@mail.com'", "email");
             return false;
         }
-        else {
-            view.emailLabel.setText("Email:");
-            view.emailLabel.setForeground(Color.black);
-        }
+        setDefault("email");
         return true;
     }
     
@@ -148,30 +198,22 @@ public class SignUpController {
         char[] confPassword = view.confPassword.getPassword();
         boolean passwordsMatch = Arrays.equals(password, confPassword);
         if(password.length <= 7) {
-            view.passLabel.setText("Password: The Password Must Be Greater "
-                    + "Than 7 Characters In Length");
-            view.passLabel.setForeground(Color.red);
+            setError("Must Be Greater Than 7 Characters In Length",
+                    "pass");
             return false;
         }
         for(char c : password) {
             if(c == ' ') {
-                view.passLabel.setText("Password: Blank Spaces Are Not Allowed");
-                view.passLabel.setForeground(Color.red);
+                setError("Blank Spaces Are Not Allowed", "pass");
                 return false;
             }
         }
         if (!passwordsMatch) {
-            view.passLabel.setText("Password: Passwords Are Not The Same");
-            view.passLabel.setForeground(Color.red);
-            view.cPassLabel.setText("Confirm Password: Passwords Are Not The Same");
-            view.cPassLabel.setForeground(Color.red);
+            setError("Passwords Are Not The Same", "cpass");
             return false;
         }
         
-        view.passLabel.setText("Password:");
-        view.passLabel.setForeground(Color.black);
-        view.cPassLabel.setText("Confirm Password:");
-        view.cPassLabel.setForeground(Color.black);
+        setDefault("cpass");
         return true;
     }
 }

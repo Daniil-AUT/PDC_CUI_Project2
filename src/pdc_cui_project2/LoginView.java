@@ -90,6 +90,7 @@ public class LoginView extends JPanel implements Page {
 
         passField = new JPasswordField("", 24);
         passField.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(passField);
         passLabel = new JLabel("Password:");
         inputPanel.add(passLabel);  // Add label
         inputPanel.add(passField);
