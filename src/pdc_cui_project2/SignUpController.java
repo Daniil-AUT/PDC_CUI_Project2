@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
 /**
@@ -79,24 +80,18 @@ public class SignUpController {
                             } else if (view.customer.isSelected()) {
                                 model.createUser(name, lName, email, 
                                         model.types.CUSTOMER, password);
-                                type = UserType.CUSTOMER;
                             }
-                            directToPage(type);
+                            JOptionPane.showMessageDialog(null,"Your Details:\n\n"+
+                                                          model.db.userDetails);
+                            System.out.println(model.db.userID);
+                            
                         }
                     }
                 }
             });
     }
     
-    private void directToPage(UserType type) {
-        WindowManager.getManager().setSignUpVisible(false);
-        if(type.equals(UserType.ASSISTANT)) {
-            WindowManager.getManager().setAssistantAccountVisible(true);
-        }  
-        else {
-            WindowManager.getManager().setUserAccountVisible(true);
-        }
-    }
+    
     private void setError(String errorMessage, Field field) {
         switch(field) {
             case NAME:

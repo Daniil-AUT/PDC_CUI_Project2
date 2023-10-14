@@ -23,6 +23,8 @@ public class WindowManager extends JFrame {
     private LoginModel loginModel;
     private UserAccountModel userModel;
     private UserAccountController userController;
+    private TicketController ticketController;
+    private TicketModel ticketModel;
     private DataBaseHandler db;
     // Apply singleton pattern
     public static synchronized WindowManager getManager() {
@@ -53,11 +55,13 @@ public class WindowManager extends JFrame {
         signupModel = new SignUpModel();
         loginModel = new LoginModel();
         userModel = new UserAccountModel();
+        ticketModel = new TicketModel();
     } 
     private void createControllers() {
         signupController = new SignUpController(signupView, signupModel);
         loginController = new LoginController(loginView, loginModel);
         userController = new UserAccountController(userAccountView, userModel);
+        ticketController = new TicketController(ticketView, ticketModel);
     }
     private void createPanels() {
         ArrayList<JPanel> views = new ArrayList<>();
@@ -106,10 +110,14 @@ public class WindowManager extends JFrame {
         signupView.setVisible(visible);
     }
     public void setUserAccountVisible(boolean visible) {
-        userAccountView.setVisible(visible);
+        
         boolean hasTicket = db.hasTicket;
         userAccountView.deleteButton.setEnabled(hasTicket);
         userAccountView.greetLabel.setText("Welcome, "+ db.currentName);
+        userAccountView.editButton.setEnabled(hasTicket);
+        userAccountView.viewButton.setEnabled(hasTicket);
+        userAccountView.createButton.setEnabled(!hasTicket);
+        userAccountView.setVisible(visible);
     }
     public void setAssistantAccountVisible(boolean visible) {
         assistantAccountView.setVisible(visible);
@@ -132,7 +140,7 @@ public class WindowManager extends JFrame {
             case "Update":
                 ticketView.showUpdateWindow();
                 break;
-            case "":
+            default:
                 break;
         }
         ticketView.setVisible(visible);

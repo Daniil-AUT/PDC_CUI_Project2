@@ -25,18 +25,34 @@ public class SignUpModel {
             case ASSISTANT:
                 User assistant = new Assistant(name, lname, email, password);
                 db.insertRecordUsers(assistant);
+                db.userID = assistant.getID();
+                directToPage(UserType.ASSISTANT);
                 break;
             case STUDENT:
                 User student = new Student(name, lname, email, password);
                 db.insertRecordUsers(student);
+                db.userID = student.getID();
+                directToPage(UserType.STUDENT);
                 break;
             case CUSTOMER:
                 User customer = new Customer(name, lname, email, password);
                 db.insertRecordUsers(customer);
+                db.userID = customer.getID();
+                directToPage(UserType.CUSTOMER);
                 break;
                 
         }
     }
-
+    
+    private void directToPage(UserType type) {
+        
+        if(type.equals(UserType.ASSISTANT)) {
+            WindowManager.getManager().setAssistantAccountVisible(true);
+        }  
+        else {
+            WindowManager.getManager().setUserAccountVisible(true);
+        }
+        WindowManager.getManager().setSignUpVisible(false);
+    }
 }
 

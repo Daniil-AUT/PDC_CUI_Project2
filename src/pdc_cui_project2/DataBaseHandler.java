@@ -16,6 +16,8 @@ public final class DataBaseHandler {
     private static final String URL = "jdbc:derby:HelpDeskDB;create=true";
     public boolean hasTicket;
     public String currentName;
+    public String userDetails;
+    public String userID;
     //Practice: jdbc:derby://localhost:1527/HelpDeskDB;create=true
     
     //Main: jdbc:derby:HelpDeskDB;create=true
@@ -25,8 +27,10 @@ public final class DataBaseHandler {
     private DataBaseHandler() {
         establishConnection();
         createUserTable();
+        createTicketTable();
         this.hasTicket = false;
         this.currentName = "<Unknown>";
+        this.userID = "<Unknown>";
     }
     
     public static synchronized DataBaseHandler getDB() {
@@ -67,23 +71,45 @@ public final class DataBaseHandler {
             }
         }
     }
+    public void insertRecordTicket(String text) {
+        String sqlCreateTicket = "INSERT INTO TICKET (TICKET_ID, DESCRIPTION) " +
+        " VALUES ('"+this.userID+"', '"+text+"')";
+        myUpdate(sqlCreateTicket);
+        
+        String sqlUpdateUser = "UPDATE USERS SET HASTICKET = true WHERE ID = '"+
+                          this.userID + "'";
+        this.hasTicket = true;
+        myUpdate(sqlUpdateUser);
+        
+    }
+    
+    public void deleteRecordTicket() {
+        String sqlDeleteTicket = "DELETE FROM TICKET WHERE TICKET_ID = '"+
+                                  this.userID+"'";
+        myUpdate(sqlDeleteTicket);
+        
+        String sqlUpdateUser = "UPDATE USERS SET HASTICKET = false WHERE ID = '"+
+                          this.userID + "'";
+        this.hasTicket = false;
+        myUpdate(sqlUpdateUser);
+        
+    }
+    
     public void insertRecordUsers(User user) {
-        try (Statement statement = conn.createStatement()) {
-            // INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type) 
-            // VALUES ('id', 'name', 'lname', 'email', 'password', false, 'type')
-            String sql = "INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type)"
+        this.currentName = user.getName();
+        this.userDetails = user.toString();
+        this.userID = user.getID();
+        this.hasTicket = false;
+        // INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type) 
+        // VALUES ('id', 'name', 'lname', 'email', 'password', false, 'type')
+        String sql = "INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type)"
         + " VALUES ('" + user.getID() + "', '" + user.getName() + "', '" + user.getLastName()
         + "', '" + user.getEmail() + "', '" + user.getPassword() + "', false, '"
         + user.getUserClass() + "')";
-            statement.executeUpdate(sql);
-            System.out.println("Record Sucessfully Inserted..");
-            this.currentName = user.getName();
-        }
-        catch(SQLException ex) {
-            System.out.println("Error Inserting Record..");
-        }
-        
+        myUpdate(sql);
+        System.out.println("Record Sucessfully Inserted..");
     }
+    
     public boolean passwordMatch(String pass, String id) {
         ResultSet rs = myQuery("SELECT PASSWORD FROM USERS WHERE ID = '" + id + "'");
         try {
@@ -107,6 +133,7 @@ public final class DataBaseHandler {
             if (rs.next()) {
                 this.hasTicket = rs.getBoolean("HASTICKET");
                 this.currentName = rs.getString("NAME");
+                this.userID = id;
             }
         } 
         catch (SQLException ex) {
@@ -157,7 +184,30 @@ CREATE TABLE USERS (
             return false;
         }
     }
-
+    
+ /*
+ CREATE TABLE Ticket (
+    ticket_id VARCHAR(50) PRIMARY KEY,
+    description TEXT
+);   
+ */   
+    
+    private void createTicketTable() {
+        String createTableSQL = "CREATE TABLE Ticket ("
+        + "ticket_id VARCHAR(50) PRIMARY KEY,"
+        + "description CLOB"
+        + ")";
+        
+        try {
+            DatabaseMetaData dbmd = conn.getMetaData();
+            if (!tableExists("TICKET", dbmd)) {
+                myUpdate(createTableSQL);
+                System.out.println("Ticket Table Created.");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Failed: " + ex.getMessage());
+        }
+    }
     private void createUser() {
         String createTableSQL = "CREATE TABLE USERS ("
                 + "ID VARCHAR(10), "
@@ -174,14 +224,10 @@ CREATE TABLE USERS (
                 "('AS123232', 'Jane', 'Doe', 'jane.doe@email.com', 'securePwd', false, 'Assistant'), " +
                 "('ABCD1234', 'Bob', 'Bill', 'bob.bill@email.com', 'bobPass', false, 'Student')";
 
-        try (Statement statement = conn.createStatement()) {
-            statement.executeUpdate(createTableSQL);
-            statement.executeUpdate(insertDataSQL);
-            System.out.println("Table created and data inserted");
-        }
-        catch(SQLException ex) {
-            System.out.println("Unable To Create USERS table...");
-        }
+        myUpdate(createTableSQL);
+        myUpdate(insertDataSQL);
+        System.out.println("Table created and data inserted");
+
     }
 
     public void createUserTable() {
