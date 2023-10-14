@@ -14,6 +14,8 @@ public final class DataBaseHandler {
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
     private static final String URL = "jdbc:derby:HelpDeskDB;create=true";
+    public boolean hasTicket;
+    public String currentName;
     //Practice: jdbc:derby://localhost:1527/HelpDeskDB;create=true
     
     //Main: jdbc:derby:HelpDeskDB;create=true
@@ -23,6 +25,8 @@ public final class DataBaseHandler {
     private DataBaseHandler() {
         establishConnection();
         createUserTable();
+        this.hasTicket = false;
+        this.currentName = "<Unknown>";
     }
     
     public static synchronized DataBaseHandler getDB() {
@@ -73,10 +77,12 @@ public final class DataBaseHandler {
         + user.getUserClass() + "')";
             statement.executeUpdate(sql);
             System.out.println("Record Sucessfully Inserted..");
+            this.currentName = user.getName();
         }
         catch(SQLException ex) {
             System.out.println("Error Inserting Record..");
         }
+        
     }
     public boolean passwordMatch(String pass, String id) {
         ResultSet rs = myQuery("SELECT PASSWORD FROM USERS WHERE ID = '" + id + "'");
@@ -93,6 +99,19 @@ public final class DataBaseHandler {
             System.out.println("Failed Reading from USER Table: " + ex.getMessage());
         } 
         return false;
+    }
+    
+    public void checkTicketStatus(String id) {
+        ResultSet rs = myQuery("SELECT NAME, HASTICKET FROM USERS WHERE ID = '" + id + "'");
+        try (rs) {
+            if (rs.next()) {
+                this.hasTicket = rs.getBoolean("HASTICKET");
+                this.currentName = rs.getString("NAME");
+            }
+        } 
+        catch (SQLException ex) {
+            System.out.println("Error Reading ID: " + ex.getMessage());
+        }
     }
     
     public boolean checkIdExist(String id, String type) {

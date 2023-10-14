@@ -5,7 +5,7 @@ package pdc_cui_project2;
  * @author Daniil
  */
 public class SignUpModel {
-    private DataBaseHandler db;
+    public DataBaseHandler db;
     public UserType types;
     public SignUpModel() {
         this.db = DataBaseHandler.getDB();
@@ -23,18 +23,20 @@ public class SignUpModel {
         lname = lname.substring(0, 1).toUpperCase() + lname.substring(1).toLowerCase();
         switch (type) {
             case ASSISTANT:
-                db.insertRecordUsers(new Assistant(name, lname, email, password));
+                User assistant = new Assistant(name, lname, email, password);
+                db.insertRecordUsers(assistant);
                 break;
             case STUDENT:
-                db.insertRecordUsers(new Student(name, lname, email, password));
+                User student = new Student(name, lname, email, password);
+                db.insertRecordUsers(student);
                 break;
             case CUSTOMER:
-                db.insertRecordUsers(new Customer(name, lname, email, password));
+                User customer = new Customer(name, lname, email, password);
+                db.insertRecordUsers(customer);
                 break;
-            // Handle other user types if needed
+                
         }
     }
 
-    // Validation methods can be added here if they are generic and reusable
 }
 

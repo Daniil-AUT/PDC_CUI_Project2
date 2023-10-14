@@ -21,7 +21,9 @@ public class WindowManager extends JFrame {
     private SignUpController signupController;
     private LoginController loginController;
     private LoginModel loginModel;
-    
+    private UserAccountModel userModel;
+    private UserAccountController userController;
+    private DataBaseHandler db;
     // Apply singleton pattern
     public static synchronized WindowManager getManager() {
         if (manager == null) {
@@ -32,6 +34,7 @@ public class WindowManager extends JFrame {
     }
     
     private WindowManager() {
+        this.db = DataBaseHandler.getDB();
         createPanels();
         createModels();
         createControllers();
@@ -49,10 +52,12 @@ public class WindowManager extends JFrame {
     private void createModels() {
         signupModel = new SignUpModel();
         loginModel = new LoginModel();
+        userModel = new UserAccountModel();
     } 
     private void createControllers() {
         signupController = new SignUpController(signupView, signupModel);
         loginController = new LoginController(loginView, loginModel);
+        userController = new UserAccountController(userAccountView, userModel);
     }
     private void createPanels() {
         ArrayList<JPanel> views = new ArrayList<>();
@@ -102,6 +107,9 @@ public class WindowManager extends JFrame {
     }
     public void setUserAccountVisible(boolean visible) {
         userAccountView.setVisible(visible);
+        boolean hasTicket = db.hasTicket;
+        userAccountView.deleteButton.setEnabled(hasTicket);
+        userAccountView.greetLabel.setText("Welcome, "+ db.currentName);
     }
     public void setAssistantAccountVisible(boolean visible) {
         assistantAccountView.setVisible(visible);

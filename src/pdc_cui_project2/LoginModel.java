@@ -7,7 +7,7 @@ import java.awt.Color;
  * @author Daniil
  */
 public class LoginModel {
-    private DataBaseHandler db;
+    public DataBaseHandler db;
     public UserType userType;
     
     public LoginModel() {

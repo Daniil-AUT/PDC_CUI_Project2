@@ -91,6 +91,7 @@ public class LoginController {
                         if (model.checkIdExist(id, search)) {
                             if (model.passwordMatch(password, id)) {
                                 setDefault(Field.PASSWORD);
+                                model.db.checkTicketStatus(id.toUpperCase());
                                 directToPage(Page.ACCOUNT, type);
                             } 
                             else {

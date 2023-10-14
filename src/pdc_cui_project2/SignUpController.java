@@ -67,22 +67,36 @@ public class SignUpController {
                         String password = new String(passChar);
                         if(isNameValid() && isLNameValid() &&
                             isEmailValid() && passwordMatch()) {
+                            UserType type = UserType.STUDENT;
                             if (view.assistant.isSelected()) {
                                 model.createUser(name, lName, email, 
                                         model.types.ASSISTANT, password);
+                                type = UserType.ASSISTANT;
                             } else if (view.student.isSelected()) {
                                 model.createUser(name, lName, email, 
                                         model.types.STUDENT, password);
+                                type = UserType.STUDENT;
                             } else if (view.customer.isSelected()) {
                                 model.createUser(name, lName, email, 
                                         model.types.CUSTOMER, password);
+                                type = UserType.CUSTOMER;
                             }
+                            directToPage(type);
                         }
                     }
                 }
             });
     }
     
+    private void directToPage(UserType type) {
+        WindowManager.getManager().setSignUpVisible(false);
+        if(type.equals(UserType.ASSISTANT)) {
+            WindowManager.getManager().setAssistantAccountVisible(true);
+        }  
+        else {
+            WindowManager.getManager().setUserAccountVisible(true);
+        }
+    }
     private void setError(String errorMessage, Field field) {
         switch(field) {
             case NAME:
