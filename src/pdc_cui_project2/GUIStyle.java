@@ -27,6 +27,10 @@ public class GUIStyle {
         
     }
     
+    public static void styleTextField(JTextField text) {
+        text.setFont(new Font("Consolas", Font.BOLD, 14));
+    }
+    
     public static void styleRadioButton(JRadioButton radioButton) {
 
         // Set background color to a light gray for a neutral look

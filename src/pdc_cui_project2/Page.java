@@ -10,5 +10,4 @@ package pdc_cui_project2;
  */
 public interface Page {
     public void createComponents();
-    public void createEvents();
 }

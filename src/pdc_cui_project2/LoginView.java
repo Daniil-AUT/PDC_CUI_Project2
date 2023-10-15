@@ -1,9 +1,8 @@
 package pdc_cui_project2;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -11,28 +10,28 @@ import javax.swing.*;
  */
 public class LoginView extends JPanel implements Page {
     // back button home
-    private JButton backButton;
+    public JButton backButton;
     // Label for Login
-    private JLabel loginLabel;
+    public JLabel loginLabel;
     // Brief explain what to do
-    private JTextArea loginExplain;
+    public JTextArea loginExplain;
     // field for email
-    private JTextField emailField;
+    public JTextField idField;
+    public JLabel idLabel;
     // field password
-    private JPasswordField passField;
+    public JPasswordField passField;
+    public JLabel passLabel;
     // button to log in
-    private JButton loginButton;
-    
-    private ButtonGroup users;
-    private JRadioButton student;
-    private JRadioButton assistant;
-    private JRadioButton customer;
+    public JButton loginButton;
+    public ButtonGroup users;
+    public JRadioButton student;
+    public JRadioButton assistant;
+    public JRadioButton customer;
 
     
     // for incorrect user input, use paint component
     public LoginView() {
         createComponents();
-        createEvents();
     }
     
     @Override
@@ -81,12 +80,19 @@ public class LoginView extends JPanel implements Page {
         GUIStyle.styleRadioButton(assistant);
         inputPanel.add(radioPanel); 
 
-        emailField = new JTextField("", 24);
-        inputPanel.add(new JLabel("Email:"));  // Add label
-        inputPanel.add(emailField);
+        idField = new JTextField("", 24);
+        idLabel = new JLabel("ID:");
+        idField.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(idField);
+        inputPanel.add(idLabel);  // Add label
         
+        inputPanel.add(idField);
+
         passField = new JPasswordField("", 24);
-        inputPanel.add(new JLabel("Password:"));  // Add label
+        passField.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(passField);
+        passLabel = new JLabel("Password:");
+        inputPanel.add(passLabel);  // Add label
         inputPanel.add(passField);
 
         loginButton = new JButton("Log In");
@@ -95,28 +101,5 @@ public class LoginView extends JPanel implements Page {
         inputPanel.add(loginButton, BorderLayout.CENTER);
 
         centerPanel.add(inputPanel, BorderLayout.SOUTH);
-    }
-
-    @Override
-    public void createEvents() {
-        backButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("back button has been pressed");
-                WindowManager.getManager().setHomeVisible(true);
-                WindowManager.getManager().setLoginVisible(false);
-            }
-        });
-        
-        loginButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("loginb button has been pressed");
-                if(passField.getText().equals("test") && emailField.getText().equals("test")) {
-                    WindowManager.getManager().setAssistantAccountVisible(true);
-                    WindowManager.getManager().setLoginVisible(false);
-                }
-            }
-        });
     }
 }

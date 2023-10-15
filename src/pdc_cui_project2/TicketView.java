@@ -188,7 +188,6 @@ public class TicketView extends JPanel implements Page {
         return updatePanel;
     }
 
-    @Override
     public void createEvents() {
         backButton.addActionListener(
         new ActionListener() {

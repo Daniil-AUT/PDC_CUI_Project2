@@ -17,28 +17,42 @@ public class WindowManager extends JFrame {
     private UserAccountView userAccountView;
     private AssistantAccountView assistantAccountView;
     private TicketView ticketView;
-    public DataBaseHandler db;
+    private SignUpModel signupModel;
+    private SignUpController signupController;
+    private LoginController loginController;
+    private LoginModel loginModel;
     
     // Apply singleton pattern
     public static synchronized WindowManager getManager() {
         if (manager == null) {
             manager = new WindowManager();
+            
         }
         return manager;
     }
     
     private WindowManager() {
-        db = new DataBaseHandler();
         createPanels();
+        createModels();
+        createControllers();
         createMainFrame();
-        
     }
+    
     private void createMainFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(718, 540);
         setTitle("AUT Helpdesk");
         setLayout(new CardLayout());
         setVisible(true);
+    }
+    
+    private void createModels() {
+        signupModel = new SignUpModel();
+        loginModel = new LoginModel();
+    } 
+    private void createControllers() {
+        signupController = new SignUpController(signupView, signupModel);
+        loginController = new LoginController(loginView, loginModel);
     }
     private void createPanels() {
         ArrayList<JPanel> views = new ArrayList<>();

@@ -1,9 +1,8 @@
 package pdc_cui_project2;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -11,25 +10,28 @@ import javax.swing.*;
  */
 
 public class SignUpView extends JPanel implements Page {
-    private JButton backButton;
-    private JLabel signupLabel;
-    private JTextField name;
-    private JTextField lastName;
-    private JTextField email;
-    private JPasswordField password;
-    private JPasswordField confPassword;
-    private JButton signupButton;
-    private ButtonGroup users;
-    private JRadioButton student;
-    private JRadioButton assistant;
-    private JRadioButton customer;
+    public JButton backButton;
+    public JLabel signupLabel;
+    public JTextField name;
+    public JLabel nameLabel;
+    public JTextField lastName;
+    public JLabel lName;
+    public JTextField email;
+    public JLabel emailLabel;
+    public JPasswordField password;
+    public JLabel passLabel;
+    public JPasswordField confPassword;
+    public JLabel cPassLabel;
+    public JButton signupButton;
+    public ButtonGroup users;
+    public JRadioButton student;
+    public JRadioButton assistant;
+    public JRadioButton customer;
     
     public SignUpView() {
         createComponents();
-        createEvents();
     }
     
-    @Override
     public void createComponents() { 
         setLayout(new BorderLayout());
         backButton = new JButton("Home");
@@ -64,9 +66,17 @@ public class SignUpView extends JPanel implements Page {
         middlePanel.add(customer);
         
         name = new JTextField();
+        name.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(name);
         lastName = new JTextField();
+        lastName.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(lastName);
         email = new JTextField();
+        email.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(email);
         password = new JPasswordField();
+        password.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(password);
         confPassword = new JPasswordField();
         
         // Bottom panel for name, lastname, email, password fields, and signup button
@@ -75,13 +85,13 @@ public class SignUpView extends JPanel implements Page {
         bottomPanel.add(middlePanel);
         // Panel for name
         JPanel namePanel = new JPanel(new BorderLayout());
-        JLabel nameLabel = new JLabel("Name:");
+        nameLabel = new JLabel("Name:");
         nameLabel.setHorizontalAlignment(JLabel.CENTER);
         namePanel.add(nameLabel, BorderLayout.NORTH);
         namePanel.add(name, BorderLayout.CENTER);
         
         JPanel lastNamePanel = new JPanel(new BorderLayout());
-        JLabel lName = new JLabel("Last Name:");
+        lName = new JLabel("Last Name:");
         lName.setHorizontalAlignment(JLabel.CENTER);
         lastNamePanel.add(lName, BorderLayout.NORTH);
         lastNamePanel.add(lastName, BorderLayout.CENTER);
@@ -90,11 +100,14 @@ public class SignUpView extends JPanel implements Page {
         fullName.add(lastNamePanel);
         
         bottomPanel.add(fullName);
-        bottomPanel.add(new JLabel("Email:"));
+        emailLabel = new JLabel("Email:");
+        bottomPanel.add(emailLabel);
         bottomPanel.add(email);
-        bottomPanel.add(new JLabel("Password:"));
+        passLabel = new JLabel("Password:");
+        bottomPanel.add(passLabel);
         bottomPanel.add(password);
-        bottomPanel.add(new JLabel("Confirm Password:"));
+        cPassLabel = new JLabel("Confirm Password:");
+        bottomPanel.add(cPassLabel);
         bottomPanel.add(confPassword);
         centerPanel.add(bottomPanel);
         
@@ -102,27 +115,6 @@ public class SignUpView extends JPanel implements Page {
         signupButton = new JButton("Sign Up");
         GUIStyle.styleButton(signupButton);
         add(signupButton, BorderLayout.SOUTH);
-    }
-    
-    @Override
-    public void createEvents() { 
-        backButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("home button has been pressed");
-                WindowManager.getManager().setHomeVisible(true);
-                WindowManager.getManager().setSignUpVisible(false);
-            }
-        });
-        signupButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("signup button has been pressed");
-                WindowManager.getManager().setUserAccountVisible(true);
-                WindowManager.getManager().setSignUpVisible(false);
-                
-            }
-        });
     }
     
 }

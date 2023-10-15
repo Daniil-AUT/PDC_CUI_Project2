@@ -34,7 +34,6 @@ public class FaqView extends JPanel implements Page {
         add(scroll, BorderLayout.CENTER);
     }
     
-    @Override
     public void createEvents() {
         backButton.addActionListener(
         new ActionListener() {
