@@ -47,7 +47,6 @@ public class TicketController {
     private void ticketOperations() {
         createTicket();
         updateTicket();
-        viewTicket();
         asViewTicket();
         replyTicket();
     }
@@ -70,7 +69,7 @@ public class TicketController {
     private boolean ticketCreateValid() {
         String text = view.createText.getText();
         if(text.isEmpty()) {
-            view.createText.setBorder(new LineBorder(Color.red, 1));
+            view.createText.setBorder(new LineBorder(Color.red, 2));
             return false;
         }
         else {
@@ -84,30 +83,26 @@ public class TicketController {
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(checkTicketUpdateValid()) {
+                    JOptionPane.showMessageDialog(null,"Ticket Has Been Updated.");
+                    model.db.updateTicket(view.updateText.getText());
                     WindowManager.getManager().setUserAccountVisible(true);
                     WindowManager.getManager().setTicketVisible(false, "");
-                }
-                
+                }     
             }
         });
     }
     private boolean checkTicketUpdateValid() {
-        boolean isValid = false;
-        if(!view.updateText.getText().isBlank()) {
-            isValid = true;
+        if(view.updateText.getText().isBlank()) {
+            view.updateText.setBorder(new LineBorder(Color.red, 2));
+            return false;
         }
-        return isValid;
-    }
-    private void viewTicket() {
-        
+        view.updateText.setBorder(new LineBorder(Color.black, 1));
+        return true;
     }
     private void asViewTicket() {
         
     }
     private void replyTicket() {
         
-    }
-    
-    public void createEvents() {
     }
 }

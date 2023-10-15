@@ -87,12 +87,15 @@ public final class DataBaseHandler {
         this.hasTicket = true;
         myUpdate(sqlUpdateUser);
     }
+    
+    public void updateTicket(String text) {
+        String sqlUpdateTicket = "UPDATE " + TICKET_TABLE + " SET DESCRIPTION = '"
+                + text + "' WHERE TICKET_ID = '"
+                + this.userID + "'";
+        myUpdate(sqlUpdateTicket);
+    }
 
-    /*
-    SELECT DESCRIPTION
-    FROM TICKET
-    WHERE TICKET_ID = 'id';
-     */
+
     public String viewTicket() {
         String sqlViewTicket = "SELECT DESCRIPTION FROM " + TICKET_TABLE +
                 " WHERE TICKET_id = '" + this.userID.toUpperCase() + "'";
