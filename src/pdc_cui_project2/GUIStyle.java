@@ -24,7 +24,6 @@ public class GUIStyle {
     
     public static void styleTextArea(JTextArea text) {
         text.setFont(new Font("Consolas", Font.PLAIN, 12));
-        
     }
     
     public static void styleTextField(JTextField text) {

@@ -1,25 +1,22 @@
 package pdc_cui_project2;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 /**
  *
  * @author Daniil
  */
 public class UserAccountView extends JPanel implements Page {
-    private JButton backButton;
-    private JButton viewButton;
-    private JButton createButton;
-    private JButton editButton;
-    private JButton deleteButton;
-    private JLabel greetLabel;
-    private JTextArea userInstruction;
+    public JButton backButton;
+    public JButton viewButton;
+    public JButton createButton;
+    public JButton editButton;
+    public JButton deleteButton;
+    public JLabel greetLabel;
+    public JTextArea userInstruction;
     
     public UserAccountView() {
         createComponents();
-        createEvents();
     }
     
     public void createComponents() { 
@@ -33,7 +30,7 @@ public class UserAccountView extends JPanel implements Page {
         
         // Panel for login label
         JPanel topCenter = new JPanel();
-        greetLabel = new JLabel("\nHello, User!\n");
+        greetLabel = new JLabel("\nHello, <Error>");
         GUIStyle.styleLabel(greetLabel);
         greetLabel.setFont(new Font("Consolas", Font.CENTER_BASELINE, 24));
         topCenter.add(greetLabel);
@@ -56,49 +53,11 @@ public class UserAccountView extends JPanel implements Page {
         editButton = new JButton("Edit Ticket");
         GUIStyle.styleButton(editButton);
         deleteButton = new JButton("Delete Ticket");
-        deleteButton.setEnabled(false);
         GUIStyle.styleButton(deleteButton);
         buttonPanel.add(viewButton);
         buttonPanel.add(createButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
-    }
-    
-    public void createEvents() { 
-        backButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("faq button has been pressed");
-                WindowManager.getManager().setHomeVisible(true);
-                WindowManager.getManager().setUserAccountVisible(false);
-            }
-        });
-        
-        createButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("create button has been pressed");
-                WindowManager.getManager().setTicketVisible(true, "Create");
-                WindowManager.getManager().setUserAccountVisible(false);
-            }
-        });
-        editButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("create button has been pressed");
-                WindowManager.getManager().setTicketVisible(true, "Update");
-                WindowManager.getManager().setUserAccountVisible(false);
-            }
-        });
-        viewButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("create button has been pressed");
-                WindowManager.getManager().setTicketVisible(true, "View");
-                WindowManager.getManager().setUserAccountVisible(false);
-            }
-        });
-        
     }
 }
 

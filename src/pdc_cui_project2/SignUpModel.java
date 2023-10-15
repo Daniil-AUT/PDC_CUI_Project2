@@ -5,7 +5,7 @@ package pdc_cui_project2;
  * @author Daniil
  */
 public class SignUpModel {
-    private DataBaseHandler db;
+    public DataBaseHandler db;
     public UserType types;
     public SignUpModel() {
         this.db = DataBaseHandler.getDB();
@@ -23,18 +23,36 @@ public class SignUpModel {
         lname = lname.substring(0, 1).toUpperCase() + lname.substring(1).toLowerCase();
         switch (type) {
             case ASSISTANT:
-                db.insertRecordUsers(new Assistant(name, lname, email, password));
+                User assistant = new Assistant(name, lname, email, password);
+                db.insertRecordUsers(assistant);
+                db.userID = assistant.getID();
+                directToPage(UserType.ASSISTANT);
                 break;
             case STUDENT:
-                db.insertRecordUsers(new Student(name, lname, email, password));
+                User student = new Student(name, lname, email, password);
+                db.insertRecordUsers(student);
+                db.userID = student.getID();
+                directToPage(UserType.STUDENT);
                 break;
             case CUSTOMER:
-                db.insertRecordUsers(new Customer(name, lname, email, password));
+                User customer = new Customer(name, lname, email, password);
+                db.insertRecordUsers(customer);
+                db.userID = customer.getID();
+                directToPage(UserType.CUSTOMER);
                 break;
-            // Handle other user types if needed
+                
         }
     }
-
-    // Validation methods can be added here if they are generic and reusable
+    
+    private void directToPage(UserType type) {
+        
+        if(type.equals(UserType.ASSISTANT)) {
+            WindowManager.getManager().setAssistantAccountVisible(true);
+        }  
+        else {
+            WindowManager.getManager().setUserAccountVisible(true);
+        }
+        WindowManager.getManager().setSignUpVisible(false);
+    }
 }
 

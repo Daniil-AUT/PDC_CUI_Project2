@@ -11,26 +11,25 @@ import javax.swing.border.LineBorder;
  * @author Daniil
  */
 public class TicketView extends JPanel implements Page {
-    private CardLayout cardLayout;
-    private JPanel cardPanel;
-    private JLabel updateLabel;
-    private JTextArea updateText;
-    private JButton updateButton;
-    private JLabel replyLabel;
-    private JButton replyButton;
-    private JTextArea replyText;
-    private JButton asViewButton;
-    private JLabel viewLabel;
-    private JTextArea viewText;
-    private JLabel createLabel;
-    private JTextArea createText;
-    private JButton createButton;
-    private JButton backButton;
-    private String currentView;
+    public CardLayout cardLayout;
+    public JPanel cardPanel;
+    public JLabel updateLabel;
+    public JTextArea updateText;
+    public JButton updateButton;
+    public JLabel replyLabel;
+    public JButton replyButton;
+    public JTextArea replyText;
+    public JButton asViewButton;
+    public JLabel viewLabel;
+    public JTextArea viewText;
+    public JLabel createLabel;
+    public JTextArea createText;
+    public JButton createButton;
+    public JButton backButton;
+    public String currentView;
 
     public TicketView() {
         createComponents();
-        createEvents();
     }
 
     @Override
@@ -114,20 +113,39 @@ public class TicketView extends JPanel implements Page {
         return asViewPanel;
     }
 
+
     public JPanel windowView() {
         JPanel viewPanel = new JPanel();
         viewLabel = new JLabel("Your Ticket Information");
+
+        JPanel topPanel = new JPanel();
         GUIStyle.styleLabel(viewLabel);
         viewLabel.setFont(new Font("Consolas", Font.CENTER_BASELINE, 24));
-        viewText = new JTextArea("");
+
+        viewText = new JTextArea();
+        GUIStyle.styleTextArea(viewText);
+        viewText.setBorder(new LineBorder(Color.BLACK, 1));
+        // Adjust the number of rows and columns based on your preference
+        viewText.setRows(10);
+        viewText.setColumns(30);
+
+        JScrollPane scrollPane = new JScrollPane(viewText);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        topPanel.add(viewLabel, BorderLayout.CENTER);
+
         viewText.setEditable(false);
         viewText.setOpaque(false);
-        viewPanel.add(viewLabel, BorderLayout.NORTH);
-        viewPanel.add(viewText, BorderLayout.CENTER);
+
+        viewPanel.setLayout(new BorderLayout());
+        viewPanel.add(topPanel, BorderLayout.NORTH);
+        viewPanel.add(scrollPane, BorderLayout.CENTER);
+
         // Add components for View window
         return viewPanel;
     }
 
+    
     public JPanel windowCreate() {
         JPanel createPanel = new JPanel(new BorderLayout());
         JPanel topEntry = new JPanel();
@@ -141,7 +159,7 @@ public class TicketView extends JPanel implements Page {
         createText.setRows(5);
         createText.setLineWrap(true);
         createText.setWrapStyleWord(true);
-
+        createText.setBorder(new LineBorder(Color.black, 1));
         JScrollPane scrollPane = new JScrollPane(createText);  
         createText.setBorder(new LineBorder(Color.BLACK));
         GUIStyle.styleTextArea(createText);
@@ -171,7 +189,7 @@ public class TicketView extends JPanel implements Page {
         updateText.setRows(5);
         updateText.setLineWrap(true);
         updateText.setWrapStyleWord(true);
-
+        updateText.setBorder(new LineBorder(Color.BLACK, 1));
         JScrollPane scrollPane = new JScrollPane(updateText);  
         updateText.setBorder(new LineBorder(Color.BLACK));
         GUIStyle.styleTextArea(updateText);
@@ -186,40 +204,5 @@ public class TicketView extends JPanel implements Page {
         updatePanel.add(updateButton, BorderLayout.SOUTH);
         
         return updatePanel;
-    }
-
-    public void createEvents() {
-        backButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                
-                WindowManager.getManager().setTicketVisible(false, "");
-                if(currentView.equals("Update") || currentView.equals("View") 
-                        || currentView.equals("Create")) {
-                    WindowManager.getManager().setUserAccountVisible(true);
-                }
-                else {
-                    WindowManager.getManager().setAssistantAccountVisible(true);
-                }
-                WindowManager.getManager().setTicketVisible(false, "");
-            }
-        });
-        
-        createButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("create button has been pressed");
-                WindowManager.getManager().setUserAccountVisible(true);
-                WindowManager.getManager().setTicketVisible(false, "");
-            }
-        });
-        updateButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("update button has been pressed");
-                WindowManager.getManager().setUserAccountVisible(true);
-                WindowManager.getManager().setTicketVisible(false, "");
-            }
-        });
     }
 }

@@ -78,7 +78,8 @@ public class SignUpView extends JPanel implements Page {
         password.setBorder(new LineBorder(Color.BLACK, 1));
         GUIStyle.styleTextField(password);
         confPassword = new JPasswordField();
-        
+        confPassword.setBorder(new LineBorder(Color.BLACK, 1));
+        GUIStyle.styleTextField(confPassword);
         // Bottom panel for name, lastname, email, password fields, and signup button
         JPanel bottomPanel = new JPanel(new GridLayout(0, 1, 1, 0)); // Use GridLayout with two columns
         JPanel fullName = new JPanel(new GridLayout(1, 4, 1, 0));

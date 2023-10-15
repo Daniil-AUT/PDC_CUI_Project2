@@ -6,25 +6,37 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+
 /**
  *
  * @author Daniil
  */
 public final class DataBaseHandler {
+
+    private static final String TICKET_TABLE = "TICKET";
+    private static final String USERS_TABLE = "USERS";
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
     private static final String URL = "jdbc:derby:HelpDeskDB;create=true";
+    public boolean hasTicket;
+    public String currentName;
+    public String userDetails;
+    public String userID;
     //Practice: jdbc:derby://localhost:1527/HelpDeskDB;create=true
-    
+
     //Main: jdbc:derby:HelpDeskDB;create=true
     Connection conn;
     private static DataBaseHandler db;
-    
+
     private DataBaseHandler() {
         establishConnection();
         createUserTable();
+        createTicketTable();
+        this.hasTicket = false;
+        this.currentName = "<Unknown>";
+        this.userID = "<Unknown>";
     }
-    
+
     public static synchronized DataBaseHandler getDB() {
         if (db == null) {
             db = new DataBaseHandler();
@@ -33,7 +45,6 @@ public final class DataBaseHandler {
         return db;
     }
 
-    
     //Establish connection
     public Connection getConnection() {
         return this.conn;
@@ -63,58 +74,143 @@ public final class DataBaseHandler {
             }
         }
     }
-    public void insertRecordUsers(User user) {
-        try (Statement statement = conn.createStatement()) {
-            // INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type) 
-            // VALUES ('id', 'name', 'lname', 'email', 'password', false, 'type')
-            String sql = "INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type)"
-        + " VALUES ('" + user.getID() + "', '" + user.getName() + "', '" + user.getLastName()
-        + "', '" + user.getEmail() + "', '" + user.getPassword() + "', false, '"
-        + user.getUserClass() + "')";
-            statement.executeUpdate(sql);
-            System.out.println("Record Sucessfully Inserted..");
-        }
-        catch(SQLException ex) {
-            System.out.println("Error Inserting Record..");
-        }
+
+    public void insertRecordTicket(String text) {
+        String sqlCreateTicket = "INSERT INTO " + TICKET_TABLE
+                + " (TICKET_ID, DESCRIPTION) "
+                + " VALUES ('" + this.userID + "', '" + text + "')";
+        myUpdate(sqlCreateTicket);
+
+        String sqlUpdateUser = "UPDATE " + USERS_TABLE + " SET HASTICKET = "
+                + "true WHERE ID = '"
+                + this.userID + "'";
+        this.hasTicket = true;
+        myUpdate(sqlUpdateUser);
     }
+    
+    public void updateTicket(String text) {
+        String sqlUpdateTicket = "UPDATE " + TICKET_TABLE + " SET DESCRIPTION = '"
+                + text + "' WHERE TICKET_ID = '"
+                + this.userID + "'";
+        myUpdate(sqlUpdateTicket);
+    }
+
+
+    public String viewTicket() {
+        String sqlViewTicket = "SELECT DESCRIPTION FROM " + TICKET_TABLE +
+                " WHERE TICKET_id = '" + this.userID.toUpperCase() + "'";
+        try (ResultSet rs = myQuery(sqlViewTicket)) {
+            if (rs.next()) {
+                String description = rs.getString("DESCRIPTION");
+                return formatTicket(description, 75); 
+            }
+        } catch (SQLException ex) {
+            System.out.println("Failed Reading from " + TICKET_TABLE + ": " + ex.getMessage());
+        }
+        return "";
+    }
+    private String formatTicket(String input, int limit) {
+        StringBuilder result = new StringBuilder();
+        int length = input.length();
+
+        for (int i = 0; i < length; i += limit) {
+            result.append(input, i, Math.min(i + limit, length)).append("\n");
+        }
+
+        return result.toString();
+    }
+
+    public void deleteRecordTicket() {
+        String sqlDeleteTicket = "DELETE FROM " + TICKET_TABLE
+                + " WHERE TICKET_ID = '"
+                + this.userID + "'";
+        myUpdate(sqlDeleteTicket);
+
+        String sqlUpdateUser = "UPDATE " + USERS_TABLE + " SET HASTICKET = "
+                + "false WHERE ID = '"
+                + this.userID + "'";
+        this.hasTicket = false;
+        myUpdate(sqlUpdateUser);
+    }
+
+    public void insertRecordUsers(User user) {
+        this.currentName = user.getName();
+        this.userDetails = user.toString();
+        this.userID = user.getID();
+        this.hasTicket = false;
+        // INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type) 
+        // VALUES ('id', 'name', 'lname', 'email', 'password', false, 'type')
+        String sql = "INSERT INTO " + USERS_TABLE + " (ID, Name, LastName, Email, "
+                + "Password, "
+                + "HasTicket, Type)"
+                + " VALUES ('" + user.getID() + "', '" + user.getName() + "', '" + user.getLastName()
+                + "', '" + user.getEmail() + "', '" + user.getPassword() + "', false, '"
+                + user.getUserClass() + "')";
+        this.userDetails = "Full Name: " + user.getName() + " " + user.getLastName() + 
+                "\nEmail: " + user.getEmail() + "\nID: " + user.getID();
+        myUpdate(sql);
+        System.out.println("Record Sucessfully Inserted..");
+    }
+
     public boolean passwordMatch(String pass, String id) {
-        ResultSet rs = myQuery("SELECT PASSWORD FROM USERS WHERE ID = '" + id + "'");
+        ResultSet rs = myQuery("SELECT * FROM " + USERS_TABLE
+                + " WHERE ID = '" + id + "'");
         try {
             while (rs.next()) {
                 String password = rs.getString("PASSWORD");
                 if (password != null && password.equalsIgnoreCase(pass)) {
-                    System.out.println("PASSWORD MATCH");
+                    String name = rs.getString("NAME");
+                    String lname = rs.getString("LASTNAME");
+                    String email = rs.getString("EMAIL");
+                    String identification = rs.getString("ID");
+                    this.userDetails = "Full Name: " + name + " " + lname + 
+                            "\nEmail: " + email + "\nID: " + identification;
                     return true;
                 }
             }
             rs.close();
         } catch (SQLException ex) {
-            System.out.println("Failed Reading from USER Table: " + ex.getMessage());
-        } 
+            System.out.println("Failed Reading from " + USERS_TABLE + " Table: "
+                    + ex.getMessage());
+        }
         return false;
     }
-    
+
+    public void checkTicketStatus(String id) {
+        ResultSet rs = myQuery("SELECT NAME, HASTICKET FROM " + USERS_TABLE
+                + " WHERE ID = '" + id + "'");
+        try (rs) {
+            if (rs.next()) {
+                this.hasTicket = rs.getBoolean("HASTICKET");
+                this.currentName = rs.getString("NAME");
+                this.userID = id;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error Reading ID: " + ex.getMessage());
+        }
+    }
+
     public boolean checkIdExist(String id, String type) {
-        ResultSet rs = myQuery("SELECT ID FROM USERS WHERE Type = '" + type + "'");
+        ResultSet rs = myQuery("SELECT ID FROM " + USERS_TABLE + " WHERE Type = '"
+                + type + "'");
         try {
             while (rs.next()) {
                 String currentID = rs.getString("ID");
                 if (currentID != null && currentID.equalsIgnoreCase(id)) {
                     System.out.println("ID Found: " + id);
+                    this.userID = id;
                     return true;
                 }
             }
             rs.close();
         } catch (SQLException ex) {
             System.out.println("Failed Reading from USER Table: " + ex.getMessage());
-        } 
-        
+        }
+
         return false;
     }
 
-    
-/*
+    /*
 CREATE TABLE USERS (
     ID VARCHAR(10),
     Name VARCHAR(20),
@@ -125,9 +221,9 @@ CREATE TABLE USERS (
     Type VARCHAR(50),
     PRIMARY KEY (ID)
 ); 
-*/ 
+     */
     private boolean tableExists(String tableName, DatabaseMetaData dbmd) throws SQLException {
-        try (ResultSet rsDBMeta = dbmd.getTables(null, null, null, null)) {
+        try ( ResultSet rsDBMeta = dbmd.getTables(null, null, null, null)) {
             while (rsDBMeta.next()) {
                 String existingTableName = rsDBMeta.getString("TABLE_NAME");
                 if (existingTableName.equalsIgnoreCase(tableName)) {
@@ -139,8 +235,31 @@ CREATE TABLE USERS (
         }
     }
 
+    /*
+ CREATE TABLE Ticket (
+    ticket_id VARCHAR(50) PRIMARY KEY,
+    description TEXT
+);   
+     */
+    private void createTicketTable() {
+        String createTableSQL = "CREATE TABLE " + TICKET_TABLE + " ("
+                + "ticket_id VARCHAR(50) PRIMARY KEY,"
+                + "description CLOB"
+                + ")";
+
+        try {
+            DatabaseMetaData dbmd = conn.getMetaData();
+            if (!tableExists(TICKET_TABLE, dbmd)) {
+                myUpdate(createTableSQL);
+                System.out.println("Ticket Table Created.");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Failed: " + ex.getMessage());
+        }
+    }
+
     private void createUser() {
-        String createTableSQL = "CREATE TABLE USERS ("
+        String createTableSQL = "CREATE TABLE " + USERS_TABLE + " ("
                 + "ID VARCHAR(10), "
                 + "Name VARCHAR(20), "
                 + "LastName VARCHAR(25), "
@@ -150,59 +269,43 @@ CREATE TABLE USERS (
                 + "Type VARCHAR(20), "
                 + "PRIMARY KEY (ID))";
 
-        String insertDataSQL = "INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type) " +
-                "VALUES ('UKDS1234', 'John', 'Doe', 'john.doe@email.com', 'password123', false, 'Customer'), " +
-                "('AS123232', 'Jane', 'Doe', 'jane.doe@email.com', 'securePwd', false, 'Assistant'), " +
-                "('ABCD1234', 'Bob', 'Bill', 'bob.bill@email.com', 'bobPass', false, 'Student')";
+        String insertDataSQL = "INSERT INTO " + USERS_TABLE + " (ID, Name, LastName, Email, Password, HasTicket, Type) "
+                + "VALUES ('UKDS1234', 'John', 'Doe', 'john.doe@email.com', 'password123', false, 'Customer'), "
+                + "('AS123232', 'Jane', 'Doe', 'jane.doe@email.com', 'securePwd', false, 'Assistant'), "
+                + "('ABCD1234', 'Bob', 'Bill', 'bob.bill@email.com', 'bobPass', false, 'Student')";
 
-        try (Statement statement = conn.createStatement()) {
-            statement.executeUpdate(createTableSQL);
-            statement.executeUpdate(insertDataSQL);
-            System.out.println("Table created and data inserted");
-        }
-        catch(SQLException ex) {
-            System.out.println("Unable To Create USERS table...");
-        }
+        myUpdate(createTableSQL);
+        myUpdate(insertDataSQL);
+        System.out.println("Table created and data inserted");
+
     }
 
     public void createUserTable() {
         try {
             DatabaseMetaData dbmd = conn.getMetaData();
-            if (!tableExists("USERS", dbmd)) {
+            if (!tableExists(USERS_TABLE, dbmd)) {
                 createUser();
             }
         } catch (SQLException ex) {
             System.out.println("Failed: " + ex.getMessage());
         }
-    } 
-    
+    }
+
     public ResultSet myQuery(String sql) {
-
-        Connection connection = this.conn;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
         try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-
-        } catch (Exception e) {
+            Statement statement = this.conn.createStatement();
+            return statement.executeQuery(sql);
+        } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return resultSet;
     }
 
     public void myUpdate(String sql) {
-
-        Connection connection = this.conn;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
         try {
-            statement = connection.createStatement();
+            Statement statement = this.conn.createStatement();
             statement.executeUpdate(sql);
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

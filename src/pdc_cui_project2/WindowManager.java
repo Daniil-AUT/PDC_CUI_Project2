@@ -21,7 +21,11 @@ public class WindowManager extends JFrame {
     private SignUpController signupController;
     private LoginController loginController;
     private LoginModel loginModel;
-    
+    private UserAccountModel userModel;
+    private UserAccountController userController;
+    private TicketController ticketController;
+    private TicketModel ticketModel;
+    private DataBaseHandler db;
     // Apply singleton pattern
     public static synchronized WindowManager getManager() {
         if (manager == null) {
@@ -32,6 +36,7 @@ public class WindowManager extends JFrame {
     }
     
     private WindowManager() {
+        this.db = DataBaseHandler.getDB();
         createPanels();
         createModels();
         createControllers();
@@ -49,10 +54,14 @@ public class WindowManager extends JFrame {
     private void createModels() {
         signupModel = new SignUpModel();
         loginModel = new LoginModel();
+        userModel = new UserAccountModel();
+        ticketModel = new TicketModel();
     } 
     private void createControllers() {
         signupController = new SignUpController(signupView, signupModel);
         loginController = new LoginController(loginView, loginModel);
+        userController = new UserAccountController(userAccountView, userModel);
+        ticketController = new TicketController(ticketView, ticketModel);
     }
     private void createPanels() {
         ArrayList<JPanel> views = new ArrayList<>();
@@ -101,6 +110,13 @@ public class WindowManager extends JFrame {
         signupView.setVisible(visible);
     }
     public void setUserAccountVisible(boolean visible) {
+        
+        boolean hasTicket = db.hasTicket;
+        userAccountView.deleteButton.setEnabled(hasTicket);
+        userAccountView.greetLabel.setText("Welcome, "+ db.currentName);
+        userAccountView.editButton.setEnabled(hasTicket);
+        userAccountView.viewButton.setEnabled(hasTicket);
+        userAccountView.createButton.setEnabled(!hasTicket);
         userAccountView.setVisible(visible);
     }
     public void setAssistantAccountVisible(boolean visible) {
@@ -120,11 +136,13 @@ public class WindowManager extends JFrame {
                 break;
             case "View":
                 ticketView.showViewWindow();
+                ticketView.viewText.setText(db.userDetails+"\n\n"+db.viewTicket());
                 break;
             case "Update":
                 ticketView.showUpdateWindow();
+                ticketView.updateText.setText(db.viewTicket());
                 break;
-            case "":
+            default:
                 break;
         }
         ticketView.setVisible(visible);
