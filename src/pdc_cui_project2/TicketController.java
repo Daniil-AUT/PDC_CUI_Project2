@@ -25,11 +25,9 @@ public class TicketController {
         view.backButton.addActionListener(
         new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
                 WindowManager.getManager().setTicketVisible(false, "");
                 switch(view.currentView) {
                     case "Update":
-                        JOptionPane.showMessageDialog(null,"Ticket Has Been Updated.");
                         WindowManager.getManager().setUserAccountVisible(true);
                         break;
                     case "Create":
@@ -62,6 +60,7 @@ public class TicketController {
                 if(ticketCreateValid()) {
                     JOptionPane.showMessageDialog(null,"Ticket Has Been Created.");
                     model.createTicket(view.createText.getText());
+                    view.createText.setText("");
                     WindowManager.getManager().setUserAccountVisible(true);
                     WindowManager.getManager().setTicketVisible(false, "");
                 }
@@ -81,7 +80,23 @@ public class TicketController {
     }
     
     private void updateTicket() {
-        
+        view.updateButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(checkTicketUpdateValid()) {
+                    WindowManager.getManager().setUserAccountVisible(true);
+                    WindowManager.getManager().setTicketVisible(false, "");
+                }
+                
+            }
+        });
+    }
+    private boolean checkTicketUpdateValid() {
+        boolean isValid = false;
+        if(!view.updateText.getText().isBlank()) {
+            isValid = true;
+        }
+        return isValid;
     }
     private void viewTicket() {
         
@@ -94,16 +109,5 @@ public class TicketController {
     }
     
     public void createEvents() {
-        
-        
-        
-        view.updateButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("update button has been pressed");
-                WindowManager.getManager().setUserAccountVisible(true);
-                WindowManager.getManager().setTicketVisible(false, "");
-            }
-        });
     }
 }

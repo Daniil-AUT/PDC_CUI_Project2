@@ -1,4 +1,3 @@
-
 package pdc_cui_project2;
 
 import java.awt.event.ActionEvent;
@@ -31,19 +30,21 @@ public class UserAccountController {
 
     private void toHomeScreen() {
         userView.backButton.addActionListener(
-            new ActionListener() {
+                new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 WindowManager.getManager().setHomeVisible(true);
                 WindowManager.getManager().setUserAccountVisible(false);
             }
         });
     }
+
     private void toTicketScreen() {
         viewTicket();
         createTicket();
         updateTicket();
         deleteTicket();
     }
+
     private void viewTicket() {
         userView.viewButton.addActionListener(
                 new ActionListener() {
@@ -54,6 +55,7 @@ public class UserAccountController {
         });
 
     }
+
     private void createTicket() {
         userView.createButton.addActionListener(
                 new ActionListener() {
@@ -63,6 +65,7 @@ public class UserAccountController {
             }
         });
     }
+
     private void updateTicket() {
         userView.editButton.addActionListener(
                 new ActionListener() {
@@ -72,15 +75,16 @@ public class UserAccountController {
             }
         });
     }
+
     private void deleteTicket() {
         userView.deleteButton.addActionListener(
                 new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 userModel.db.deleteRecordTicket();
                 WindowManager.getManager().setUserAccountVisible(true);
-                 JOptionPane.showMessageDialog(null, "Ticket Has Been Deleted.");
+                JOptionPane.showMessageDialog(null, "Ticket Has Been Deleted.");
             }
         });
-        
+
     }
 }

@@ -136,9 +136,11 @@ public class WindowManager extends JFrame {
                 break;
             case "View":
                 ticketView.showViewWindow();
+                ticketView.viewText.setText(db.userDetails+"\n\n"+db.viewTicket());
                 break;
             case "Update":
                 ticketView.showUpdateWindow();
+                ticketView.updateText.setText(db.viewTicket());
                 break;
             default:
                 break;

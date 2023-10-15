@@ -113,19 +113,39 @@ public class TicketView extends JPanel implements Page {
         return asViewPanel;
     }
 
+
     public JPanel windowView() {
         JPanel viewPanel = new JPanel();
         viewLabel = new JLabel("Your Ticket Information");
+
+        JPanel topPanel = new JPanel();
         GUIStyle.styleLabel(viewLabel);
         viewLabel.setFont(new Font("Consolas", Font.CENTER_BASELINE, 24));
-        viewText = new JTextArea("");
+
+        viewText = new JTextArea();
+        GUIStyle.styleTextArea(viewText);
+        viewText.setBorder(new LineBorder(Color.BLACK, 1));
+        // Adjust the number of rows and columns based on your preference
+        viewText.setRows(10);
+        viewText.setColumns(30);
+
+        JScrollPane scrollPane = new JScrollPane(viewText);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        topPanel.add(viewLabel, BorderLayout.CENTER);
+
         viewText.setEditable(false);
         viewText.setOpaque(false);
-        viewPanel.add(viewLabel, BorderLayout.NORTH);
-        viewPanel.add(viewText, BorderLayout.CENTER);
+
+        viewPanel.setLayout(new BorderLayout());
+        viewPanel.add(topPanel, BorderLayout.NORTH);
+        viewPanel.add(scrollPane, BorderLayout.CENTER);
+
         // Add components for View window
         return viewPanel;
     }
+
+    
     public JPanel windowCreate() {
         JPanel createPanel = new JPanel(new BorderLayout());
         JPanel topEntry = new JPanel();
@@ -169,7 +189,7 @@ public class TicketView extends JPanel implements Page {
         updateText.setRows(5);
         updateText.setLineWrap(true);
         updateText.setWrapStyleWord(true);
-
+        updateText.setBorder(new LineBorder(Color.BLACK, 1));
         JScrollPane scrollPane = new JScrollPane(updateText);  
         updateText.setBorder(new LineBorder(Color.BLACK));
         GUIStyle.styleTextArea(updateText);
