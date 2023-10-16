@@ -27,6 +27,8 @@ public class TicketView extends JPanel implements Page {
     public JButton createButton;
     public JButton backButton;
     public String currentView;
+    public JLabel idLabel;
+    public JTextField idField;
 
     public TicketView() {
         createComponents();
@@ -75,41 +77,55 @@ public class TicketView extends JPanel implements Page {
     }
     
     
-    public JPanel windowReply() {
+   public JPanel windowReply() {
         JPanel asViewPanel = new JPanel(new BorderLayout());
-        JPanel topEntry = new JPanel();
-        
-        replyLabel = new JLabel("Enter You Reply Below");
+
+        // Top Panel for ID Label and Field
+        JPanel topPanel = new JPanel();
+        idLabel = new JLabel("Enter User ID: ");
+        GUIStyle.styleLabel(idLabel);
+        idField = new JTextField("", 20);
+        GUIStyle.styleTextField(idField);
+        idField.setBorder(new LineBorder(Color.BLACK, 1));
+        topPanel.add(idLabel);
+        topPanel.add(idField);
+        asViewPanel.add(topPanel, BorderLayout.NORTH);
+
+        // Center Panel for Reply Label and Text Area
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        JPanel topCenterPanel = new JPanel(new FlowLayout());
+        replyLabel = new JLabel("Reply To User Ticket");
         GUIStyle.styleLabel(replyLabel);
-        replyLabel.setFont(new Font("Consolas", Font.CENTER_BASELINE, 26));
-        topEntry.add(replyLabel, BorderLayout.CENTER);
-        
+        topCenterPanel.add(replyLabel);
+        centerPanel.add(topCenterPanel, BorderLayout.NORTH);
+
         replyText = new JTextArea("");
         replyText.setRows(5);
         replyText.setLineWrap(true);
         replyText.setWrapStyleWord(true);
-        JScrollPane scrollPane = new JScrollPane(replyText);
-        replyText.setBorder(new LineBorder(Color.BLACK)); 
         GUIStyle.styleTextArea(replyText);
+        replyText.setBorder(new LineBorder(Color.BLACK, 1));
         replyText.setFont(new Font("Consolas", Font.CENTER_BASELINE, 15));
-        
+        JScrollPane scrollPane = new JScrollPane(replyText);
+        centerPanel.add(scrollPane, BorderLayout.CENTER);
+
+        asViewPanel.add(centerPanel, BorderLayout.CENTER);
+
+        // Reply Button at the bottom
         replyButton = new JButton("Reply");
         GUIStyle.styleButton(replyButton);
-        
-        // Add components for AsView window
-        asViewPanel.add(topEntry, BorderLayout.NORTH);
-        asViewPanel.add(scrollPane, BorderLayout.CENTER);  
-        asViewPanel.add(replyButton, BorderLayout.SOUTH);
+        asViewPanel.add(replyButton, BorderLayout.PAGE_END);
+
         return asViewPanel;
     }
-    
+
+
     public JPanel windowAsView() {
         JPanel asViewPanel = new JPanel();
         
         asViewButton = new JButton("View All Tickets");
         asViewPanel.add(asViewButton, BorderLayout.NORTH);
         
-        // Add components for AsView window
         return asViewPanel;
     }
 
@@ -120,7 +136,6 @@ public class TicketView extends JPanel implements Page {
 
         JPanel topPanel = new JPanel();
         GUIStyle.styleLabel(viewLabel);
-        viewLabel.setFont(new Font("Consolas", Font.CENTER_BASELINE, 24));
 
         viewText = new JTextArea();
         GUIStyle.styleTextArea(viewText);
@@ -152,7 +167,6 @@ public class TicketView extends JPanel implements Page {
 
         createLabel = new JLabel("Please Enter Ticket Description");
         GUIStyle.styleLabel(createLabel);
-        createLabel.setFont(new Font("Consolas", Font.CENTER_BASELINE, 26));
         topEntry.add(createLabel, BorderLayout.CENTER);
 
         createText = new JTextArea("");  // Use a different variable for createText
@@ -163,7 +177,6 @@ public class TicketView extends JPanel implements Page {
         JScrollPane scrollPane = new JScrollPane(createText);  
         createText.setBorder(new LineBorder(Color.BLACK));
         GUIStyle.styleTextArea(createText);
-        createText.setFont(new Font("Consolas", Font.CENTER_BASELINE, 15));
 
         createButton = new JButton("Create Ticket");
         GUIStyle.styleButton(createButton);
@@ -182,7 +195,6 @@ public class TicketView extends JPanel implements Page {
 
         updateLabel = new JLabel("Please Edit Your Ticket Details");
         GUIStyle.styleLabel(updateLabel);
-        updateLabel.setFont(new Font("Consolas", Font.CENTER_BASELINE, 26));
         topEntry.add(updateLabel, BorderLayout.CENTER);
 
         updateText = new JTextArea("");  
@@ -191,9 +203,7 @@ public class TicketView extends JPanel implements Page {
         updateText.setWrapStyleWord(true);
         updateText.setBorder(new LineBorder(Color.BLACK, 1));
         JScrollPane scrollPane = new JScrollPane(updateText);  
-        updateText.setBorder(new LineBorder(Color.BLACK));
         GUIStyle.styleTextArea(updateText);
-        updateText.setFont(new Font("Consolas", Font.CENTER_BASELINE, 15));
 
         updateButton = new JButton("Update Ticket");
         GUIStyle.styleButton(updateButton);

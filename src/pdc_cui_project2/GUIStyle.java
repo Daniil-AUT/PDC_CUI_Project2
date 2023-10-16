@@ -18,12 +18,12 @@ public class GUIStyle {
     }
     
     public static void styleLabel(JLabel label) { 
-        label.setFont(new Font("Consolas", Font.BOLD, 12));
+        label.setFont(new Font("Consolas", Font.BOLD, 24));
         label.setText("<html>" + label.getText().replace("\n", "<br>") + "</html>");
     }
     
     public static void styleTextArea(JTextArea text) {
-        text.setFont(new Font("Consolas", Font.PLAIN, 12));
+        text.setFont(new Font("Consolas", Font.CENTER_BASELINE, 15));
     }
     
     public static void styleTextField(JTextField text) {

@@ -15,15 +15,14 @@ import javax.swing.JTextArea;
  * @author Daniil
  */
 public class AssistantAccountView extends JPanel implements Page{
-    private JButton backButton;
-    private JTextArea userInstruction;
-    private JButton assistantReply;
-    private JButton assistantView;
-    private JLabel greetLabel;
+    public JButton backButton;
+    public JTextArea userInstruction;
+    public JButton assistantReply;
+    public JButton assistantView;
+    public JLabel greetLabel;
     
     public AssistantAccountView() {
         createComponents();
-        createEvents();
     }
     
     @Override
@@ -61,33 +60,5 @@ public class AssistantAccountView extends JPanel implements Page{
 
            buttonPanel.add(assistantView);
            buttonPanel.add(assistantReply);
-    }
-    
-    public void createEvents() { 
-        backButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("home button has been pressed");
-                WindowManager.getManager().setHomeVisible(true);
-                WindowManager.getManager().setAssistantAccountVisible(false);
-            }
-        });
-        assistantReply.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("reply button has been pressed");
-                WindowManager.getManager().setTicketVisible(true, "asReply");
-                WindowManager.getManager().setAssistantAccountVisible(false);
-            }
-        });
-        
-        assistantView.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("reply button has been pressed");
-                WindowManager.getManager().setTicketVisible(true, "asView");
-                WindowManager.getManager().setAssistantAccountVisible(false);
-            }
-        });
     }
 }

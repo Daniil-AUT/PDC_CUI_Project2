@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -87,7 +89,7 @@ public final class DataBaseHandler {
         this.hasTicket = true;
         myUpdate(sqlUpdateUser);
     }
-    
+
     public void updateTicket(String text) {
         String sqlUpdateTicket = "UPDATE " + TICKET_TABLE + " SET DESCRIPTION = '"
                 + text + "' WHERE TICKET_ID = '"
@@ -95,20 +97,59 @@ public final class DataBaseHandler {
         myUpdate(sqlUpdateTicket);
     }
 
+    public void replyToTicket(String id, String newText) {
+        try {
+            String sqlSelectTicket = "SELECT DESCRIPTION FROM " + TICKET_TABLE
+                    + " WHERE TICKET_ID = '" + id.toUpperCase() + "'";
+            ResultSet rs = myQuery(sqlSelectTicket);
+
+            if (rs.next()) {
+                String originalText = rs.getString("DESCRIPTION");
+                String replyText = originalText + "\n" + "--Reply--\n"+userDetails + "\n\n" +
+                        newText;
+
+                String sqlUpdateTicket = "UPDATE " + TICKET_TABLE + " SET DESCRIPTION = '"
+                        + replyText + "' WHERE TICKET_ID = '"
+                        + id.toUpperCase() + "'";
+                myUpdate(sqlUpdateTicket);
+
+                rs.close(); 
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataBaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public boolean checkTicketExists(String id) {
+        String sqlCheckTicket = "SELECT TICKET_ID FROM " + TICKET_TABLE
+                + " WHERE TICKET_ID = '" + id + "'";
+
+        try {
+            ResultSet rs = myQuery(sqlCheckTicket);
+            if (rs.next()) {
+                return true;
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            System.out.println("Failed Reading from TICKET Table: " + ex.getMessage());
+        }
+        return false;
+    }
 
     public String viewTicket() {
-        String sqlViewTicket = "SELECT DESCRIPTION FROM " + TICKET_TABLE +
-                " WHERE TICKET_id = '" + this.userID.toUpperCase() + "'";
-        try (ResultSet rs = myQuery(sqlViewTicket)) {
+        String sqlViewTicket = "SELECT DESCRIPTION FROM " + TICKET_TABLE
+                + " WHERE TICKET_id = '" + this.userID.toUpperCase() + "'";
+        try ( ResultSet rs = myQuery(sqlViewTicket)) {
             if (rs.next()) {
                 String description = rs.getString("DESCRIPTION");
-                return formatTicket(description, 75); 
+                return formatTicket(description, 75);
             }
         } catch (SQLException ex) {
             System.out.println("Failed Reading from " + TICKET_TABLE + ": " + ex.getMessage());
         }
         return "";
     }
+
     private String formatTicket(String input, int limit) {
         StringBuilder result = new StringBuilder();
         int length = input.length();
@@ -146,8 +187,8 @@ public final class DataBaseHandler {
                 + " VALUES ('" + user.getID() + "', '" + user.getName() + "', '" + user.getLastName()
                 + "', '" + user.getEmail() + "', '" + user.getPassword() + "', false, '"
                 + user.getUserClass() + "')";
-        this.userDetails = "Full Name: " + user.getName() + " " + user.getLastName() + 
-                "\nEmail: " + user.getEmail() + "\nID: " + user.getID();
+        this.userDetails = "Full Name: " + user.getName() + " " + user.getLastName()
+                + "\nEmail: " + user.getEmail() + "\nID: " + user.getID();
         myUpdate(sql);
         System.out.println("Record Sucessfully Inserted..");
     }
@@ -163,8 +204,8 @@ public final class DataBaseHandler {
                     String lname = rs.getString("LASTNAME");
                     String email = rs.getString("EMAIL");
                     String identification = rs.getString("ID");
-                    this.userDetails = "Full Name: " + name + " " + lname + 
-                            "\nEmail: " + email + "\nID: " + identification;
+                    this.userDetails = "Full Name: " + name + " " + lname
+                            + "\nEmail: " + email + "\nID: " + identification;
                     return true;
                 }
             }
@@ -206,7 +247,6 @@ public final class DataBaseHandler {
         } catch (SQLException ex) {
             System.out.println("Failed Reading from USER Table: " + ex.getMessage());
         }
-
         return false;
     }
 

@@ -15,7 +15,7 @@ public class WindowManager extends JFrame {
     private LoginView loginView;
     private SignUpView signupView;
     private UserAccountView userAccountView;
-    private AssistantAccountView assistantAccountView;
+    private AssistantAccountView assistantView;
     private TicketView ticketView;
     private SignUpModel signupModel;
     private SignUpController signupController;
@@ -24,7 +24,9 @@ public class WindowManager extends JFrame {
     private UserAccountModel userModel;
     private UserAccountController userController;
     private TicketController ticketController;
+    private AssistantAccountController assistantController;
     private TicketModel ticketModel;
+    private AssistantAccountModel assistantModel;
     private DataBaseHandler db;
     // Apply singleton pattern
     public static synchronized WindowManager getManager() {
@@ -56,12 +58,14 @@ public class WindowManager extends JFrame {
         loginModel = new LoginModel();
         userModel = new UserAccountModel();
         ticketModel = new TicketModel();
+        assistantModel = new AssistantAccountModel();
     } 
     private void createControllers() {
         signupController = new SignUpController(signupView, signupModel);
         loginController = new LoginController(loginView, loginModel);
         userController = new UserAccountController(userAccountView, userModel);
         ticketController = new TicketController(ticketView, ticketModel);
+        assistantController = new AssistantAccountController(assistantView,assistantModel);
     }
     private void createPanels() {
         ArrayList<JPanel> views = new ArrayList<>();
@@ -76,8 +80,8 @@ public class WindowManager extends JFrame {
         views.add(signupView);
         userAccountView = new UserAccountView();
         views.add(userAccountView);
-        assistantAccountView = new AssistantAccountView();
-        views.add(assistantAccountView);
+        assistantView = new AssistantAccountView();
+        views.add(assistantView);
         ticketView = new TicketView();
         views.add(ticketView);
         
@@ -120,15 +124,15 @@ public class WindowManager extends JFrame {
         userAccountView.setVisible(visible);
     }
     public void setAssistantAccountVisible(boolean visible) {
-        assistantAccountView.setVisible(visible);
+        assistantView.setVisible(visible);
     }
     
     public void setTicketVisible(boolean visible, String window) {
         switch (window) {
-            case "asReply":
+            case "Reply":
                 ticketView.showAsReplyWindow();
                 break;
-            case "asView":
+            case "AsView":
                 ticketView.showAsViewWindow();
                 break;
             case "Create":
