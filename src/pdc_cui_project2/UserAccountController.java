@@ -80,7 +80,7 @@ public class UserAccountController {
         userView.deleteButton.addActionListener(
                 new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                userModel.db.deleteRecordTicket();
+                userModel.deleteTicket();
                 WindowManager.getManager().setUserAccountVisible(true);
                 JOptionPane.showMessageDialog(null, "Ticket Has Been Deleted.");
             }

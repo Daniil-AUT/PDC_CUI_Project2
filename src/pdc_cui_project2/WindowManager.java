@@ -25,7 +25,6 @@ public class WindowManager extends JFrame {
     private LoginModel loginModel;
     private UserAccountModel userModel;
     private TicketModel ticketModel;
-    private AssistantAccountModel assistantModel;
 
     private SignUpController signupController;
     private UserAccountController userController;
@@ -72,7 +71,6 @@ public class WindowManager extends JFrame {
         loginModel = new LoginModel();
         userModel = new UserAccountModel();
         ticketModel = new TicketModel();
-        assistantModel = new AssistantAccountModel();
     }
 
     private void createControllers() {
@@ -80,7 +78,7 @@ public class WindowManager extends JFrame {
         loginController = new LoginController(loginView, loginModel);
         userController = new UserAccountController(userAccountView, userModel);
         ticketController = new TicketController(ticketView, ticketModel);
-        assistantController = new AssistantAccountController(assistantView, assistantModel);
+        assistantController = new AssistantAccountController(assistantView);
         homeFaqController = new HomeFaqController(homeView, faqView);
     }
 

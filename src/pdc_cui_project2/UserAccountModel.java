@@ -10,5 +10,9 @@ public class UserAccountModel {
     public UserAccountModel() {
         this.db = DataBaseHandler.getDB();
     }
+    
+    public void deleteTicket() {
+        db.deleteRecordTicket();
+    }
 
 }

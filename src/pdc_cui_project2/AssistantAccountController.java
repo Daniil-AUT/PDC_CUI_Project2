@@ -2,7 +2,6 @@ package pdc_cui_project2;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
 /**
  *
@@ -10,12 +9,9 @@ import java.util.Map;
  */
 public class AssistantAccountController {
     AssistantAccountView view;
-    AssistantAccountModel model;
     
-    public AssistantAccountController(AssistantAccountView view, 
-                                      AssistantAccountModel model) {
+    public AssistantAccountController(AssistantAccountView view) {
         this.view = view;
-        this.model = model;
         toTicketScreen();
     }
     
