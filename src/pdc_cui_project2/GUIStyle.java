@@ -2,6 +2,7 @@ package pdc_cui_project2;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -23,7 +24,11 @@ public class GUIStyle {
     }
     
     public static void styleTextArea(JTextArea text) {
-        text.setFont(new Font("Consolas", Font.CENTER_BASELINE, 15));
+        text.setFont(new Font("Consolas", Font.CENTER_BASELINE, 13));
+        text.setBorder(new LineBorder(Color.BLACK, 1));
+        text.setLineWrap(true);
+        text.setRows(5);
+        text.setWrapStyleWord(true);
     }
     
     public static void styleTextField(JTextField text) {

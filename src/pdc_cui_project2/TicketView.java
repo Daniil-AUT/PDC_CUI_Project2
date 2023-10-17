@@ -1,16 +1,16 @@
 package pdc_cui_project2;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
+import java.awt.*;
+import javax.swing.border.*;
+import javax.swing.table.*;
 
 /*
  *
  * @author Daniil
  */
 public class TicketView extends JPanel implements Page {
+
     public CardLayout cardLayout;
     public JPanel cardPanel;
     public JLabel updateLabel;
@@ -29,6 +29,8 @@ public class TicketView extends JPanel implements Page {
     public String currentView;
     public JLabel idLabel;
     public JTextField idField;
+    public JTable tickeTable;
+    public DefaultTableModel modelTable;
 
     public TicketView() {
         createComponents();
@@ -47,8 +49,7 @@ public class TicketView extends JPanel implements Page {
         cardPanel.add("Create", windowCreate());
         cardPanel.add("Update", windowUpdate());
         backButton = new JButton("Back");
-        
-        
+
         GUIStyle.styleButton(backButton);
         add(backButton, BorderLayout.NORTH);
         add(cardPanel, BorderLayout.CENTER);
@@ -63,21 +64,23 @@ public class TicketView extends JPanel implements Page {
         cardLayout.show(cardPanel, "AsView");
         currentView = "AsView";
     }
+
     public void showViewWindow() {
         cardLayout.show(cardPanel, "View");
         currentView = "View";
     }
+
     public void showCreateWindow() {
         cardLayout.show(cardPanel, "Create");
         currentView = "Create";
     }
+
     public void showUpdateWindow() {
         cardLayout.show(cardPanel, "Update");
         currentView = "Update";
     }
-    
-    
-   public JPanel windowReply() {
+
+    public JPanel windowReply() {
         JPanel asViewPanel = new JPanel(new BorderLayout());
 
         // Top Panel for ID Label and Field
@@ -119,16 +122,39 @@ public class TicketView extends JPanel implements Page {
         return asViewPanel;
     }
 
-
     public JPanel windowAsView() {
-        JPanel asViewPanel = new JPanel();
+        JPanel asViewPanel = new JPanel(new BorderLayout());
+
+        JLabel viewTicketslabel = new JLabel("View User Tickets", SwingConstants.CENTER);
+        JPanel labelPanel = new JPanel(new BorderLayout());
+        GUIStyle.styleLabel(viewTicketslabel);
+        labelPanel.add(viewTicketslabel, BorderLayout.CENTER);
+
+        // Column names
+        String[] columnNames = {"ID", "Description"};
+
+        // Create a DefaultTableModel with no data
+        modelTable = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        // Create JTable with the DefaultTableModel
+        tickeTable = new JTable(modelTable);
+        tickeTable.setRowHeight(60);
+        // Set preferred column widths
         
-        asViewButton = new JButton("View All Tickets");
-        asViewPanel.add(asViewButton, BorderLayout.NORTH);
-        
+        JScrollPane scrollPaneTable = new JScrollPane(tickeTable);
+
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.add(labelPanel, BorderLayout.NORTH);
+        centerPanel.add(scrollPaneTable, BorderLayout.CENTER);
+
+        asViewPanel.add(centerPanel, BorderLayout.CENTER);
+
         return asViewPanel;
     }
-
 
     public JPanel windowView() {
         JPanel viewPanel = new JPanel();
@@ -138,12 +164,10 @@ public class TicketView extends JPanel implements Page {
         GUIStyle.styleLabel(viewLabel);
 
         viewText = new JTextArea();
+        viewText.setLineWrap(true);
+        viewText.setWrapStyleWord(true);
         GUIStyle.styleTextArea(viewText);
-        viewText.setBorder(new LineBorder(Color.BLACK, 1));
         // Adjust the number of rows and columns based on your preference
-        viewText.setRows(10);
-        viewText.setColumns(30);
-
         JScrollPane scrollPane = new JScrollPane(viewText);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -160,7 +184,6 @@ public class TicketView extends JPanel implements Page {
         return viewPanel;
     }
 
-    
     public JPanel windowCreate() {
         JPanel createPanel = new JPanel(new BorderLayout());
         JPanel topEntry = new JPanel();
@@ -174,7 +197,7 @@ public class TicketView extends JPanel implements Page {
         createText.setLineWrap(true);
         createText.setWrapStyleWord(true);
         createText.setBorder(new LineBorder(Color.black, 1));
-        JScrollPane scrollPane = new JScrollPane(createText);  
+        JScrollPane scrollPane = new JScrollPane(createText);
         createText.setBorder(new LineBorder(Color.BLACK));
         GUIStyle.styleTextArea(createText);
 
@@ -188,7 +211,6 @@ public class TicketView extends JPanel implements Page {
         return createPanel;
     }
 
-
     public JPanel windowUpdate() {
         JPanel updatePanel = new JPanel(new BorderLayout());
         JPanel topEntry = new JPanel();
@@ -197,12 +219,12 @@ public class TicketView extends JPanel implements Page {
         GUIStyle.styleLabel(updateLabel);
         topEntry.add(updateLabel, BorderLayout.CENTER);
 
-        updateText = new JTextArea("");  
+        updateText = new JTextArea("");
         updateText.setRows(5);
         updateText.setLineWrap(true);
         updateText.setWrapStyleWord(true);
         updateText.setBorder(new LineBorder(Color.BLACK, 1));
-        JScrollPane scrollPane = new JScrollPane(updateText);  
+        JScrollPane scrollPane = new JScrollPane(updateText);
         GUIStyle.styleTextArea(updateText);
 
         updateButton = new JButton("Update Ticket");
@@ -212,7 +234,7 @@ public class TicketView extends JPanel implements Page {
         updatePanel.add(topEntry, BorderLayout.NORTH);
         updatePanel.add(scrollPane, BorderLayout.CENTER);
         updatePanel.add(updateButton, BorderLayout.SOUTH);
-        
+
         return updatePanel;
     }
 }

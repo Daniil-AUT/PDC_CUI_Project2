@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,7 +77,7 @@ public final class DataBaseHandler {
             }
         }
     }
-
+    
     public void insertRecordTicket(String text) {
         String sqlCreateTicket = "INSERT INTO " + TICKET_TABLE
                 + " (TICKET_ID, DESCRIPTION) "
@@ -97,29 +98,41 @@ public final class DataBaseHandler {
         myUpdate(sqlUpdateTicket);
     }
 
-    public void replyToTicket(String id, String newText) {
+    public void replyToTicket(String id, String text) {
         try {
             String sqlSelectTicket = "SELECT DESCRIPTION FROM " + TICKET_TABLE
                     + " WHERE TICKET_ID = '" + id.toUpperCase() + "'";
             ResultSet rs = myQuery(sqlSelectTicket);
 
             if (rs.next()) {
-                String originalText = rs.getString("DESCRIPTION");
-                String replyText = originalText + "\n" + "--Reply--\n"+userDetails + "\n\n" +
-                        newText;
-
-                String sqlUpdateTicket = "UPDATE " + TICKET_TABLE + " SET DESCRIPTION = '"
-                        + replyText + "' WHERE TICKET_ID = '"
-                        + id.toUpperCase() + "'";
-                myUpdate(sqlUpdateTicket);
-
-                rs.close(); 
+                String sqlUpdateReply = "UPDATE " + TICKET_TABLE + " SET REPLY = '" +
+                                        text + "' WHERE TICKET_ID = '" + id + "'";
+                myUpdate(sqlUpdateReply);
+                rs.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(DataBaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
+    public boolean beenRepliedTo(String id) {
+    try {
+            String sqlSelectTicket = "SELECT REPLY FROM " + TICKET_TABLE
+                    + " WHERE TICKET_ID = '" + id.toUpperCase() + "'";
+            ResultSet rs = myQuery(sqlSelectTicket);
+
+            if (rs.next()) {
+                rs.close();
+                return true;
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataBaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
     public boolean checkTicketExists(String id) {
         String sqlCheckTicket = "SELECT TICKET_ID FROM " + TICKET_TABLE
                 + " WHERE TICKET_ID = '" + id + "'";
@@ -136,19 +149,30 @@ public final class DataBaseHandler {
         return false;
     }
 
-    public String viewTicket() {
-        String sqlViewTicket = "SELECT DESCRIPTION FROM " + TICKET_TABLE
-                + " WHERE TICKET_id = '" + this.userID.toUpperCase() + "'";
-        try ( ResultSet rs = myQuery(sqlViewTicket)) {
+   public String viewTicket() {
+        String sqlViewTicket = "SELECT DESCRIPTION, REPLY FROM " + TICKET_TABLE
+                + " WHERE TICKET_ID = '" + this.userID.toUpperCase() + "'";
+
+        try (ResultSet rs = myQuery(sqlViewTicket)) {
             if (rs.next()) {
                 String description = rs.getString("DESCRIPTION");
-                return formatTicket(description, 75);
+                String reply = rs.getString("REPLY");
+
+                if (reply != null) {
+                    // Include a blank line between description and reply for clarity
+                    return formatTicket(description + "\n\n" + userDetails + "\n" + reply, 150);
+                } else {
+                    return formatTicket(description, 70);
+                }
             }
         } catch (SQLException ex) {
             System.out.println("Failed Reading from " + TICKET_TABLE + ": " + ex.getMessage());
         }
         return "";
     }
+
+   
+   
 
     private String formatTicket(String input, int limit) {
         StringBuilder result = new StringBuilder();
@@ -160,7 +184,23 @@ public final class DataBaseHandler {
 
         return result.toString();
     }
-
+    public HashMap<String, String> getUserTickets() {
+        HashMap<String, String> ticketTable = new HashMap<>();
+        String sqlGetTickets = "SELECT TICKET_ID, DESCRIPTION FROM " + TICKET_TABLE;
+        
+        try (ResultSet rs = myQuery(sqlGetTickets)) {
+            while (rs.next()) {
+                String id = rs.getString("TICKET_ID");
+                String description = rs.getString("DESCRIPTION");
+                // Assuming formatTicket returns a 1D array for each ticket
+                ticketTable.put(id, description);
+        }
+        } catch (SQLException ex) {
+            System.out.println("Failed Reading from " + TICKET_TABLE + ": " + ex.getMessage());
+        }
+        return ticketTable;
+    }
+    
     public void deleteRecordTicket() {
         String sqlDeleteTicket = "DELETE FROM " + TICKET_TABLE
                 + " WHERE TICKET_ID = '"
@@ -187,8 +227,8 @@ public final class DataBaseHandler {
                 + " VALUES ('" + user.getID() + "', '" + user.getName() + "', '" + user.getLastName()
                 + "', '" + user.getEmail() + "', '" + user.getPassword() + "', false, '"
                 + user.getUserClass() + "')";
-        this.userDetails = "Full Name: " + user.getName() + " " + user.getLastName()
-                + "\nEmail: " + user.getEmail() + "\nID: " + user.getID();
+        this.userDetails = "\nFull Name: " + user.getName() + " " + user.getLastName()
+                + "\nEmail: " + user.getEmail() + "\nID: " + user.getID()+"\n";
         myUpdate(sql);
         System.out.println("Record Sucessfully Inserted..");
     }
@@ -283,8 +323,9 @@ CREATE TABLE USERS (
      */
     private void createTicketTable() {
         String createTableSQL = "CREATE TABLE " + TICKET_TABLE + " ("
-                + "ticket_id VARCHAR(50) PRIMARY KEY,"
-                + "description CLOB"
+                + "TICKET_ID VARCHAR(50) PRIMARY KEY,"
+                + "DESCRIPTION CLOB, "
+                + "REPLY CLOB"
                 + ")";
 
         try {

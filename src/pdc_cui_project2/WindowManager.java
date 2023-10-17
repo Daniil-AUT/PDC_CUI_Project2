@@ -2,6 +2,7 @@ package pdc_cui_project2;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.*;
 
 /**
@@ -126,7 +127,9 @@ public class WindowManager extends JFrame {
     public void setAssistantAccountVisible(boolean visible) {
         assistantView.setVisible(visible);
     }
-    
+    public void setAssistantReply(String[] replyText) {
+        
+    }
     public void setTicketVisible(boolean visible, String window) {
         switch (window) {
             case "Reply":
@@ -134,6 +137,12 @@ public class WindowManager extends JFrame {
                 break;
             case "AsView":
                 ticketView.showAsViewWindow();
+                
+                for (Map.Entry<String, String> entry : db.getUserTickets().entrySet()) {
+                String id = entry.getKey();
+                String description = entry.getValue().split("Full Name:")[0];
+                    ticketView.modelTable.addRow(new Object[]{id,description});
+                }
                 break;
             case "Create":
                 ticketView.showCreateWindow();
