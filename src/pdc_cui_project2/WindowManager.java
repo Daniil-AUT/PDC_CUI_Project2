@@ -125,6 +125,7 @@ public class WindowManager extends JFrame {
         userAccountView.setVisible(visible);
     }
     public void setAssistantAccountVisible(boolean visible) {
+        assistantView.greetLabel.setText("Welcome, "+ db.currentName);
         assistantView.setVisible(visible);
     }
     public void setAssistantReply(String[] replyText) {

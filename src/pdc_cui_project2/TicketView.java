@@ -85,8 +85,9 @@ public class TicketView extends JPanel implements Page {
 
         // Top Panel for ID Label and Field
         JPanel topPanel = new JPanel();
-        idLabel = new JLabel("Enter User ID: ");
+        idLabel = new JLabel("Enter User ID ");
         GUIStyle.styleLabel(idLabel);
+        idLabel.setFont(new Font("Consolas", Font.BOLD, 13));
         idField = new JTextField("", 20);
         GUIStyle.styleTextField(idField);
         idField.setBorder(new LineBorder(Color.BLACK, 1));

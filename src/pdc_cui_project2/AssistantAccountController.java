@@ -24,6 +24,7 @@ public class AssistantAccountController {
         replyTicket();
         viewAllTickets();
     }
+    
     private void toHomeScreen() {
         view.backButton.addActionListener(
         new ActionListener() {
