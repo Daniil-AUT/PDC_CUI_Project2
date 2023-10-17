@@ -10,16 +10,15 @@ import javax.swing.*;
  * @author Daniil
  */
 public final class HomeView extends JPanel implements Page {
-    private JButton loginButton;
-    private JButton signupButton;
-    private JButton faqButton;
-    private JLabel greetLabel;
-    private JTextArea instructionText;
+    public JButton loginButton;
+    public JButton signupButton;
+    public JButton faqButton;
+    public JLabel greetLabel;
+    public JTextArea instructionText;
     
     
     public HomeView() {
         createComponents();
-        createEvents();
     }
     
     @Override
@@ -62,34 +61,4 @@ public final class HomeView extends JPanel implements Page {
         
     }
     
-    public void createEvents() {
-       loginButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("login button has been pressed");
-                WindowManager.getManager().setHomeVisible(false);
-                WindowManager.getManager().setLoginVisible(true);
-            }
-        }); 
-       
-       signupButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("signup button has been pressed");
-                WindowManager.getManager().setSignUpVisible(true);
-                WindowManager.getManager().setHomeVisible(false);
-                
-            }
-        });
-        
-        
-        faqButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("faq button has been pressed");
-                WindowManager.getManager().setHomeVisible(false);
-                WindowManager.getManager().setFAQVisible(true);
-            }
-        });   
-    }
 }

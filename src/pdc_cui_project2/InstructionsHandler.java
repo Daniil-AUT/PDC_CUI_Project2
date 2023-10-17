@@ -26,7 +26,7 @@ public class InstructionsHandler {
         "\n" +
         "Quit Button:\n" +
         "\n" +
-        "Click the \"Quit\" button to exit the program.\n" +
+        "Click the \"X\" and the top right to exit the program.\n" +
         "If you wish to leave the application, this is the way to do it.";
 
     }

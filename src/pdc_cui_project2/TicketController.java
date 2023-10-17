@@ -112,7 +112,7 @@ public class TicketController {
                 String assistantReply = view.replyText.getText();
                 String userID = view.idField.getText().toUpperCase();
 
-                boolean ticketExists = model.checkTicketExists(id);
+                boolean ticketExists = model.checkTicketExists(id.toUpperCase());
 
                 handleAssistantReply(assistantReply);
                 handleUserID(userID, ticketExists);

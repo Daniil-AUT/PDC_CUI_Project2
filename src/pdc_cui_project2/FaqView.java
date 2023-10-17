@@ -11,12 +11,11 @@ import javax.swing.*;
  * @author Daniil
  */
 public class FaqView extends JPanel implements Page {
-    private JButton backButton;
-    private JTextArea faqInfo;
+    public JButton backButton;
+    public JTextArea faqInfo;
     
     public FaqView() {
         createComponents();
-        createEvents();
     }
     
     @Override
@@ -24,7 +23,7 @@ public class FaqView extends JPanel implements Page {
         setLayout(new BorderLayout());
         backButton = new JButton("Go Back");
         GUIStyle.styleButton(backButton);
-        faqInfo = new JTextArea("\n\n"+showInfo(), 60, 50);
+        faqInfo = new JTextArea();
         faqInfo.setEditable(false);
         GUIStyle.styleTextArea(faqInfo);
         
@@ -32,33 +31,5 @@ public class FaqView extends JPanel implements Page {
         scroll.setEnabled(true);
         add(backButton, BorderLayout.NORTH);
         add(scroll, BorderLayout.CENTER);
-    }
-    
-    public void createEvents() {
-        backButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("home button has been pressed");
-                WindowManager.getManager().setFAQVisible(false);
-                WindowManager.getManager().setHomeVisible(true);
-            }
-        });
-    }
-    
-    private static String showInfo() {
-        String text = "";
-        try (BufferedReader reader = new BufferedReader(new FileReader("HelpDeskFiles\\faq.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                text += line + "\n";
-            }
-            reader.close();
-            // Give possible exceptions errors and handle them through print statements
-        } catch (FileNotFoundException e) {
-            return "Sorry, FAQ is unavailable at the moment.";
-        } catch (IOException e) {
-            return "Apologies, An Error Occured Loading an FAQ";
-        }
-        return text;
     }
 }
