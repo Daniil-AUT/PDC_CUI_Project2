@@ -82,8 +82,8 @@ public class SignUpController {
                                         model.types.CUSTOMER, password);
                             }
                             JOptionPane.showMessageDialog(null,"Your Details:\n\n"+
-                                                          model.db.userDetails);
-                            System.out.println(model.db.userID);
+                                                          model.getDetails());
+                            System.out.println(model.getID());
                             
                         }
                     }

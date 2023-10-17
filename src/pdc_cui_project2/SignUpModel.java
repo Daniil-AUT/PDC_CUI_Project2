@@ -25,23 +25,27 @@ public class SignUpModel {
             case ASSISTANT:
                 User assistant = new Assistant(name, lname, email, password);
                 db.insertRecordUsers(assistant);
-                db.userID = assistant.getID();
                 directToPage(UserType.ASSISTANT);
                 break;
             case STUDENT:
                 User student = new Student(name, lname, email, password);
                 db.insertRecordUsers(student);
-                db.userID = student.getID();
                 directToPage(UserType.STUDENT);
                 break;
             case CUSTOMER:
                 User customer = new Customer(name, lname, email, password);
                 db.insertRecordUsers(customer);
-                db.userID = customer.getID();
                 directToPage(UserType.CUSTOMER);
                 break;
                 
         }
+    }
+    
+    public String getID() {
+        return db.getUserID();
+    }
+    public String getDetails() {
+        return db.getUserDetails();
     }
     
     private void directToPage(UserType type) {

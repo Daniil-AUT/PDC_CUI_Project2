@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 /**
@@ -17,7 +16,12 @@ public class TicketController {
 
     TicketView view;
     TicketModel model;
-
+    private static final Color ERROR_COLOUR = Color.red;
+    private static final Color DEFAULT_COLOUR = Color.black;
+    private static final String VIEW_UPDATE = "Update";
+    private static final String VIEW_CREATE = "Create";
+    private static final String VIEW_VIEW = "View";
+    
     public TicketController(TicketView view, TicketModel model) {
         this.view = view;
         this.model = model;
@@ -26,24 +30,18 @@ public class TicketController {
     }
 
     private void toAccountScreen() {
-        view.backButton.addActionListener(
-                new ActionListener() {
+        view.backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 WindowManager.getManager().setTicketVisible(false, "");
-                switch (view.currentView) {
-                    case "Update":
-                        WindowManager.getManager().setUserAccountVisible(true);
-                        break;
-                    case "Create":
-                        WindowManager.getManager().setUserAccountVisible(true);
-                        break;
-                    case "View":
-                        WindowManager.getManager().setUserAccountVisible(true);
-                        break;
-                    default:
-                        WindowManager.getManager().setAssistantAccountVisible(true);
-                        break;
+                if(view.currentView.equals(VIEW_UPDATE) || 
+                            view.currentView.equals(VIEW_CREATE) || 
+                            view.currentView.equals(VIEW_VIEW)) {
+                            WindowManager.getManager().setUserAccountVisible(true);
                 }
+                else {
+                     WindowManager.getManager().setAssistantAccountVisible(true);
+                }
+                
             }
         });
     }
@@ -74,35 +72,14 @@ public class TicketController {
     private boolean ticketTextValid(JTextArea textArea, JLabel textLabel) {
         String text = textArea.getText();
         if (text.isEmpty()) {
-            textLabel.setForeground(Color.red);
-            textArea.setBorder(new LineBorder(Color.red, 2));
+            textLabel.setForeground(ERROR_COLOUR);
+            textArea.setBorder(new LineBorder(ERROR_COLOUR, 2));
             return false;
         } else {
-            textLabel.setForeground(Color.black);
-            textArea.setBorder(new LineBorder(Color.black, 1));
+            textLabel.setForeground(DEFAULT_COLOUR);
+            textArea.setBorder(new LineBorder(DEFAULT_COLOUR, 1));
             return true;
         }
-    }
-
-    private boolean ticketFieldValid(JTextField textField, JLabel fieldLabel) {
-        String idEntry = textField.getText();
-        String labelInfo = fieldLabel.getText();
-
-        if (idEntry.isEmpty()) {
-            fieldLabel.setForeground(Color.red);
-            textField.setBorder(new LineBorder(Color.red, 2));
-            return false;
-        }
-
-        if (!checkTicketIDExist(idEntry)) {
-            fieldLabel.setForeground(Color.red);
-            textField.setBorder(new LineBorder(Color.red, 2));
-            return false;
-        }
-        fieldLabel.setText(labelInfo); // Reset the label text to its original state
-        fieldLabel.setForeground(Color.black);
-        textField.setBorder(new LineBorder(Color.black, 1));
-        return true;
     }
 
     private void updateTicket() {
@@ -111,7 +88,7 @@ public class TicketController {
             public void actionPerformed(ActionEvent e) {
                 if (ticketTextValid(view.updateText, view.updateLabel)) {
                     JOptionPane.showMessageDialog(null, "Ticket Has Been Updated.");
-                    model.db.updateTicket(view.updateText.getText());
+                    model.updateTicket(view.updateText.getText());
                     WindowManager.getManager().setUserAccountVisible(true);
                     WindowManager.getManager().setTicketVisible(false, "");
                 }
@@ -120,50 +97,72 @@ public class TicketController {
     }
 
     private void asViewTicket() {
-        view.backButton.addActionListener(
-                new ActionListener() {
+        view.backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                view.modelTable.setRowCount(0);
+                view.modelTable.setRowCount(0); // This clears the table
             }
         });
-
-    }
-
-    //new LineBorder(Color.BLACK, 1)
-    private boolean checkTicketIDExist(String id) {
-        return model.db.checkTicketExists(id);
     }
 
     private void replyTicket() {
-        view.replyButton.addActionListener(
-                new ActionListener() {
+        view.replyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String id = view.idField.getText();
                 String reply = view.replyText.getText();
-                    
-                    
-                if(ticketTextValid(view.replyText, view.replyLabel) ==
-                   ticketFieldValid(view.idField, view.idLabel)) {
-                    if(view.replyText.getText().isEmpty()) {
-                        view.replyLabel.setText("Reply To User Ticket (No Blanks)");
-                    }
-                    if(view.idField.getText().isBlank()) {
-                        view.idLabel.setText("Enter User ID (No Blanks)");
-                    } 
-                    else if(!checkTicketIDExist(view.idField.getText())) {
-                        view.idLabel.setText("Enter User ID (ID Not Found)");
-                    }
-                    
-                   if(ticketTextValid(view.replyText, view.replyLabel) &&
-                   ticketFieldValid(view.idField, view.idLabel)) {
-                       JOptionPane.showMessageDialog(null, "Reply Was Sent.");
-                       model.db.replyToTicket(id, reply);
-                       WindowManager.getManager().setAssistantAccountVisible(true);
-                       WindowManager.getManager().setTicketVisible(false, "");
-                   }
+                String assistantReply = view.replyText.getText();
+                String userID = view.idField.getText().toUpperCase();
+
+                boolean ticketExists = model.checkTicketExists(id);
+
+                handleAssistantReply(assistantReply);
+                handleUserID(userID, ticketExists);
+
+                if (isFormValid(view.replyText, view.replyLabel) && ticketExists) {
+                    JOptionPane.showMessageDialog(null, "Reply Was Sent.");
+                    model.replyToTicket(id, reply);
+                    view.replyText.setText("");
+                    view.idField.setText("");
+                    WindowManager.getManager().setAssistantAccountVisible(true);
+                    WindowManager.getManager().setTicketVisible(false, "");
                 }
             }
-        }
-        );
+        });
     }
+
+    private void handleAssistantReply(String assistantReply) {
+        if (assistantReply.isEmpty()) {
+            view.replyLabel.setText("Reply To User Ticket (No Blanks)");
+        } else {
+            view.replyLabel.setText("Reply To User Ticket");
+        }
+    }
+
+    private void handleUserID(String userID, boolean ticketExists) {
+        if (userID.isEmpty()) {
+            view.idLabel.setText("Enter User ID (No Blanks)");
+            view.idLabel.setForeground(ERROR_COLOUR);  
+        } else if (!ticketExists) {
+            view.idLabel.setText("Enter User ID (ID Not Found)");
+            view.idLabel.setForeground(ERROR_COLOUR); 
+        } else {
+            view.idLabel.setText("Enter User ID");
+            view.idLabel.setForeground(DEFAULT_COLOUR); 
+        }
+    }
+
+
+    private boolean isFormValid(JTextArea textArea, JLabel textLabel) {
+        String text = textArea.getText();
+        if (text.isEmpty()) {
+            textLabel.setForeground(ERROR_COLOUR);
+            textArea.setBorder(new LineBorder(ERROR_COLOUR, 2));
+            return false;
+        } else {
+            textLabel.setForeground(DEFAULT_COLOUR);
+            textArea.setBorder(new LineBorder(DEFAULT_COLOUR, 1));
+            return true;
+        }
+    }
+
+
 }

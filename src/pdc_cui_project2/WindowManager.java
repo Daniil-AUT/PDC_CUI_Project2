@@ -116,16 +116,16 @@ public class WindowManager extends JFrame {
     }
     public void setUserAccountVisible(boolean visible) {
         
-        boolean hasTicket = db.hasTicket;
+        boolean hasTicket = db.hasTicket();
         userAccountView.deleteButton.setEnabled(hasTicket);
-        userAccountView.greetLabel.setText("Welcome, "+ db.currentName);
+        userAccountView.greetLabel.setText("Welcome, "+ db.getUserName());
         userAccountView.editButton.setEnabled(hasTicket);
         userAccountView.viewButton.setEnabled(hasTicket);
         userAccountView.createButton.setEnabled(!hasTicket);
         userAccountView.setVisible(visible);
     }
     public void setAssistantAccountVisible(boolean visible) {
-        assistantView.greetLabel.setText("Welcome, "+ db.currentName);
+        assistantView.greetLabel.setText("Welcome, "+ db.getUserName());
         assistantView.setVisible(visible);
     }
     public void setAssistantReply(String[] replyText) {
@@ -150,7 +150,7 @@ public class WindowManager extends JFrame {
                 break;
             case "View":
                 ticketView.showViewWindow();
-                ticketView.viewText.setText(db.userDetails+"\n\n"+db.viewTicket());
+                ticketView.viewText.setText(db.getUserDetails()+"\n\n"+db.viewTicket());
                 break;
             case "Update":
                 ticketView.showUpdateWindow();

@@ -21,10 +21,12 @@ public final class DataBaseHandler {
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
     private static final String URL = "jdbc:derby:HelpDeskDB;create=true";
-    public boolean hasTicket;
-    public String currentName;
-    public String userDetails;
-    public String userID;
+    
+    private boolean hasTicket;
+    private String currentName;
+    private String userDetails;
+    private String userID;
+    
     //Practice: jdbc:derby://localhost:1527/HelpDeskDB;create=true
 
     //Main: jdbc:derby:HelpDeskDB;create=true
@@ -52,13 +54,24 @@ public final class DataBaseHandler {
     public Connection getConnection() {
         return this.conn;
     }
-
+    
+    public boolean hasTicket() {
+        return this.hasTicket;
+    }
+    public String getUserName() {
+        return this.currentName;
+    }
+    public String getUserDetails() {
+        return this.userDetails;
+    }
+    public String getUserID() {
+        return this.userID;
+    }
     //Establish connection
     public void establishConnection() {
         if (this.conn == null) {
             try {
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
 
@@ -114,23 +127,6 @@ public final class DataBaseHandler {
             Logger.getLogger(DataBaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }
-
-    public boolean beenRepliedTo(String id) {
-    try {
-            String sqlSelectTicket = "SELECT REPLY FROM " + TICKET_TABLE
-                    + " WHERE TICKET_ID = '" + id.toUpperCase() + "'";
-            ResultSet rs = myQuery(sqlSelectTicket);
-
-            if (rs.next()) {
-                rs.close();
-                return true;
-                
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DataBaseHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
     }
     
     public boolean checkTicketExists(String id) {
