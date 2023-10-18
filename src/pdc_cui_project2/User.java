@@ -12,7 +12,7 @@ public abstract class User {
     private final String lastName;
     private final String email;
     private final String password;
-    public Random rand;
+    protected Random rand;
     
     // Initialise the user constructor with appropriate
     // arguments + instantiate the Random object for generating id's

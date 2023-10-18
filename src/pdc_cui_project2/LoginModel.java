@@ -1,7 +1,5 @@
 package pdc_cui_project2;
 
-import java.awt.Color;
-
 /**
  *
  * @author Daniil
@@ -21,10 +19,9 @@ public class LoginModel {
     }
     
     public boolean checkIdExist(String id, String type) {
-        boolean valid = false;
         System.out.println(type);
 
-        valid = db.checkIdExist(id, type);
+        boolean valid = db.checkIdExist(id.toUpperCase(), type);
 
         if (!valid) {
             return false;
@@ -38,6 +35,10 @@ public class LoginModel {
             return false;
         }
         return true;
+    }
+    
+    public void setTicketStatus(String id) {
+        db.checkTicketStatus(id);
     }
 
 }

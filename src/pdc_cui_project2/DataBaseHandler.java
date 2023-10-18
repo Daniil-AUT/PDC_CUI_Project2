@@ -231,17 +231,18 @@ public final class DataBaseHandler {
 
     public boolean passwordMatch(String pass, String id) {
         ResultSet rs = myQuery("SELECT * FROM " + USERS_TABLE
-                + " WHERE ID = '" + id + "'");
+                + " WHERE ID = '" + id.toUpperCase() + "'");
         try {
             while (rs.next()) {
                 String password = rs.getString("PASSWORD");
-                if (password != null && password.equalsIgnoreCase(pass)) {
+                if (password != null && password.equals(pass)) {
                     String name = rs.getString("NAME");
                     String lname = rs.getString("LASTNAME");
                     String email = rs.getString("EMAIL");
                     String identification = rs.getString("ID");
                     this.userDetails = "Full Name: " + name + " " + lname
                             + "\nEmail: " + email + "\nID: " + identification;
+                    this.currentName = name;
                     return true;
                 }
             }
