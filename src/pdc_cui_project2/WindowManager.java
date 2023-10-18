@@ -9,6 +9,9 @@ import javax.swing.*;
  *
  * @author Daniil
  */
+
+// MEDIATOR PATTERN
+// SINGLETON PATTERN
 public class WindowManager extends JFrame {
 
     private static WindowManager manager;

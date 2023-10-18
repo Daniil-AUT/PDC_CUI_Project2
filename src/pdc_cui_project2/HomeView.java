@@ -8,11 +8,11 @@ import javax.swing.*;
  * @author Daniil
  */
 public final class HomeView extends JPanel implements Page {
-    public JButton loginButton;
-    public JButton signupButton;
-    public JButton faqButton;
-    public JLabel greetLabel;
-    public JTextArea instructionText;
+    protected JButton loginButton;
+    protected JButton signupButton;
+    protected JButton faqButton;
+    protected JLabel greetLabel;
+    protected JTextArea instructionText;
     
     
     public HomeView() {

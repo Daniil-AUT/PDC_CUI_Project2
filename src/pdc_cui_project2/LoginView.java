@@ -10,23 +10,23 @@ import javax.swing.border.LineBorder;
  */
 public class LoginView extends JPanel implements Page {
     // back button home
-    public JButton backButton;
+    protected JButton backButton;
     // Label for Login
-    public JLabel loginLabel;
+    protected JLabel loginLabel;
     // Brief explain what to do
-    public JTextArea loginExplain;
+    protected JTextArea loginExplain;
     // field for email
-    public JTextField idField;
-    public JLabel idLabel;
+    protected JTextField idField;
+    protected JLabel idLabel;
     // field password
-    public JPasswordField passField;
-    public JLabel passLabel;
+    protected JPasswordField passField;
+    protected JLabel passLabel;
     // button to log in
-    public JButton loginButton;
-    public ButtonGroup users;
-    public JRadioButton student;
-    public JRadioButton assistant;
-    public JRadioButton customer;
+    protected JButton loginButton;
+    protected ButtonGroup users;
+    protected JRadioButton student;
+    protected JRadioButton assistant;
+    protected JRadioButton customer;
 
     
     // for incorrect user input, use paint component
