@@ -3,8 +3,6 @@ package pdc_cui_project2;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,12 +12,12 @@ import javax.swing.JTextArea;
  *
  * @author Daniil
  */
-public class AssistantAccountView extends JPanel implements Page{
-    public JButton backButton;
-    public JTextArea userInstruction;
-    public JButton assistantReply;
-    public JButton assistantView;
-    public JLabel greetLabel;
+public final class AssistantAccountView extends JPanel implements Page{
+    protected JButton backButton;
+    protected JTextArea userInstruction;
+    protected JButton assistantReply;
+    protected JButton assistantView;
+    protected JLabel greetLabel;
     
     public AssistantAccountView() {
         createComponents();

@@ -5,8 +5,9 @@ package pdc_cui_project2;
  * @author Daniil
  */
 public class SignUpModel {
-    public DataBaseHandler db;
+    private final DataBaseHandler db;
     public UserType types;
+    
     public SignUpModel() {
         this.db = DataBaseHandler.getDB();
     }

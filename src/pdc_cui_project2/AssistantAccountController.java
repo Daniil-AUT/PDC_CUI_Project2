@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
  * @author Daniil
  */
 public class AssistantAccountController {
-    AssistantAccountView view;
+    private final AssistantAccountView view;
     
     public AssistantAccountController(AssistantAccountView view) {
         this.view = view;

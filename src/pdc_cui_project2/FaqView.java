@@ -1,18 +1,15 @@
 package pdc_cui_project2;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
 import javax.swing.*;
 
 /**
  *
  * @author Daniil
  */
-public class FaqView extends JPanel implements Page {
-    public JButton backButton;
-    public JTextArea faqInfo;
+public final class FaqView extends JPanel implements Page {
+    protected JButton backButton;
+    protected JTextArea faqInfo;
     
     public FaqView() {
         createComponents();

@@ -9,28 +9,28 @@ import javax.swing.table.*;
  *
  * @author Daniil
  */
-public class TicketView extends JPanel implements Page {
+public final class TicketView extends JPanel implements Page {
 
-    public CardLayout cardLayout;
-    public JPanel cardPanel;
-    public JLabel updateLabel;
-    public JTextArea updateText;
-    public JButton updateButton;
-    public JLabel replyLabel;
-    public JButton replyButton;
-    public JTextArea replyText;
-    public JButton asViewButton;
-    public JLabel viewLabel;
-    public JTextArea viewText;
-    public JLabel createLabel;
-    public JTextArea createText;
-    public JButton createButton;
-    public JButton backButton;
-    public String currentView;
-    public JLabel idLabel;
-    public JTextField idField;
-    public JTable tickeTable;
-    public DefaultTableModel modelTable;
+    protected CardLayout cardLayout;
+    protected JPanel cardPanel;
+    protected JLabel updateLabel;
+    protected JTextArea updateText;
+    protected JButton updateButton;
+    protected JLabel replyLabel;
+    protected JButton replyButton;
+    protected JTextArea replyText;
+    protected JButton asViewButton;
+    protected JLabel viewLabel;
+    protected JTextArea viewText;
+    protected JLabel createLabel;
+    protected JTextArea createText;
+    protected JButton createButton;
+    protected JButton backButton;
+    protected String currentView;
+    protected JLabel idLabel;
+    protected JTextField idField;
+    protected JTable tickeTable;
+    protected DefaultTableModel modelTable;
 
     public TicketView() {
         createComponents();

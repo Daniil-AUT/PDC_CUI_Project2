@@ -6,10 +6,7 @@ import java.util.Random;
  *
  * @author Daniil
  */
-/**
- *
- * @author Daniil
- */
+
 public final class Student extends User {
 
     private final String studentID;
@@ -36,7 +33,6 @@ public final class Student extends User {
     // returns the id string
     @Override
     public String createID() {
-        Random rand = new Random();
         String component = "";
         for (int i = 0; i < 4; i++) {
             int letter = super.rand.nextInt(26) + 65;

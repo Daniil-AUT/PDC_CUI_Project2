@@ -12,10 +12,12 @@ import java.io.IOException;
  *
  * @author Daniil
  */
-public class HomeFaqController {
+public final class HomeFaqController {
     private final HomeView homeView;
     private final FaqView faqView;
+    
     private final static String PATH = "HelpDeskFiles\\faq.txt";
+    
     public HomeFaqController(HomeView homeView, FaqView faqView) {
         this.homeView = homeView;
         this.faqView = faqView;
@@ -30,44 +32,28 @@ public class HomeFaqController {
     }
     
     public void toLogInScreen() {
-        homeView.loginButton.addActionListener(
-        new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                WindowManager.getManager().setHomeVisible(false);
-                WindowManager.getManager().setLoginVisible(true);
-            }
+        homeView.loginButton.addActionListener((ActionEvent e) -> {
+            WindowManager.getManager().setHomeVisible(false);
+            WindowManager.getManager().setLoginVisible(true);
         }); 
     }
     public void toSignUpScreen() {
-        homeView.signupButton.addActionListener(
-        new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                WindowManager.getManager().setSignUpVisible(true);
-                WindowManager.getManager().setHomeVisible(false);
-                
-            }
+        homeView.signupButton.addActionListener((ActionEvent e) -> {
+            WindowManager.getManager().setSignUpVisible(true);
+            WindowManager.getManager().setHomeVisible(false);
         });
     }
     public void toFAQScreen() {
-        homeView.faqButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                WindowManager.getManager().setHomeVisible(false);
-                WindowManager.getManager().setFAQVisible(true);
-            }
+        homeView.faqButton.addActionListener((ActionEvent e) -> {
+            WindowManager.getManager().setHomeVisible(false);
+            WindowManager.getManager().setFAQVisible(true);
         });   
     }
     
     public void toHomeScreen() {
-        faqView.backButton.addActionListener(
-        new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                WindowManager.getManager().setFAQVisible(false);
-                WindowManager.getManager().setHomeVisible(true);
-            }
+        faqView.backButton.addActionListener((ActionEvent e) -> {
+            WindowManager.getManager().setFAQVisible(false);
+            WindowManager.getManager().setHomeVisible(true);
         });
     }
     

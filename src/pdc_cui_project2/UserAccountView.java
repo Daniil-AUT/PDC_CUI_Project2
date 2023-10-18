@@ -6,19 +6,20 @@ import javax.swing.*;
  *
  * @author Daniil
  */
-public class UserAccountView extends JPanel implements Page {
-    public JButton backButton;
-    public JButton viewButton;
-    public JButton createButton;
-    public JButton editButton;
-    public JButton deleteButton;
-    public JLabel greetLabel;
-    public JTextArea userInstruction;
+public final class UserAccountView extends JPanel implements Page {
+    protected JButton backButton;
+    protected JButton viewButton;
+    protected JButton createButton;
+    protected JButton editButton;
+    protected JButton deleteButton;
+    protected JLabel greetLabel;
+    protected JTextArea userInstruction;
     
     public UserAccountView() {
         createComponents();
     }
     
+    @Override
     public void createComponents() { 
         setLayout(new BorderLayout());
         backButton = new JButton("Home");

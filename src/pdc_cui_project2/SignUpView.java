@@ -9,29 +9,30 @@ import javax.swing.border.LineBorder;
  * @author Daniil
  */
 
-public class SignUpView extends JPanel implements Page {
-    public JButton backButton;
-    public JLabel signupLabel;
-    public JTextField name;
-    public JLabel nameLabel;
-    public JTextField lastName;
-    public JLabel lName;
-    public JTextField email;
-    public JLabel emailLabel;
-    public JPasswordField password;
-    public JLabel passLabel;
-    public JPasswordField confPassword;
-    public JLabel cPassLabel;
-    public JButton signupButton;
-    public ButtonGroup users;
-    public JRadioButton student;
-    public JRadioButton assistant;
-    public JRadioButton customer;
+public final class SignUpView extends JPanel implements Page {
+    protected JButton backButton;
+    protected JLabel signupLabel;
+    protected JTextField name;
+    protected JLabel nameLabel;
+    protected JTextField lastName;
+    protected JLabel lName;
+    protected JTextField email;
+    protected JLabel emailLabel;
+    protected JPasswordField password;
+    protected JLabel passLabel;
+    protected JPasswordField confPassword;
+    protected JLabel cPassLabel;
+    protected JButton signupButton;
+    protected ButtonGroup users;
+    protected JRadioButton student;
+    protected JRadioButton assistant;
+    protected JRadioButton customer;
     
     public SignUpView() {
         createComponents();
     }
     
+    @Override
     public void createComponents() { 
         setLayout(new BorderLayout());
         backButton = new JButton("Home");

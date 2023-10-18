@@ -10,8 +10,8 @@ import javax.swing.JOptionPane;
  */
 public class UserAccountController {
 
-    UserAccountView userView;
-    UserAccountModel userModel;
+    private final UserAccountView userView;
+    private final UserAccountModel userModel;
 
     public enum Ticket {
         UPDATE,
@@ -29,12 +29,9 @@ public class UserAccountController {
     }
 
     private void toHomeScreen() {
-        userView.backButton.addActionListener(
-                new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                WindowManager.getManager().setHomeVisible(true);
-                WindowManager.getManager().setUserAccountVisible(false);
-            }
+        userView.backButton.addActionListener((ActionEvent e) -> {
+            WindowManager.getManager().setHomeVisible(true);
+            WindowManager.getManager().setUserAccountVisible(false);
         });
     }
 
@@ -46,44 +43,32 @@ public class UserAccountController {
     }
 
     private void viewTicket() {
-        userView.viewButton.addActionListener(
-                new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                WindowManager.getManager().setTicketVisible(true, "View");
-                WindowManager.getManager().setUserAccountVisible(false);
-            }
+        userView.viewButton.addActionListener((ActionEvent e) -> {
+            WindowManager.getManager().setTicketVisible(true, "View");
+            WindowManager.getManager().setUserAccountVisible(false);
         });
 
     }
 
     private void createTicket() {
-        userView.createButton.addActionListener(
-                new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                WindowManager.getManager().setTicketVisible(true, "Create");
-                WindowManager.getManager().setUserAccountVisible(false);
-            }
+        userView.createButton.addActionListener((ActionEvent e) -> {
+            WindowManager.getManager().setTicketVisible(true, "Create");
+            WindowManager.getManager().setUserAccountVisible(false);
         });
     }
 
     private void updateTicket() {
-        userView.editButton.addActionListener(
-                new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                WindowManager.getManager().setTicketVisible(true, "Update");
-                WindowManager.getManager().setUserAccountVisible(false);
-            }
+        userView.editButton.addActionListener((ActionEvent e) -> {
+            WindowManager.getManager().setTicketVisible(true, "Update");
+            WindowManager.getManager().setUserAccountVisible(false);
         });
     }
 
     private void deleteTicket() {
-        userView.deleteButton.addActionListener(
-                new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                userModel.deleteTicket();
-                WindowManager.getManager().setUserAccountVisible(true);
-                JOptionPane.showMessageDialog(null, "Ticket Has Been Deleted.");
-            }
+        userView.deleteButton.addActionListener((ActionEvent e) -> {
+            userModel.deleteTicket();
+            WindowManager.getManager().setUserAccountVisible(true);
+            JOptionPane.showMessageDialog(null, "Ticket Has Been Deleted.");
         });
 
     }
