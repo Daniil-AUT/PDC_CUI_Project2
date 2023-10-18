@@ -23,7 +23,7 @@ public class LoginController {
     private static final String INVALID_ID_CHARACTERS_ERROR = "Can Only Have Letters "
             + "and Numbers (No Special Characters)";
     private static final String PASSWORD_REGEX = "^[a-zA-Z0-9]+$";
-    private static final int MIN_PASSWORD_LENGTH = 8;
+    private static final int MIN_PASSWORD_LENGTH = 7;
 
     public LoginController(LoginView view, LoginModel model) {
         this.view = view;
@@ -78,25 +78,31 @@ public class LoginController {
                 String id = view.idField.getText();
                 char[] comps = view.passField.getPassword();
                 String password = new String(comps);
-
-                if (validateId(id) && validatePassword(password)) {
-                    setDefault(Field.ID);
-                    
-                    if (model.checkIdExist(id, selectType())) {
-                        if (model.passwordMatch(password, id)) {
-                            setDefault(Field.PASSWORD);
-                            model.setTicketStatus(id);
-                            directToPage(Page.ACCOUNT, selectType());
-                        } else {
-                            setError("The Password is Invalid, Try Again.", Field.PASSWORD);
-                        }
-                    } else {
-                        setError("No ID Found, Try Different User Category", Field.ID);
-                    }
-                }
+                validateEntries(id, password);
             }
         });
     }
+
+    private void validateEntries(String id, String password) {
+        
+        if(validateId(id) == validatePassword(password)) {
+            if (validateId(id) && validatePassword(password)) {
+            setDefault(Field.ID);
+            if (model.checkIdExist(id, selectType())) {
+                if (model.passwordMatch(password, id)) {
+                    setDefault(Field.PASSWORD);
+                    model.setTicketStatus(id);
+                    directToPage(Page.ACCOUNT, selectType());
+                } else {
+                    setError("The Password is Invalid, Try Again.", Field.PASSWORD);
+                }
+            } else {
+                setError("No ID Found, Try Different User Category", Field.ID);
+            }
+        }
+        }
+    }
+
     private String selectType() {
         String type = UserType.STUDENT.stringValue;
         if (view.assistant.isSelected()) {
@@ -108,6 +114,7 @@ public class LoginController {
         }
         return type;
     }
+
     private boolean validateId(String id) {
         Matcher matcher = Pattern.compile(PASSWORD_REGEX).matcher(id);
 

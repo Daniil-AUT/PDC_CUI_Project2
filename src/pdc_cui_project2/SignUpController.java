@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.ButtonModel;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
@@ -70,13 +71,20 @@ public class SignUpController {
                 char[] passChar = view.password.getPassword();
                 String password = new String(passChar);
                 getUserType(name, lName, email, password);
-
+                resetFields();
                 JOptionPane.showMessageDialog(null, "Your Details:\n\n" + model.getDetails());
                 System.out.println(model.getID());
             }
         }
     }
-
+    private void resetFields() {
+        view.name.setText("");
+        view.lastName.setText("");
+        view.email.setText("");
+        view.password.setText("");
+        view.confPassword.setText("");
+        view.student.setSelected(true);
+    }
     private void getUserType(String name, String lName, String email, String password) {
         if (view.assistant.isSelected()) {
             model.createUser(name, lName, email, model.types.ASSISTANT, password);
