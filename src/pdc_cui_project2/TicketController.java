@@ -21,7 +21,7 @@ public class TicketController {
     private static final String VIEW_UPDATE = "Update";
     private static final String VIEW_CREATE = "Create";
     private static final String VIEW_VIEW = "View";
-    
+
     public TicketController(TicketView view, TicketModel model) {
         this.view = view;
         this.model = model;
@@ -33,15 +33,14 @@ public class TicketController {
         view.backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 WindowManager.getManager().setTicketVisible(false, "");
-                if(view.currentView.equals(VIEW_UPDATE) || 
-                            view.currentView.equals(VIEW_CREATE) || 
-                            view.currentView.equals(VIEW_VIEW)) {
-                            WindowManager.getManager().setUserAccountVisible(true);
+                if (view.currentView.equals(VIEW_UPDATE)
+                        || view.currentView.equals(VIEW_CREATE)
+                        || view.currentView.equals(VIEW_VIEW)) {
+                    WindowManager.getManager().setUserAccountVisible(true);
+                } else {
+                    WindowManager.getManager().setAssistantAccountVisible(true);
                 }
-                else {
-                     WindowManager.getManager().setAssistantAccountVisible(true);
-                }
-                
+
             }
         });
     }
@@ -140,16 +139,15 @@ public class TicketController {
     private void handleUserID(String userID, boolean ticketExists) {
         if (userID.isEmpty()) {
             view.idLabel.setText("Enter User ID (No Blanks)");
-            view.idLabel.setForeground(ERROR_COLOUR);  
+            view.idLabel.setForeground(ERROR_COLOUR);
         } else if (!ticketExists) {
             view.idLabel.setText("Enter User ID (ID Not Found)");
-            view.idLabel.setForeground(ERROR_COLOUR); 
+            view.idLabel.setForeground(ERROR_COLOUR);
         } else {
             view.idLabel.setText("Enter User ID");
-            view.idLabel.setForeground(DEFAULT_COLOUR); 
+            view.idLabel.setForeground(DEFAULT_COLOUR);
         }
     }
-
 
     private boolean isFormValid(JTextArea textArea, JLabel textLabel) {
         String text = textArea.getText();
@@ -163,6 +161,5 @@ public class TicketController {
             return true;
         }
     }
-
 
 }

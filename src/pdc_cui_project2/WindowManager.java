@@ -156,6 +156,8 @@ public class WindowManager extends JFrame {
         switch (window) {
             case REPLY:
                 ticketView.showAsReplyWindow();
+                ticketView.idField.setText("");
+                ticketView.replyText.setText("");
                 break;
             case AS_VIEW:
                 ticketView.showAsViewWindow();

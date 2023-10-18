@@ -133,8 +133,7 @@ public final class DataBaseHandler {
         String sqlCheckTicket = "SELECT TICKET_ID FROM " + TICKET_TABLE
                 + " WHERE TICKET_ID = '" + id + "'";
 
-        try {
-            ResultSet rs = myQuery(sqlCheckTicket);
+        try(ResultSet rs = myQuery(sqlCheckTicket)) {
             if (rs.next()) {
                 return true;
             }
