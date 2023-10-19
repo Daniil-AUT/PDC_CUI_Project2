@@ -12,7 +12,6 @@ public class UserAccountController {
 
     private final UserAccountView userView;
     private final UserAccountModel userModel;
-
     public enum Ticket {
         UPDATE,
         CREATE,

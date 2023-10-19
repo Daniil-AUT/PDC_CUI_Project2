@@ -23,6 +23,10 @@ public class LoginController {
     private static final String INVALID_ID_CHARACTERS_ERROR = "Can Only Have Letters "
             + "and Numbers (No Special Characters)";
     private static final String PASSWORD_REGEX = "^[a-zA-Z0-9]+$";
+    private static final String PASSWORD_MISMATCH = "The Password is Invalid, "
+            + "Try Again.";
+    private static final String INVALID_ID_NOT_FOUND = "No ID Found, Try Different "
+            + "User Category";
     private static final int MIN_PASSWORD_LENGTH = 7;
 
     public LoginController(LoginView view, LoginModel model) {
@@ -40,10 +44,6 @@ public class LoginController {
 
         UserType(String stringValue) {
             this.stringValue = stringValue;
-        }
-
-        public String getStringValue() {
-            return stringValue;
         }
     }
 
@@ -63,43 +63,35 @@ public class LoginController {
     }
 
     private void toHomeScreen() {
-        view.backButton.addActionListener(
-                new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                directToPage(Page.HOME, null);
-            }
+        view.backButton.addActionListener((ActionEvent e) -> {
+            directToPage(Page.HOME, null);
         });
     }
 
     private void toAccountScreen() {
-        view.loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String id = view.idField.getText();
-                char[] comps = view.passField.getPassword();
-                String password = new String(comps);
-                validateEntries(id, password);
-            }
+        view.loginButton.addActionListener((ActionEvent e) -> {
+            String id = view.idField.getText();
+            char[] comps = view.passField.getPassword();
+            String password = new String(comps);
+            validateEntries(id, password);
         });
     }
 
     private void validateEntries(String id, String password) {
-        
-        if(validateId(id) == validatePassword(password)) {
+
+        if (validateId(id) == validatePassword(password)) {
             if (validateId(id) && validatePassword(password)) {
-            setDefault(Field.ID);
-            if (model.checkIdExist(id, selectType())) {
-                if (model.passwordMatch(password, id)) {
-                    setDefault(Field.PASSWORD);
-                    model.setTicketStatus(id);
-                    directToPage(Page.ACCOUNT, selectType());
-                } else {
-                    setError("The Password is Invalid, Try Again.", Field.PASSWORD);
+                setDefault(Field.ID);
+                if (model.checkIdExist(id, selectType())) {
+                    if (model.passwordMatch(password, id)) {
+                        setDefault(Field.PASSWORD);
+                        model.setTicketStatus(id);
+                        directToPage(Page.ACCOUNT, selectType());
+                    } else {
+                        setError(PASSWORD_MISMATCH, Field.PASSWORD);
+                    }
                 }
-            } else {
-                setError("No ID Found, Try Different User Category", Field.ID);
             }
-        }
         }
     }
 
@@ -128,6 +120,10 @@ public class LoginController {
         }
         if (!matcher.matches()) {
             setError(INVALID_ID_CHARACTERS_ERROR, Field.ID);
+            return false;
+        }
+        if (!model.checkIdExist(id, selectType())) {
+            setError(INVALID_ID_NOT_FOUND, Field.ID);
             return false;
         }
         setDefault(Field.ID);

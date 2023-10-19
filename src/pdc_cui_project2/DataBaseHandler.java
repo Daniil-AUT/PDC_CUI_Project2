@@ -21,14 +21,13 @@ public final class DataBaseHandler {
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
     private static final String URL = "jdbc:derby:HelpDeskDB;create=true";
-    
+
     private boolean hasTicket;
     private String currentName;
     private String userDetails;
     private String userID;
-    
-    //Practice: jdbc:derby://localhost:1527/HelpDeskDB;create=true
 
+    //Practice: jdbc:derby://localhost:1527/HelpDeskDB;create=true
     //Main: jdbc:derby:HelpDeskDB;create=true
     Connection conn;
     private static DataBaseHandler db;
@@ -55,18 +54,6 @@ public final class DataBaseHandler {
         return this.conn;
     }
     
-    public boolean hasTicket() {
-        return this.hasTicket;
-    }
-    public String getUserName() {
-        return this.currentName;
-    }
-    public String getUserDetails() {
-        return this.userDetails;
-    }
-    public String getUserID() {
-        return this.userID;
-    }
     //Establish connection
     public void establishConnection() {
         if (this.conn == null) {
@@ -78,7 +65,8 @@ public final class DataBaseHandler {
             }
         }
     }
-
+    
+    // Close Connection
     public void closeConnections() {
         if (conn != null) {
             try {
@@ -90,81 +78,48 @@ public final class DataBaseHandler {
             }
         }
     }
+
+    /* --GETTER METHODS-- */
+    public boolean hasTicket() {
+        return this.hasTicket;
+    }
+
+    public String getUserName() {
+        return this.currentName;
+    }
+
+    public String getUserDetails() {
+        return this.userDetails;
+    }
+
+    public String getUserID() {
+        return this.userID;
+    }
+
     
-    public void insertRecordTicket(String text) {
-        String sqlCreateTicket = "INSERT INTO " + TICKET_TABLE
-                + " (TICKET_ID, DESCRIPTION) "
-                + " VALUES ('" + this.userID + "', '" + text + "')";
-        myUpdate(sqlCreateTicket);
 
-        String sqlUpdateUser = "UPDATE " + USERS_TABLE + " SET HASTICKET = "
-                + "true WHERE ID = '"
-                + this.userID + "'";
-        this.hasTicket = true;
-        myUpdate(sqlUpdateUser);
-    }
+    
 
-    public void updateTicket(String text) {
-        String sqlUpdateTicket = "UPDATE " + TICKET_TABLE + " SET DESCRIPTION = '"
-                + text + "' WHERE TICKET_ID = '"
-                + this.userID + "'";
-        myUpdate(sqlUpdateTicket);
-    }
-
-    public void replyToTicket(String id, String text) {
+    /*                      */
+    /* --GENERAL METHODS--  */
+    /*                      */
+    public ResultSet myQuery(String sql) {
         try {
-            String sqlSelectTicket = "SELECT DESCRIPTION FROM " + TICKET_TABLE
-                    + " WHERE TICKET_ID = '" + id.toUpperCase() + "'";
-            ResultSet rs = myQuery(sqlSelectTicket);
-
-            if (rs.next()) {
-                String sqlUpdateReply = "UPDATE " + TICKET_TABLE + " SET REPLY = '" +
-                                        text + "' WHERE TICKET_ID = '" + id + "'";
-                myUpdate(sqlUpdateReply);
-                rs.close();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DataBaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Statement statement = this.conn.createStatement();
+            return statement.executeQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
-        
-    }
-    
-    public boolean checkTicketExists(String id) {
-        String sqlCheckTicket = "SELECT TICKET_ID FROM " + TICKET_TABLE
-                + " WHERE TICKET_ID = '" + id + "'";
-
-        try(ResultSet rs = myQuery(sqlCheckTicket)) {
-            if (rs.next()) {
-                return true;
-            }
-            rs.close();
-        } catch (SQLException ex) {
-            System.out.println("Failed Reading from TICKET Table: " + ex.getMessage());
-        }
-        return false;
     }
 
-   public String viewTicket() {
-        String sqlViewTicket = "SELECT DESCRIPTION, REPLY FROM " + TICKET_TABLE
-                + " WHERE TICKET_ID = '" + this.userID.toUpperCase() + "'";
-
-        try (ResultSet rs = myQuery(sqlViewTicket)) {
-            if (rs.next()) {
-                String description = rs.getString("DESCRIPTION");
-                String reply = rs.getString("REPLY");
-
-                if (reply != null) {
-                    // Include a blank line between description and reply for clarity
-                    return formatTicket(description + 
-                            "\n\n--REPLY--\n\n" + userDetails + "\n\n" + reply, 150);
-                } else {
-                    return formatTicket(description, 70);
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Failed Reading from " + TICKET_TABLE + ": " + ex.getMessage());
+    public void myUpdate(String sql) {
+        try {
+            Statement statement = this.conn.createStatement();
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return "";
     }
 
     private String formatTicket(String input, int limit) {
@@ -177,53 +132,41 @@ public final class DataBaseHandler {
 
         return result.toString();
     }
-    public HashMap<String, String> getUserTickets() {
-        HashMap<String, String> ticketTable = new HashMap<>();
-        String sqlGetTickets = "SELECT TICKET_ID, DESCRIPTION FROM " + TICKET_TABLE;
-        
-        try (ResultSet rs = myQuery(sqlGetTickets)) {
+
+    /*                      */
+    /*    --READ METHODS--  */
+    /*                      */
+    public boolean checkIdExist(String id, String type) {
+        ResultSet rs = myQuery("SELECT ID FROM " + USERS_TABLE + " WHERE Type = '"
+                + type + "'");
+        try {
             while (rs.next()) {
-                String id = rs.getString("TICKET_ID");
-                String description = rs.getString("DESCRIPTION");
-                // Assuming formatTicket returns a 1D array for each ticket
-                ticketTable.put(id, description);
-        }
+                String currentID = rs.getString("ID");
+                if (currentID != null && currentID.equalsIgnoreCase(id)) {
+                    System.out.println("ID Found: " + id);
+                    this.userID = id;
+                    return true;
+                }
+            }
+            rs.close();
         } catch (SQLException ex) {
-            System.out.println("Failed Reading from " + TICKET_TABLE + ": " + ex.getMessage());
+            System.out.println("Failed Reading from USER Table: " + ex.getMessage());
         }
-        return ticketTable;
-    }
-    
-    public void deleteRecordTicket() {
-        String sqlDeleteTicket = "DELETE FROM " + TICKET_TABLE
-                + " WHERE TICKET_ID = '"
-                + this.userID + "'";
-        myUpdate(sqlDeleteTicket);
-
-        String sqlUpdateUser = "UPDATE " + USERS_TABLE + " SET HASTICKET = "
-                + "false WHERE ID = '"
-                + this.userID + "'";
-        this.hasTicket = false;
-        myUpdate(sqlUpdateUser);
+        return false;
     }
 
-    public void insertRecordUsers(User user) {
-        this.currentName = user.getName();
-        this.userDetails = user.toString();
-        this.userID = user.getID();
-        this.hasTicket = false;
-        // INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type) 
-        // VALUES ('id', 'name', 'lname', 'email', 'password', false, 'type')
-        String sql = "INSERT INTO " + USERS_TABLE + " (ID, Name, LastName, Email, "
-                + "Password, "
-                + "HasTicket, Type)"
-                + " VALUES ('" + user.getID() + "', '" + user.getName() + "', '" + user.getLastName()
-                + "', '" + user.getEmail() + "', '" + user.getPassword() + "', false, '"
-                + user.getUserClass() + "')";
-        this.userDetails = "\nFull Name: " + user.getName() + " " + user.getLastName()
-                + "\nEmail: " + user.getEmail() + "\nID: " + user.getID()+"\n";
-        myUpdate(sql);
-        System.out.println("Record Sucessfully Inserted..");
+    public void checkTicketStatus(String id) {
+        ResultSet rs = myQuery("SELECT NAME, HASTICKET FROM " + USERS_TABLE
+                + " WHERE ID = '" + id + "'");
+        try (rs) {
+            if (rs.next()) {
+                this.hasTicket = rs.getBoolean("HASTICKET");
+                this.currentName = rs.getString("NAME");
+                this.userID = id;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error Reading ID: " + ex.getMessage());
+        }
     }
 
     public boolean passwordMatch(String pass, String id) {
@@ -251,51 +194,136 @@ public final class DataBaseHandler {
         return false;
     }
 
-    public void checkTicketStatus(String id) {
-        ResultSet rs = myQuery("SELECT NAME, HASTICKET FROM " + USERS_TABLE
-                + " WHERE ID = '" + id + "'");
-        try (rs) {
-            if (rs.next()) {
-                this.hasTicket = rs.getBoolean("HASTICKET");
-                this.currentName = rs.getString("NAME");
-                this.userID = id;
+    public HashMap<String, String> getUserTickets() {
+        HashMap<String, String> ticketTable = new HashMap<>();
+        String sqlGetTickets = "SELECT TICKET_ID, DESCRIPTION FROM " + TICKET_TABLE;
+
+        try ( ResultSet rs = myQuery(sqlGetTickets)) {
+            while (rs.next()) {
+                String id = rs.getString("TICKET_ID");
+                String description = rs.getString("DESCRIPTION");
+                // Assuming formatTicket returns a 1D array for each ticket
+                ticketTable.put(id, description);
             }
         } catch (SQLException ex) {
-            System.out.println("Error Reading ID: " + ex.getMessage());
+            System.out.println("Failed Reading from " + TICKET_TABLE + ": " + ex.getMessage());
         }
+        return ticketTable;
     }
 
-    public boolean checkIdExist(String id, String type) {
-        ResultSet rs = myQuery("SELECT ID FROM " + USERS_TABLE + " WHERE Type = '"
-                + type + "'");
-        try {
-            while (rs.next()) {
-                String currentID = rs.getString("ID");
-                if (currentID != null && currentID.equalsIgnoreCase(id)) {
-                    System.out.println("ID Found: " + id);
-                    this.userID = id;
-                    return true;
+    public String viewTicket() {
+        String sqlViewTicket = "SELECT DESCRIPTION, REPLY FROM " + TICKET_TABLE
+                + " WHERE TICKET_ID = '" + this.userID.toUpperCase() + "'";
+
+        try ( ResultSet rs = myQuery(sqlViewTicket)) {
+            if (rs.next()) {
+                String description = rs.getString("DESCRIPTION");
+                String reply = rs.getString("REPLY");
+
+                if (reply != null) {
+                    // Include a blank line between description and reply for clarity
+                    return formatTicket(description
+                            + "\n\n--REPLY--\n\n" + userDetails + "\n\n" + reply, 150);
+                } else {
+                    return formatTicket(description, 70);
                 }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Failed Reading from " + TICKET_TABLE + ": " + ex.getMessage());
+        }
+        return "";
+    }
+
+    public boolean checkTicketExists(String id) {
+        String sqlCheckTicket = "SELECT TICKET_ID FROM " + TICKET_TABLE
+                + " WHERE TICKET_ID = '" + id + "'";
+
+        try ( ResultSet rs = myQuery(sqlCheckTicket)) {
+            if (rs.next()) {
+                return true;
             }
             rs.close();
         } catch (SQLException ex) {
-            System.out.println("Failed Reading from USER Table: " + ex.getMessage());
+            System.out.println("Failed Reading from TICKET Table: " + ex.getMessage());
         }
         return false;
     }
 
-    /*
-CREATE TABLE USERS (
-    ID VARCHAR(10),
-    Name VARCHAR(20),
-    LastName VARCHAR(25),
-    Email VARCHAR(50),
-    Password VARCHAR(20),
-    HasTicket BOOLEAN,
-    Type VARCHAR(50),
-    PRIMARY KEY (ID)
-); 
-     */
+    /*                      */
+    /*   --WRITE METHODS--  */
+    /*                      */
+    public void insertRecordUsers(User user) {
+        this.currentName = user.getName();
+        this.userDetails = user.toString();
+        this.userID = user.getID();
+        this.hasTicket = false;
+        // INSERT INTO USERS (ID, Name, LastName, Email, Password, HasTicket, Type) 
+        // VALUES ('id', 'name', 'lname', 'email', 'password', false, 'type')
+        String sql = "INSERT INTO " + USERS_TABLE + " (ID, Name, LastName, Email, "
+                + "Password, "
+                + "HasTicket, Type)"
+                + " VALUES ('" + user.getID() + "', '" + user.getName() + "', '" + user.getLastName()
+                + "', '" + user.getEmail() + "', '" + user.getPassword() + "', false, '"
+                + user.getUserClass() + "')";
+        this.userDetails = "\nFull Name: " + user.getName() + " " + user.getLastName()
+                + "\nEmail: " + user.getEmail() + "\nID: " + user.getID() + "\n";
+        myUpdate(sql);
+        System.out.println("Record Sucessfully Inserted..");
+    }
+
+    public void deleteRecordTicket() {
+        String sqlDeleteTicket = "DELETE FROM " + TICKET_TABLE
+                + " WHERE TICKET_ID = '"
+                + this.userID + "'";
+        myUpdate(sqlDeleteTicket);
+
+        String sqlUpdateUser = "UPDATE " + USERS_TABLE + " SET HASTICKET = "
+                + "false WHERE ID = '"
+                + this.userID + "'";
+        this.hasTicket = false;
+        myUpdate(sqlUpdateUser);
+    }
+
+    public void insertRecordTicket(String text) {
+        String sqlCreateTicket = "INSERT INTO " + TICKET_TABLE
+                + " (TICKET_ID, DESCRIPTION) "
+                + " VALUES ('" + this.userID + "', '" + text + "')";
+        myUpdate(sqlCreateTicket);
+
+        String sqlUpdateUser = "UPDATE " + USERS_TABLE + " SET HASTICKET = "
+                + "true WHERE ID = '"
+                + this.userID + "'";
+        this.hasTicket = true;
+        myUpdate(sqlUpdateUser);
+    }
+
+    public void updateTicket(String text) {
+        String sqlUpdateTicket = "UPDATE " + TICKET_TABLE + " SET DESCRIPTION = '"
+                + text + "' WHERE TICKET_ID = '"
+                + this.userID + "'";
+        myUpdate(sqlUpdateTicket);
+    }
+
+    public void replyToTicket(String id, String text) {
+        try {
+            String sqlSelectTicket = "SELECT DESCRIPTION FROM " + TICKET_TABLE
+                    + " WHERE TICKET_ID = '" + id.toUpperCase() + "'";
+            ResultSet rs = myQuery(sqlSelectTicket);
+
+            if (rs.next()) {
+                String sqlUpdateReply = "UPDATE " + TICKET_TABLE + " SET REPLY = '"
+                        + text + "' WHERE TICKET_ID = '" + id + "'";
+                myUpdate(sqlUpdateReply);
+                rs.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataBaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /*                      */
+    /*   --TABLE METHODS--  */
+    /*                      */
     private boolean tableExists(String tableName, DatabaseMetaData dbmd) throws SQLException {
         try ( ResultSet rsDBMeta = dbmd.getTables(null, null, null, null)) {
             while (rsDBMeta.next()) {
@@ -309,12 +337,6 @@ CREATE TABLE USERS (
         }
     }
 
-    /*
- CREATE TABLE Ticket (
-    ticket_id VARCHAR(50) PRIMARY KEY,
-    description TEXT
-);   
-     */
     private void createTicketTable() {
         String createTableSQL = "CREATE TABLE " + TICKET_TABLE + " ("
                 + "TICKET_ID VARCHAR(50) PRIMARY KEY,"
@@ -366,22 +388,4 @@ CREATE TABLE USERS (
         }
     }
 
-    public ResultSet myQuery(String sql) {
-        try {
-            Statement statement = this.conn.createStatement();
-            return statement.executeQuery(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public void myUpdate(String sql) {
-        try {
-            Statement statement = this.conn.createStatement();
-            statement.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
