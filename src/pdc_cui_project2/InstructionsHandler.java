@@ -1,12 +1,17 @@
 package pdc_cui_project2;
 
 /**
- *
+ * Instruction Handler is used for managing insutrction text for different
+ * user interactions and roles in HelpDesk App.
+ * 
  * @author Daniil
  */
 public class InstructionsHandler {
 
-
+    /*
+    Gives instruction text for the Home Page (greeting).
+    Explains the functionality of buttons like View FAQ, Log In, Sign Up, and Quit.
+    */
     public static String userGreeting() {
         return  "FAQ Button:\n" +
         "\n" +
@@ -30,7 +35,11 @@ public class InstructionsHandler {
         "If you wish to leave the application, this is the way to do it.";
 
     }
-
+    
+    /*
+    Shows instruction text for the user login page.
+    Explains role selection, email entry, and password entry.
+    */
     public static String userLogIn() {
         
         return "Please choose your role to be Student, Assistant, or Customer. \n"+
@@ -40,7 +49,11 @@ public class InstructionsHandler {
                 "For the password entry,  enter your password in password field and \n"+
                 "remember, no blank spaces allowed. Keep it secure!\n\n";
     }
-
+    
+    /*
+    Shows instructions text for user account page.
+    Explains ticket creation, viewing, updating, and deletion.
+    */
     public static String userAccount() {
         return "Creating a Ticket:\n" +
                 "The \"Create Ticket\" button is available. Click on it, and a \n"
@@ -64,7 +77,11 @@ public class InstructionsHandler {
                 + "button becomes enabled. Click on it if you wish to remove your existing \n"
                 + "ticket. Confirm the action when prompted.";
     }
-
+    
+    /*
+    Shows instruction text for assistant ticket page.
+    Explains ticket viewing and replying.
+    */
     public static String assistantTicket() {
         return "Viewing Tickets:\n\n"
         + "Start by navigating to the ticket management interface.\n"
