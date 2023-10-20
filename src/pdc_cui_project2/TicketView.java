@@ -5,82 +5,117 @@ import java.awt.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
 
-/*
+/**
+ * TicketView displays the content for every ticket operation within a page.
+ * Extends JPanel and implements the Page interface for consistent styling.
  *
  * @author Daniil
  */
 public final class TicketView extends JPanel implements Page {
 
+    // CardLayout for managing different panels
     protected CardLayout cardLayout;
     protected JPanel cardPanel;
+
+    // Labels for different windows
     protected JLabel updateLabel;
-    protected JTextArea updateText;
-    protected JButton updateButton;
     protected JLabel replyLabel;
-    protected JButton replyButton;
-    protected JTextArea replyText;
-    protected JButton asViewButton;
     protected JLabel viewLabel;
-    protected JTextArea viewText;
     protected JLabel createLabel;
+    protected JLabel idLabel;
+
+    // TextArea for user input and displaying information
+    protected JTextArea updateText;
+    protected JTextArea replyText;
+    protected JTextArea viewText;
     protected JTextArea createText;
+
+    // Buttons for user to interact with
+    protected JButton updateButton;
+    protected JButton replyButton;
+    protected JButton asViewButton;
     protected JButton createButton;
     protected JButton backButton;
+
+    // Current view trigger
     protected String currentView;
-    protected JLabel idLabel;
+
     protected JTextField idField;
+
+    // Table for displaying information for user tickets
     protected JTable tickeTable;
     protected DefaultTableModel modelTable;
 
+    /**
+     * Constructor initializes page through overridable method from page
+     * interface.
+     */
     public TicketView() {
         createComponents();
     }
 
+    /**
+     * Override createComponents method from the Page interface. To create
+     * layout and add components to the Ticket page.
+     */
     @Override
     public void createComponents() {
+
+        // Set layout for the main panel
         setLayout(new BorderLayout());
 
+        // Initialise CardLayout to switching between different ticket opertations
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-
+        
+        // Add different panels for each ticket operation
         cardPanel.add("Reply", windowReply());
         cardPanel.add("AsView", windowAsView());
         cardPanel.add("View", windowView());
         cardPanel.add("Create", windowCreate());
         cardPanel.add("Update", windowUpdate());
         backButton = new JButton("Back");
-
+        
+        // Button for navigating back to the account page
         GUIStyle.styleButton(backButton);
         add(backButton, BorderLayout.NORTH);
         add(cardPanel, BorderLayout.CENTER);
     }
-
+    
+    // Show reply page for assistants
     public void showAsReplyWindow() {
         cardLayout.show(cardPanel, "Reply");
         currentView = "Reply";
     }
 
+    // Show view page for assistants
     public void showAsViewWindow() {
         cardLayout.show(cardPanel, "AsView");
         currentView = "AsView";
     }
-
+    
+    // Show view page for customers & students
     public void showViewWindow() {
         cardLayout.show(cardPanel, "View");
         currentView = "View";
     }
-
+    
+    // Show create page for customers & students
     public void showCreateWindow() {
         cardLayout.show(cardPanel, "Create");
         currentView = "Create";
     }
-
+    
+    // Show update page for customers & students
     public void showUpdateWindow() {
         cardLayout.show(cardPanel, "Update");
         currentView = "Update";
     }
-
+    
+    // Creates a reply window
     public JPanel windowReply() {
+        
+        // Create panel for Reply page.
         JPanel asViewPanel = new JPanel(new BorderLayout());
 
         // Top Panel for ID Label and Field
@@ -122,16 +157,20 @@ public final class TicketView extends JPanel implements Page {
 
         return asViewPanel;
     }
-
+    
+    // Create assistant view page
     public JPanel windowAsView() {
+        
+        // Create panel for the assistant view
         JPanel asViewPanel = new JPanel(new BorderLayout());
-
+        
+        // Create the label for page title
         JLabel viewTicketslabel = new JLabel("View User Tickets", SwingConstants.CENTER);
         JPanel labelPanel = new JPanel(new BorderLayout());
         GUIStyle.styleLabel(viewTicketslabel);
         labelPanel.add(viewTicketslabel, BorderLayout.CENTER);
 
-        // Column names
+        // Column names for id and description
         String[] columnNames = {"ID", "Description"};
 
         // Create a DefaultTableModel with no data
@@ -144,10 +183,11 @@ public final class TicketView extends JPanel implements Page {
         // Create JTable with the DefaultTableModel
         tickeTable = new JTable(modelTable);
         tickeTable.setRowHeight(60);
-        // Set preferred column widths
         
+        // Create scroll pane for the ticket table
         JScrollPane scrollPaneTable = new JScrollPane(tickeTable);
-
+        
+        // Add components to the center panel, and add to main panel
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(labelPanel, BorderLayout.NORTH);
         centerPanel.add(scrollPaneTable, BorderLayout.CENTER);
@@ -156,44 +196,55 @@ public final class TicketView extends JPanel implements Page {
 
         return asViewPanel;
     }
-
+    
+    // Create a view page
     public JPanel windowView() {
+        
+        // Create a view panel
         JPanel viewPanel = new JPanel();
         viewLabel = new JLabel("Your Ticket Information");
 
         JPanel topPanel = new JPanel();
         GUIStyle.styleLabel(viewLabel);
-
+        
+        // Create and style text area
         viewText = new JTextArea();
         viewText.setLineWrap(true);
         viewText.setWrapStyleWord(true);
         GUIStyle.styleTextArea(viewText);
-        // Adjust the number of rows and columns based on your preference
+        
+        // Add scroll pane to text area for text to be displayed properly
         JScrollPane scrollPane = new JScrollPane(viewText);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         topPanel.add(viewLabel, BorderLayout.CENTER);
-
+        
+        // Disable editing text, remove background colour
         viewText.setEditable(false);
         viewText.setOpaque(false);
-
+        
+        // Add components to the view panel
         viewPanel.setLayout(new BorderLayout());
         viewPanel.add(topPanel, BorderLayout.NORTH);
         viewPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Add components for View window
         return viewPanel;
     }
-
+    
+    // Create "Create" page for customers & students
     public JPanel windowCreate() {
+        
+        // Create "Create" panel
         JPanel createPanel = new JPanel(new BorderLayout());
         JPanel topEntry = new JPanel();
-
+        
+        // Create a label to set the title for page
         createLabel = new JLabel("Please Enter Ticket Description");
         GUIStyle.styleLabel(createLabel);
         topEntry.add(createLabel, BorderLayout.CENTER);
-
-        createText = new JTextArea("");  // Use a different variable for createText
+        
+        // Create and style text area and set the word limit per line
+        createText = new JTextArea(""); 
         createText.setRows(5);
         createText.setLineWrap(true);
         createText.setWrapStyleWord(true);
@@ -201,7 +252,8 @@ public final class TicketView extends JPanel implements Page {
         JScrollPane scrollPane = new JScrollPane(createText);
         createText.setBorder(new LineBorder(Color.BLACK));
         GUIStyle.styleTextArea(createText);
-
+        
+        // Create a button for user to interact with
         createButton = new JButton("Create Ticket");
         GUIStyle.styleButton(createButton);
 
@@ -211,15 +263,20 @@ public final class TicketView extends JPanel implements Page {
         createPanel.add(createButton, BorderLayout.SOUTH);
         return createPanel;
     }
-
+    
+    // Create update page
     public JPanel windowUpdate() {
+        
+        // Create update panel
         JPanel updatePanel = new JPanel(new BorderLayout());
         JPanel topEntry = new JPanel();
 
+        // Create label for page title
         updateLabel = new JLabel("Please Edit Your Ticket Details");
         GUIStyle.styleLabel(updateLabel);
         topEntry.add(updateLabel, BorderLayout.CENTER);
-
+        
+        // Create and style update text area
         updateText = new JTextArea("");
         updateText.setRows(5);
         updateText.setLineWrap(true);
@@ -227,7 +284,8 @@ public final class TicketView extends JPanel implements Page {
         updateText.setBorder(new LineBorder(Color.BLACK, 1));
         JScrollPane scrollPane = new JScrollPane(updateText);
         GUIStyle.styleTextArea(updateText);
-
+        
+        // Create update button for user to interact with.
         updateButton = new JButton("Update Ticket");
         GUIStyle.styleButton(updateButton);
 

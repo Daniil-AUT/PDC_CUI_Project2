@@ -9,19 +9,24 @@ import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
 /**
+ * TicketController handles interaction between view and model for ticket class.
  *
  * @author Daniil
  */
 public class TicketController {
 
+    // Reference the appropriat view and model for ticket class
     private final TicketView view;
     private final TicketModel model;
+
+    // Constants to indicate whether there was an error and which operation to do.
     private static final Color ERROR_COLOUR = Color.red;
     private static final Color DEFAULT_COLOUR = Color.black;
     private static final String VIEW_UPDATE = "Update";
     private static final String VIEW_CREATE = "Create";
     private static final String VIEW_VIEW = "View";
 
+    // Constructor initialises view and model for ticket class
     public TicketController(TicketView view, TicketModel model) {
         this.view = view;
         this.model = model;
@@ -29,6 +34,7 @@ public class TicketController {
         ticketOperations();
     }
 
+    // Navigate back to user or assistant account screen based on current view.
     private void toAccountScreen() {
         view.backButton.addActionListener((ActionEvent e) -> {
             WindowManager.getManager().setTicketVisible(false, "");
@@ -42,6 +48,7 @@ public class TicketController {
         });
     }
 
+    // Set up action listeners for ticket operations (create, update, view, reply).
     private void ticketOperations() {
         createTicket();
         updateTicket();
@@ -49,6 +56,7 @@ public class TicketController {
         replyTicket();
     }
 
+    // Handle ticket operation for ticket creating
     private void createTicket() {
         view.createButton.addActionListener((ActionEvent e) -> {
             System.out.println("Created ticket...");
@@ -62,6 +70,7 @@ public class TicketController {
         });
     }
 
+    // Validate text for ticket text area.
     private boolean ticketTextValid(JTextArea textArea, JLabel textLabel) {
         String text = textArea.getText();
         if (text.isEmpty()) {
@@ -74,7 +83,8 @@ public class TicketController {
             return true;
         }
     }
-
+    
+    // Handle ticket update for existing ticket.
     private void updateTicket() {
         view.updateButton.addActionListener((ActionEvent e) -> {
             if (ticketTextValid(view.updateText, view.updateLabel)) {
@@ -85,25 +95,27 @@ public class TicketController {
             }
         });
     }
-
+    
+    // Clear ticket table when navigating from assistant ticket page.
     private void asViewTicket() {
         view.backButton.addActionListener((ActionEvent e) -> {
-            view.modelTable.setRowCount(0); // This clears the table
+            view.modelTable.setRowCount(0); 
         });
     }
 
+    // Handles reply ticket interaction
     private void replyTicket() {
         view.replyButton.addActionListener((ActionEvent e) -> {
             String id = view.idField.getText();
             String reply = view.replyText.getText();
             String assistantReply = view.replyText.getText();
             String userID = view.idField.getText().toUpperCase();
-            
+
             boolean ticketExists = model.checkTicketExists(id.toUpperCase());
-            
+
             handleAssistantReply(assistantReply);
             handleUserID(userID, ticketExists);
-            
+
             if (isFormValid(view.replyText, view.replyLabel) && ticketExists) {
                 JOptionPane.showMessageDialog(null, "Reply Was Sent.");
                 model.replyToTicket(id, reply);
@@ -114,7 +126,8 @@ public class TicketController {
             }
         });
     }
-
+    
+    // Update reply label based on the input text for assistant's reply.
     private void handleAssistantReply(String assistantReply) {
         if (assistantReply.isEmpty()) {
             view.replyLabel.setText("Reply To User Ticket (No Blanks)");
@@ -122,7 +135,8 @@ public class TicketController {
             view.replyLabel.setText("Reply To User Ticket");
         }
     }
-
+    
+    //  Handle user ID and update id label based on its input (error or not).
     private void handleUserID(String userID, boolean ticketExists) {
         if (userID.isEmpty()) {
             view.idLabel.setText("Enter User ID (No Blanks)");
@@ -135,7 +149,8 @@ public class TicketController {
             view.idLabel.setForeground(DEFAULT_COLOUR);
         }
     }
-
+    
+    // Validate text in a text area fields.
     private boolean isFormValid(JTextArea textArea, JLabel textLabel) {
         String text = textArea.getText();
         if (text.isEmpty()) {
@@ -148,5 +163,4 @@ public class TicketController {
             return true;
         }
     }
-
 }

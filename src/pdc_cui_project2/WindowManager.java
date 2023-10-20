@@ -13,8 +13,6 @@ import javax.swing.*;
  * @author Daniil
  */
 
-// MEDIATOR PATTERN
-// SINGLETON PATTERN
 public class WindowManager extends JFrame {
     
     // Create a single instance of a manager class
