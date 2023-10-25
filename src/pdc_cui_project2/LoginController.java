@@ -92,8 +92,11 @@ public class LoginController {
         });
     }
 
-    // Validate user entries and handle navigation based conditions
-    private void validateEntries(String id, String password) {
+    /*
+    Validate user entries and handle navigation based conditions.
+    Protected for test purpose.
+     */
+    protected boolean validateEntries(String id, String password) {
 
         // Check the logic before proceeding to account page
         if (validateId(id) == validatePassword(password)) {
@@ -104,16 +107,20 @@ public class LoginController {
                         setDefault(Field.PASSWORD);
                         model.setTicketStatus(id);
                         directToPage(Page.ACCOUNT, selectType());
+                        return true;
                     } else {
                         setError(PASSWORD_MISMATCH, Field.PASSWORD);
                     }
                 }
             }
         }
+        return false;
     }
 
-    // Select user type based on the selected radio button
-    private String selectType() {
+    /*
+    Select user type based on the selected radio button (protected for test purpose)
+     */
+    protected String selectType() {
 
         // Use conditional statements to set user type
         String type = UserType.STUDENT.stringValue;
@@ -167,7 +174,7 @@ public class LoginController {
     // Navigate to the specific page based on the user type
     private void directToPage(Page page, String type) {
         WindowManager.getManager().setLoginVisible(false);
-        
+
         // Switch to introduce any new potential pages on LogIn page
         switch (page) {
             case ACCOUNT:

@@ -410,10 +410,10 @@ public final class DataBaseHandler {
         // SQL query to create the USERS table
         String createTableSQL = "CREATE TABLE " + USERS_TABLE + " ("
                 + "ID VARCHAR(10), "
-                + "Name VARCHAR(20), "
-                + "LastName VARCHAR(25), "
-                + "Email VARCHAR(50), "
-                + "Password VARCHAR(20), "
+                + "Name VARCHAR(50), "
+                + "LastName VARCHAR(50), "
+                + "Email VARCHAR(100), "
+                + "Password VARCHAR(50), "
                 + "HasTicket BOOLEAN, "
                 + "Type VARCHAR(20), "
                 + "PRIMARY KEY (ID))";

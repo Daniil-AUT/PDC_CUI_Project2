@@ -72,8 +72,11 @@ public class SignUpController {
         });
     }
     
-    // Validates user input and creates new user if input is valid.
-    private void validateEntry() {
+    /*
+    Validates user input and creates new user if input is valid.
+    Protected for test case purpose.
+    */
+    protected void validateEntry() {
         if (checkFields()) {
             if (validateFields()) {
                 String name = view.name.getText();
@@ -89,8 +92,8 @@ public class SignUpController {
         }
     }
     
-    // Resets input fields in SignUpView
-    private void resetFields() {
+    // Resets input fields in SignUpView (protected for test purposes)
+    protected void resetFields() {
         view.name.setText("");
         view.lastName.setText("");
         view.email.setText("");
@@ -102,8 +105,9 @@ public class SignUpController {
     /*
     Determines the user type based on the radio button selected and calls the
     appropriate method in the SignUpModel to create a new user.
+    Protected for test case purpose.
     */
-    private void getUserType(String name, String lName, String email, String password) {
+    protected void getUserType(String name, String lName, String email, String password) {
         if (view.assistant.isSelected()) {
             model.createUser(name, lName, email, model.types.ASSISTANT, password);
         } else if (view.student.isSelected()) {
@@ -113,8 +117,8 @@ public class SignUpController {
         }
     }
     
-    // Validates all user input fields.
-    private boolean validateFields() {
+    // Validates all user input fields (protected for test purposes).
+    protected boolean validateFields() {
         return isNameValid() && isLNameValid() && isEmailValid() && passwordMatch();
     }
     

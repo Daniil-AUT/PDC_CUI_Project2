@@ -19,13 +19,13 @@ public class WindowManager extends JFrame {
     private static WindowManager manager;
     
     // Views for the Help Desk App
-    private HomeView homeView;
-    private FaqView faqView;
-    private LoginView loginView;
-    private SignUpView signupView;
-    private UserAccountView userAccountView;
-    private AssistantAccountView assistantView;
-    private TicketView ticketView;
+    protected HomeView homeView;
+    protected FaqView faqView;
+    protected LoginView loginView;
+    protected SignUpView signupView;
+    protected UserAccountView userAccountView;
+    protected AssistantAccountView assistantView;
+    protected TicketView ticketView;
     
     // Models for the Help Desk App
     private SignUpModel signupModel;
