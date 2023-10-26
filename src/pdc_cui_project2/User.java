@@ -3,7 +3,10 @@ package pdc_cui_project2;
 import java.util.Random;
 
 /**
- *
+ * User is a high-level class for the user management.
+ * This class is abstract which  provides template for other user 
+ * categories.
+ * This class has common attributes and methods shared to other user types.
  * @author Daniil
  */
 public abstract class User {
@@ -12,28 +15,36 @@ public abstract class User {
     private final String lastName;
     private final String email;
     private final String password;
-    public Random rand;
+    protected Random rand;
+    protected DataBaseHandler db;
     
-    // Initialise the user constructor with appropriate
-    // arguments + instantiate the Random object for generating id's
+    /*
+    Initialise the user constructor with appropriate
+    arguments + instantiate the Random object for generating id's
+    */
     public User(String name, String lastName, String email, String password) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.rand = new Random();
+        this.db = DataBaseHandler.getDB();
     }
     
-    // The abstracts methods will vary from class to class
-    // depending on the object
+    /*
+    The abstracts methods will vary from class to class
+    depending on the object
+    */
     public abstract String createID();
     public abstract String getUserClass();
 
     public abstract String getID();
     
     
-    // The getter methods are the only ones
-    // allowed for this class and its child classes
+    /*
+    Provide getter and setter methods only
+    the primitive types are not to be modified
+    */
     public String getPassword() {
         return password;
     }
@@ -49,9 +60,11 @@ public abstract class User {
         return email;
     }
     
-    // Override toString to that the User object
-    // will be displayed in the following form in string format
-    // Shows name, last name and mail of Users
+    /*
+    Override toString of User object to display
+    general user details (name, last name, email)
+    which sets a template for further extension
+    */
     @Override
     public String toString() {
         return "Full Name: " + getName() + " " + getLastName() 
