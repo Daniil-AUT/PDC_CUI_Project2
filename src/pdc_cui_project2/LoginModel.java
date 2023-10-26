@@ -1,37 +1,46 @@
 package pdc_cui_project2;
 
-import java.awt.Color;
-
 /**
- *
+ * Model class for the login page which handles interaction with the database
+ * where it checks if the entered ID exists, matches passwords, and sets
+ * ticket status.
+ * 
  * @author Daniil
  */
 public class LoginModel {
-    private DataBaseHandler db;
-
+    
+    // Reference the DataBaseHandle
+    private final DataBaseHandler db;
+    
+    // Enum which identifies different user types
+    public UserType userType;
+    
+    // Initialise model by geting reference to the database handler.
     public LoginModel() {
         this.db = DataBaseHandler.getDB();
     }
-
+    
+    // Shows ENUM for different user types
+    public enum UserType {
+        ASSISTANT,
+        CUSTOMER,
+        STUDENT
+    }
+    
+    // Check to see if ID exists for a given user type.
     public boolean checkIdExist(String id, String type) {
-        boolean valid = false;
         System.out.println(type);
-
-        valid = db.checkIdExist(id, type);
-
-        if (!valid) {
-            return false;
-        }
-
-        
-        return true;
+        boolean valid = db.checkIdExist(id.toUpperCase(), type);
+        return valid;
     }
-
+    
+    // Check if password matches given user ID.
     public boolean passwordMatch(String password, String id) {
-        if(!db.passwordMatch(password, id)) {   
-            return false;
-        }
-        return true;
+        return db.passwordMatch(password, id);
     }
-
+    
+    // Set ticket status given user ID.
+    public void setTicketStatus(String id) {
+        db.checkTicketStatus(id);
+    }
 }

@@ -1,42 +1,39 @@
 package pdc_cui_project2;
 
-import java.util.Random;
+/**
+ * Responsible for setting up student type by extending the User class.
+ * Each customer has a unique ID following format (4 letters and 4 numbers)
+ * The Customer class is a child class of User parent class.
+ * @author Daniil
+ */
 
-/**
- *
- * @author Daniil
- */
-/**
- *
- * @author Daniil
- */
+
 public final class Student extends User {
 
     private final String studentID;
-    private final DataBaseHandler db;
-    // Constructor will take in arguments passed to super
-    // and set the id based on the method
+    
+    /*
+    Instantiate the Student constructor with user super class
+    and unqiue ID by calling the createID method
+    */
     public Student(String name, String lastName, String email, String password) {
         super(name, lastName, email, password);
-        
-        this.db = DataBaseHandler.getDB();
         this.studentID = createID();
     }
-
-    // The toString method is overriden
-    // to include the toString of the super class
-    // and additionally include the id variable of child class
+    
+    // Override toString method so that it prints all details for Student type.
     @Override
     public String toString() {
         return super.toString() + "\nStudent ID: " + studentID;
     }
     
-    // Generates a unique id based on the child class, the
-    // id consists of 8 digits/characters and is of string format
-    // returns the id string
+    /*
+    Implements abstract method which creates id based on specific format
+    and checks the id existence in the table, if exists, the function calls
+    itself again.
+    */
     @Override
     public String createID() {
-        Random rand = new Random();
         String component = "";
         for (int i = 0; i < 4; i++) {
             int letter = super.rand.nextInt(26) + 65;
@@ -53,15 +50,13 @@ public final class Student extends User {
         return component;
     }
     
-    // Override getID method to get student id
+    //Create a getter method to get the id of a Student class
     @Override
     public String getID() {
         return this.studentID;
     }
-    // The folder name method is overriden
-    // so that it returns the string based
-    // on the class
 
+    // Getter method for the sub-user class (Student)
     @Override
     public String getUserClass() {
         return "Student";

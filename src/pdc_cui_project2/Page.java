@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package pdc_cui_project2;
 
 /**
@@ -9,5 +5,10 @@ package pdc_cui_project2;
  * @author Daniil
  */
 public interface Page {
+    
+    /*
+    Each Page inherits this method which it calls in 
+    constructor to initialise all the GUI components
+    */
     public void createComponents();
 }
