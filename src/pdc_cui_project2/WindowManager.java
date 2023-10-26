@@ -190,6 +190,7 @@ public class WindowManager extends JFrame {
                 break;
             case AS_VIEW:
                 
+                // --CHAT-GPT assisted method--
                 // Show TicketView through view window while displaying user tickets
                 ticketView.showAsViewWindow();
                 for (Map.Entry<String, String> entry : db.getUserTickets().entrySet()) {

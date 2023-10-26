@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
 /**
+ * // --CHAT-GPT HELPED CREATE POP UP MESSAGES FOR THIS CLASS--
  * TicketController handles interaction between view and model for ticket class.
  *
  * @author Daniil

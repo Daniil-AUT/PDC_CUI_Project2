@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 /**
+ * // --CHAT-GPT HAS HELPED WITH CREATING POP UP MESSAGE FOR EACH OPERATION--
  * UserAccountController class is responsible for handling user interactions and
  * events in the User Account View. The class is connects the model and view
  * while controlling navigation to other views (Mainly Ticket Operations).

@@ -41,7 +41,8 @@ public final class TicketView extends JPanel implements Page {
     protected String currentView;
 
     protected JTextField idField;
-
+    
+    // --CHAT-GPT assisted method--
     // Table for displaying information for user tickets
     protected JTable tickeTable;
     protected DefaultTableModel modelTable;
@@ -158,6 +159,7 @@ public final class TicketView extends JPanel implements Page {
         return asViewPanel;
     }
     
+    // --CHAT-GPT assisted method--
     // Create assistant view page
     public JPanel windowAsView() {
         
@@ -172,7 +174,7 @@ public final class TicketView extends JPanel implements Page {
 
         // Column names for id and description
         String[] columnNames = {"ID", "Description"};
-
+        
         // Create a DefaultTableModel with no data
         modelTable = new DefaultTableModel(columnNames, 0) {
             @Override

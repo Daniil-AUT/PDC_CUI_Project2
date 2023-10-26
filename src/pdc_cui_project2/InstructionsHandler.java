@@ -1,7 +1,7 @@
 package pdc_cui_project2;
 
 /**
- * Instruction Handler is used for managing insutrction text for different
+ * Instruction Handler is used for managing instruction text for different
  * user interactions and roles in HelpDesk App.
  * 
  * @author Daniil

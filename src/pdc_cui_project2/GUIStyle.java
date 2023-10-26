@@ -66,7 +66,8 @@ public class GUIStyle {
         
         // Set appropriate font and size
         radioButton.setFont(new Font("Consolas", Font.BOLD, 15));
-
+        
+        // --CHAT-GPT assisted method--
         // Remove focus painting for a cleaner appearance
         radioButton.setFocusPainted(false);
     }
