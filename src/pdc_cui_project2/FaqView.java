@@ -1,64 +1,51 @@
 package pdc_cui_project2;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
 import javax.swing.*;
 
 /**
+ * Is the FAQ page for AUT HelpDesk application. Extends JPanel and implements
+ * the Page interface. Displays components for FAQ page with information and a
+ * button to navigate back.
+ *
+ * Styles components using GUIStyle class.
  *
  * @author Daniil
  */
-public class FaqView extends JPanel implements Page {
-    private JButton backButton;
-    private JTextArea faqInfo;
-    
+public final class FaqView extends JPanel implements Page {
+
+    protected JButton backButton;
+    protected JTextArea faqInfo;
+
+    /*
+    Instatiates FAQView constructor which calls overridable
+    interface method.
+     */
     public FaqView() {
         createComponents();
-        createEvents();
     }
-    
+
+    // Compiles all GUI components into one method
     @Override
     public void createComponents() {
+        // Set layout for the overall panel
         setLayout(new BorderLayout());
+
+        // Create and style back button
         backButton = new JButton("Go Back");
         GUIStyle.styleButton(backButton);
-        faqInfo = new JTextArea("\n\n"+showInfo(), 60, 50);
+
+        // Create text area for displaying FAQ information
+        faqInfo = new JTextArea();
         faqInfo.setEditable(false);
         GUIStyle.styleTextArea(faqInfo);
-        
+
+        // Add a scroll pane for the faqInfo text area
         JScrollPane scroll = new JScrollPane(faqInfo);
         scroll.setEnabled(true);
+
+        // Add components to the panel
         add(backButton, BorderLayout.NORTH);
         add(scroll, BorderLayout.CENTER);
-    }
-    
-    public void createEvents() {
-        backButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("home button has been pressed");
-                WindowManager.getManager().setFAQVisible(false);
-                WindowManager.getManager().setHomeVisible(true);
-            }
-        });
-    }
-    
-    private static String showInfo() {
-        String text = "";
-        try (BufferedReader reader = new BufferedReader(new FileReader("HelpDeskFiles\\faq.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                text += line + "\n";
-            }
-            reader.close();
-            // Give possible exceptions errors and handle them through print statements
-        } catch (FileNotFoundException e) {
-            return "Sorry, FAQ is unavailable at the moment.";
-        } catch (IOException e) {
-            return "Apologies, An Error Occured Loading an FAQ";
-        }
-        return text;
     }
 }

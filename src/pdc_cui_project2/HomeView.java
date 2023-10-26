@@ -1,31 +1,38 @@
 package pdc_cui_project2;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
+ * Shows a home page for the AUT HelpDesk App which extends JPanel and
+ * implements the Page interface. Provides components to access login, sign up,
+ * and FAQ pages The page also contains the instructions to guide user. The
+ * components use GUIStyle class to look universal.
+ *
+ * This is a view of a Home/FAQ MVC pattern.
  *
  * @author Daniil
  */
 public final class HomeView extends JPanel implements Page {
-    private JButton loginButton;
-    private JButton signupButton;
-    private JButton faqButton;
-    private JLabel greetLabel;
-    private JTextArea instructionText;
-    
-    
+
+    // Buttons and labels for the home view
+    protected JButton loginButton;
+    protected JButton signupButton;
+    protected JButton faqButton;
+    protected JLabel greetLabel;
+    protected JTextArea instructionText;
+
+    // Instantiate Constructor with a method which compiles components
     public HomeView() {
         createComponents();
-        createEvents();
     }
-    
+
     @Override
     public void createComponents() {
+        // Set layout for the overall panel
         setLayout(new BorderLayout());
-        
+
+        // Create and style FAQ button
         faqButton = new JButton("View FAQ");
         GUIStyle.styleButton(faqButton);
         add(faqButton, BorderLayout.NORTH);
@@ -49,8 +56,8 @@ public final class HomeView extends JPanel implements Page {
         instructionText.setOpaque(false);
         midCenter.add(instructionText);
         centerPanel.add(midCenter, BorderLayout.CENTER);
-
         
+        // Panel for login and sign up buttons
         JPanel bottomPanel = new JPanel(new GridLayout(0, 2, 1, 0));
         loginButton = new JButton("Log In");
         GUIStyle.styleButton(loginButton);
@@ -59,37 +66,7 @@ public final class HomeView extends JPanel implements Page {
         bottomPanel.add(loginButton);
         bottomPanel.add(signupButton);
         add(bottomPanel, BorderLayout.SOUTH);
-        
+
     }
-    
-    public void createEvents() {
-       loginButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("login button has been pressed");
-                WindowManager.getManager().setHomeVisible(false);
-                WindowManager.getManager().setLoginVisible(true);
-            }
-        }); 
-       
-       signupButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("signup button has been pressed");
-                WindowManager.getManager().setSignUpVisible(true);
-                WindowManager.getManager().setHomeVisible(false);
-                
-            }
-        });
-        
-        
-        faqButton.addActionListener(
-        new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("faq button has been pressed");
-                WindowManager.getManager().setHomeVisible(false);
-                WindowManager.getManager().setFAQVisible(true);
-            }
-        });   
-    }
+
 }
