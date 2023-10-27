@@ -77,6 +77,8 @@ public class WindowManager extends JFrame {
     private void createMainFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(718, 540);
+        ImageIcon icon = new ImageIcon("HelpDeskFiles\\aut_logo.png");
+        this.setIconImage(icon.getImage());
         setTitle("AUT Helpdesk");
         setLayout(new CardLayout());
         setVisible(true);
