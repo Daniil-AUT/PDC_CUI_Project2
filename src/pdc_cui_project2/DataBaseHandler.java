@@ -242,7 +242,7 @@ public final class DataBaseHandler {
                 if (reply != null) {
                     // Include a blank line between description and reply for clarity
                     return formatTicket(description
-                            + "\n\n--REPLY--\n\n" + userDetails + "\n\n" + reply, 150);
+                             + reply, 150);
                 } else {
                     return formatTicket(description, 70);
                 }
@@ -345,8 +345,9 @@ public final class DataBaseHandler {
             ResultSet rs = myQuery(sqlSelectTicket);
 
             if (rs.next()) {
+                String reply = "\n\n--REPLY--\n\n" + userDetails + "\n\n" + text;
                 String sqlUpdateReply = "UPDATE " + TICKET_TABLE + " SET REPLY = '"
-                        + text + "' WHERE TICKET_ID = '" + id + "'";
+                        + reply + "' WHERE TICKET_ID = '" + id + "'";
                 myUpdate(sqlUpdateReply);
                 rs.close();
             }
