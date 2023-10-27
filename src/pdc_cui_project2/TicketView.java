@@ -214,7 +214,7 @@ public final class TicketView extends JPanel implements Page {
         viewText.setLineWrap(true);
         viewText.setWrapStyleWord(true);
         GUIStyle.styleTextArea(viewText);
-        
+        viewText.setFont(new Font("Consolas", Font.CENTER_BASELINE, 15));
         // Add scroll pane to text area for text to be displayed properly
         JScrollPane scrollPane = new JScrollPane(viewText);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -254,7 +254,7 @@ public final class TicketView extends JPanel implements Page {
         JScrollPane scrollPane = new JScrollPane(createText);
         createText.setBorder(new LineBorder(Color.BLACK));
         GUIStyle.styleTextArea(createText);
-        
+        createText.setFont(new Font("Consolas", Font.CENTER_BASELINE, 15));
         // Create a button for user to interact with
         createButton = new JButton("Create Ticket");
         GUIStyle.styleButton(createButton);
@@ -286,9 +286,10 @@ public final class TicketView extends JPanel implements Page {
         updateText.setBorder(new LineBorder(Color.BLACK, 1));
         JScrollPane scrollPane = new JScrollPane(updateText);
         GUIStyle.styleTextArea(updateText);
+        updateText.setFont(new Font("Consolas", Font.CENTER_BASELINE, 15));
         
         // Create update button for user to interact with.
-        updateButton = new JButton("Update Ticket");
+        updateButton = new JButton("Edit Ticket");
         GUIStyle.styleButton(updateButton);
 
         // Add components for Create window

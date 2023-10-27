@@ -74,7 +74,7 @@ public class TicketController {
     // Validate text for ticket text area.
     private boolean ticketTextValid(JTextArea textArea, JLabel textLabel) {
         String text = textArea.getText();
-        if (text.isEmpty()) {
+        if (text.isBlank() || text.isEmpty()) {
             textLabel.setForeground(ERROR_COLOUR);
             textArea.setBorder(new LineBorder(ERROR_COLOUR, 2));
             return false;
@@ -89,7 +89,7 @@ public class TicketController {
     private void updateTicket() {
         view.updateButton.addActionListener((ActionEvent e) -> {
             if (ticketTextValid(view.updateText, view.updateLabel)) {
-                JOptionPane.showMessageDialog(null, "Ticket Has Been Updated.");
+                JOptionPane.showMessageDialog(null, "Ticket Has Been Edited.");
                 model.updateTicket(view.updateText.getText());
                 WindowManager.getManager().setUserAccountVisible(true);
                 WindowManager.getManager().setTicketVisible(false, "");
@@ -130,7 +130,7 @@ public class TicketController {
     
     // Update reply label based on the input text for assistant's reply.
     private void handleAssistantReply(String assistantReply) {
-        if (assistantReply.isEmpty()) {
+        if (assistantReply.isBlank() || assistantReply.isEmpty()) {
             view.replyLabel.setText("Reply To User Ticket (No Blanks)");
         } else {
             view.replyLabel.setText("Reply To User Ticket");
@@ -139,7 +139,7 @@ public class TicketController {
     
     //  Handle user ID and update id label based on its input (error or not).
     private void handleUserID(String userID, boolean ticketExists) {
-        if (userID.isEmpty()) {
+        if (userID.isBlank() || userID.isEmpty()) {
             view.idLabel.setText("Enter User ID (No Blanks)");
             view.idLabel.setForeground(ERROR_COLOUR);
         } else if (!ticketExists) {
@@ -154,7 +154,7 @@ public class TicketController {
     // Validate text in a text area fields.
     private boolean isFormValid(JTextArea textArea, JLabel textLabel) {
         String text = textArea.getText();
-        if (text.isEmpty()) {
+        if (text.isBlank() || text.isEmpty()) {
             textLabel.setForeground(ERROR_COLOUR);
             textArea.setBorder(new LineBorder(ERROR_COLOUR, 2));
             return false;
